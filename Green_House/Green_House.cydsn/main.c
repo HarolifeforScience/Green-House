@@ -29,7 +29,7 @@ int main(void)
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     UART_Start();
     isr_UART_StartEx(my_isr_UART);
-    
+    //
     I2C_RTC_Start();
     
     
@@ -51,11 +51,11 @@ void realTimeClock(void)
     
     // read the rtm module data from the i2c master
   
-    I2C_RTC_MasterSendStart(0x68, I2C_RTC_WRITE_XFER_MODE);
+    I2C_RTC_MasterSendStart(0x00, I2C_RTC_WRITE_XFER_MODE);
     
     I2C_RTC_MasterWriteByte(0x00);
     
-    I2C_RTC_MasterSendRestart(0x68, I2C_RTC_WRITE_XFER_MODE);
+    I2C_RTC_MasterSendRestart(0x00, I2C_RTC_WRITE_XFER_MODE);
     
     for(i=0; i<6; i++)
     {
@@ -80,6 +80,8 @@ void realTimeClock(void)
 CY_ISR(my_isr_UART)
 {
     realTimeClock();
+    
+    // Terminal Interface Commande
     
     // Clearing the Interrupt bit and the Receive register
     UART_ClearRxBuffer();
