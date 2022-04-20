@@ -36,7 +36,7 @@ int main(void)
     // test transmition to putty
     char projectName[50] = "Green House Project \n\r";
     UART_PutString(projectName);
-    
+   
     
     for(;;)
     {
@@ -51,11 +51,11 @@ void realTimeClock(void)
     
     // read the rtm module data from the i2c master
   
-    I2C_RTC_MasterSendStart(0x00, I2C_RTC_WRITE_XFER_MODE);
+    I2C_RTC_MasterSendStart(0x68, I2C_RTC_WRITE_XFER_MODE);
     
     I2C_RTC_MasterWriteByte(0x00);
     
-    I2C_RTC_MasterSendRestart(0x00, I2C_RTC_WRITE_XFER_MODE);
+    I2C_RTC_MasterSendRestart(0x68, I2C_RTC_WRITE_XFER_MODE);
     
     for(i=0; i<6; i++)
     {
