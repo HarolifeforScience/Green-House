@@ -34,7 +34,7 @@ int main(void)
     
     
     // test transmition to putty
-    char projectName[50] = "Green House Project \n\r";
+    char projectName[50] = "***Green House Project*** \n\r";
     UART_PutString(projectName);
    
     
@@ -78,11 +78,57 @@ void realTimeClock(void)
 
 
 CY_ISR(my_isr_UART)
-{
-    realTimeClock();
+{   
+    // Testing
+    //realTimeClock();
+    
+    // Testing ends
     
     // Terminal Interface Commande
+    static uint8 old_char = 0;
+    uint8 current_char;
+    current_char = UART_GetChar();
     
+    if(current_char == 't' || current_char == 'T')
+    {
+        // Setting the current time for the device
+        UART_PutString("Setting the current time for the device\r\n");  
+    }
+    else if(current_char == 'd' || current_char == 'D')
+    {
+        // Setting the current day for the device
+        UART_PutString("Setting the current day for the device\r\n");  
+    }
+    else if(current_char == '?')
+    {
+        if(old_char == 't' || old_char == 'T')
+        {
+            // Sending out the current device time
+            UART_PutString("Sending out the current device time\r\n");
+        }
+        else if(old_char == 'd' || old_char == 'D')
+        {
+            // Sending out the current device day
+            UART_PutString("Sending out the current device day\r\n");
+        }
+        else
+        {
+            // Sending out indentification information 
+            UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\r\n");
+        }
+    }
+     else if(current_char == 'a' || current_char == 'A')
+    {
+        // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, soil moisture, light sensor
+        UART_PutString("Sending all saved data...\r\n");
+    }
+     else if(current_char == 'c' || current_char == 'C')
+    {
+        // clearing the device data logging memory
+        UART_PutString("Clearing the logging memory...\r\n");
+    }
+    
+    old_char = current_char;
     // Clearing the Interrupt bit and the Receive register
     UART_ClearRxBuffer();
     isr_UART_ClearPending();
