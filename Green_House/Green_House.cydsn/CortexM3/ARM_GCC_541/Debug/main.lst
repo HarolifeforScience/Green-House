@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 1
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 1
 
 
    1              		.syntax unified
@@ -19,14 +19,14 @@ ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.section	.text.my_isr_UART,"ax",%progbits
+  19              		.section	.text.main,"ax",%progbits
   20              		.align	2
-  21              		.global	my_isr_UART
+  21              		.global	main
   22              		.thumb
   23              		.thumb_func
-  24              		.type	my_isr_UART, %function
-  25              	my_isr_UART:
-  26              	.LFB66:
+  24              		.type	main, %function
+  25              	main:
+  26              	.LFB64:
   27              		.file 1 "main.c"
    1:main.c        **** /* ========================================
    2:main.c        ****  *
@@ -42,1716 +42,1775 @@ ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 1
   12:main.c        **** #include "project.h"
   13:main.c        **** #include <stdio.h>
   14:main.c        **** 
-  15:main.c        **** // Function prototypes
-  16:main.c        **** void realTimeClock(void);
-  17:main.c        **** 
-  18:main.c        **** // Interrupts handler prototypes
-  19:main.c        **** CY_ISR_PROTO(my_isr_UART);
-  20:main.c        **** 
-  21:main.c        **** 
+  15:main.c        **** // Define and global variables
+  16:main.c        **** # define RTC_slaveAddress 0x68
+  17:main.c        **** # define True 1
+  18:main.c        **** # define False 0
+  19:main.c        **** 
+  20:main.c        **** // Function prototypes
+  21:main.c        **** void realTimeClock(void);
   22:main.c        **** 
-  23:main.c        **** volatile uint8 rtc_data[7];
-  24:main.c        **** 
-  25:main.c        **** int main(void)
-  26:main.c        **** {
-  27:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
-  28:main.c        **** 
-  29:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-  30:main.c        ****     UART_Start();
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 2
-
-
-  31:main.c        ****     isr_UART_StartEx(my_isr_UART);
-  32:main.c        ****     //
-  33:main.c        ****     I2C_RTC_Start();
-  34:main.c        ****     
-  35:main.c        ****     
-  36:main.c        ****     // test transmition to putty
-  37:main.c        ****     char projectName[50] = "***Green House Project*** \n\r";
-  38:main.c        ****     UART_PutString(projectName);
-  39:main.c        ****    
-  40:main.c        ****     
-  41:main.c        ****     for(;;)
-  42:main.c        ****     {
-  43:main.c        ****         /* Place your application code here. */
-  44:main.c        ****        
-  45:main.c        ****     }
-  46:main.c        **** }
-  47:main.c        **** 
-  48:main.c        **** void realTimeClock(void)
-  49:main.c        **** {
-  50:main.c        ****     uint8 i, result = 0;
-  51:main.c        ****     
-  52:main.c        ****     // read the rtm module data from the i2c master
-  53:main.c        ****   
-  54:main.c        ****     I2C_RTC_MasterSendStart(0x68, I2C_RTC_WRITE_XFER_MODE);
-  55:main.c        ****     
-  56:main.c        ****     I2C_RTC_MasterWriteByte(0x00);
-  57:main.c        ****     
-  58:main.c        ****     I2C_RTC_MasterSendRestart(0x68, I2C_RTC_WRITE_XFER_MODE);
-  59:main.c        ****     
-  60:main.c        ****     for(i=0; i<6; i++)
-  61:main.c        ****     {
-  62:main.c        ****         rtc_data[i] = I2C_RTC_MasterReadByte(I2C_RTC_ACK_DATA);
-  63:main.c        ****     }
-  64:main.c        ****     
-  65:main.c        ****     rtc_data[6] = I2C_RTC_MasterReadByte(I2C_RTC_NAK_DATA);
-  66:main.c        ****     
-  67:main.c        ****     I2C_RTC_MasterSendStop();
-  68:main.c        ****     
-  69:main.c        ****     // send the result to the commad window
-  70:main.c        ****     char testData[20];
-  71:main.c        ****     for(i=0; i<7; i++)
-  72:main.c        ****     {
-  73:main.c        ****         sprintf(testData,"Bit%d : %d\r\n" ,i , rtc_data[i]>>4&0x07);
-  74:main.c        ****         UART_PutString(testData);
-  75:main.c        ****     }
-  76:main.c        **** 
-  77:main.c        **** }
-  78:main.c        **** 
-  79:main.c        **** 
-  80:main.c        **** CY_ISR(my_isr_UART)
-  81:main.c        **** {   
-  28              		.loc 1 81 0
-  29              		.cfi_startproc
-  30              		@ args = 0, pretend = 0, frame = 0
-  31              		@ frame_needed = 0, uses_anonymous_args = 0
-  32 0000 10B5     		push	{r4, lr}
-  33              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 3
-
-
-  34              		.cfi_offset 4, -8
-  35              		.cfi_offset 14, -4
-  82:main.c        ****     // Testing
-  83:main.c        ****     //realTimeClock();
-  84:main.c        ****     
-  85:main.c        ****     // Testing ends
-  86:main.c        ****     
-  87:main.c        ****     // Terminal Interface Commande
-  88:main.c        ****     static uint8 old_char = 0;
-  89:main.c        ****     uint8 current_char;
-  90:main.c        ****     current_char = UART_GetChar();
-  36              		.loc 1 90 0
-  37 0002 FFF7FEFF 		bl	UART_GetChar
-  38              	.LVL0:
-  39 0006 0446     		mov	r4, r0
-  40              	.LVL1:
-  91:main.c        ****     
-  92:main.c        ****     if(current_char == 't' || current_char == 'T')
-  41              		.loc 1 92 0
-  42 0008 7428     		cmp	r0, #116
-  43 000a 01D0     		beq	.L2
-  44              		.loc 1 92 0 is_stmt 0 discriminator 1
-  45 000c 5428     		cmp	r0, #84
-  46 000e 03D1     		bne	.L3
-  47              	.L2:
-  93:main.c        ****     {
-  94:main.c        ****         // Setting the current time for the device
-  95:main.c        ****         UART_PutString("Setting the current time for the device\r\n");  
-  48              		.loc 1 95 0 is_stmt 1
-  49 0010 1C48     		ldr	r0, .L16
-  50              	.LVL2:
-  51 0012 FFF7FEFF 		bl	UART_PutString
-  52              	.LVL3:
-  53 0016 2EE0     		b	.L4
-  54              	.LVL4:
-  55              	.L3:
-  96:main.c        ****     }
-  97:main.c        ****     else if(current_char == 'd' || current_char == 'D')
-  56              		.loc 1 97 0
-  57 0018 6428     		cmp	r0, #100
-  58 001a 01D0     		beq	.L5
-  59              		.loc 1 97 0 is_stmt 0 discriminator 1
-  60 001c 4428     		cmp	r0, #68
-  61 001e 03D1     		bne	.L6
-  62              	.L5:
-  98:main.c        ****     {
-  99:main.c        ****         // Setting the current day for the device
- 100:main.c        ****         UART_PutString("Setting the current day for the device\r\n");  
-  63              		.loc 1 100 0 is_stmt 1
-  64 0020 1948     		ldr	r0, .L16+4
-  65              	.LVL5:
-  66 0022 FFF7FEFF 		bl	UART_PutString
-  67              	.LVL6:
-  68 0026 26E0     		b	.L4
-  69              	.LVL7:
-  70              	.L6:
- 101:main.c        ****     }
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 4
-
-
- 102:main.c        ****     else if(current_char == '?')
-  71              		.loc 1 102 0
-  72 0028 3F28     		cmp	r0, #63
-  73 002a 15D1     		bne	.L7
- 103:main.c        ****     {
- 104:main.c        ****         if(old_char == 't' || old_char == 'T')
-  74              		.loc 1 104 0
-  75 002c 174B     		ldr	r3, .L16+8
-  76 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-  77 0030 742B     		cmp	r3, #116
-  78 0032 01D0     		beq	.L8
-  79              		.loc 1 104 0 is_stmt 0 discriminator 1
-  80 0034 542B     		cmp	r3, #84
-  81 0036 03D1     		bne	.L9
-  82              	.L8:
- 105:main.c        ****         {
- 106:main.c        ****             // Sending out the current device time
- 107:main.c        ****             UART_PutString("Sending out the current device time\r\n");
-  83              		.loc 1 107 0 is_stmt 1
-  84 0038 1548     		ldr	r0, .L16+12
-  85              	.LVL8:
-  86 003a FFF7FEFF 		bl	UART_PutString
-  87              	.LVL9:
-  88 003e 1AE0     		b	.L4
-  89              	.LVL10:
-  90              	.L9:
- 108:main.c        ****         }
- 109:main.c        ****         else if(old_char == 'd' || old_char == 'D')
-  91              		.loc 1 109 0
-  92 0040 642B     		cmp	r3, #100
-  93 0042 01D0     		beq	.L10
-  94              		.loc 1 109 0 is_stmt 0 discriminator 1
-  95 0044 442B     		cmp	r3, #68
-  96 0046 03D1     		bne	.L11
-  97              	.L10:
- 110:main.c        ****         {
- 111:main.c        ****             // Sending out the current device day
- 112:main.c        ****             UART_PutString("Sending out the current device day\r\n");
-  98              		.loc 1 112 0 is_stmt 1
-  99 0048 1248     		ldr	r0, .L16+16
- 100              	.LVL11:
- 101 004a FFF7FEFF 		bl	UART_PutString
- 102              	.LVL12:
- 103 004e 12E0     		b	.L4
- 104              	.LVL13:
- 105              	.L11:
- 113:main.c        ****         }
- 114:main.c        ****         else
- 115:main.c        ****         {
- 116:main.c        ****             // Sending out indentification information 
- 117:main.c        ****             UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\
- 106              		.loc 1 117 0
- 107 0050 1148     		ldr	r0, .L16+20
- 108              	.LVL14:
- 109 0052 FFF7FEFF 		bl	UART_PutString
- 110              	.LVL15:
- 111 0056 0EE0     		b	.L4
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 5
-
-
- 112              	.LVL16:
- 113              	.L7:
- 118:main.c        ****         }
- 119:main.c        ****     }
- 120:main.c        ****      else if(current_char == 'a' || current_char == 'A')
- 114              		.loc 1 120 0
- 115 0058 6128     		cmp	r0, #97
- 116 005a 01D0     		beq	.L12
- 117              		.loc 1 120 0 is_stmt 0 discriminator 1
- 118 005c 4128     		cmp	r0, #65
- 119 005e 03D1     		bne	.L13
- 120              	.L12:
- 121:main.c        ****     {
- 122:main.c        ****         // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, s
- 123:main.c        ****         UART_PutString("Sending all saved data...\r\n");
- 121              		.loc 1 123 0 is_stmt 1
- 122 0060 0E48     		ldr	r0, .L16+24
- 123              	.LVL17:
- 124 0062 FFF7FEFF 		bl	UART_PutString
- 125              	.LVL18:
- 126 0066 06E0     		b	.L4
- 127              	.LVL19:
- 128              	.L13:
- 124:main.c        ****     }
- 125:main.c        ****      else if(current_char == 'c' || current_char == 'C')
- 129              		.loc 1 125 0
- 130 0068 6328     		cmp	r0, #99
- 131 006a 01D0     		beq	.L14
- 132              		.loc 1 125 0 is_stmt 0 discriminator 1
- 133 006c 4328     		cmp	r0, #67
- 134 006e 02D1     		bne	.L4
- 135              	.L14:
- 126:main.c        ****     {
- 127:main.c        ****         // clearing the device data logging memory
- 128:main.c        ****         UART_PutString("Clearing the logging memory...\r\n");
- 136              		.loc 1 128 0 is_stmt 1
- 137 0070 0B48     		ldr	r0, .L16+28
- 138              	.LVL20:
- 139 0072 FFF7FEFF 		bl	UART_PutString
- 140              	.LVL21:
- 141              	.L4:
- 129:main.c        ****     }
- 130:main.c        ****     
- 131:main.c        ****     old_char = current_char;
- 142              		.loc 1 131 0
- 143 0076 054B     		ldr	r3, .L16+8
- 144 0078 1C70     		strb	r4, [r3]
- 132:main.c        ****     // Clearing the Interrupt bit and the Receive register
- 133:main.c        ****     UART_ClearRxBuffer();
- 145              		.loc 1 133 0
- 146 007a FFF7FEFF 		bl	UART_ClearRxBuffer
- 147              	.LVL22:
- 134:main.c        ****     isr_UART_ClearPending();
- 148              		.loc 1 134 0
- 149 007e FFF7FEFF 		bl	isr_UART_ClearPending
- 150              	.LVL23:
- 151 0082 10BD     		pop	{r4, pc}
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 6
-
-
- 152              	.L17:
- 153              		.align	2
- 154              	.L16:
- 155 0084 00000000 		.word	.LC0
- 156 0088 2C000000 		.word	.LC1
- 157 008c 00000000 		.word	.LANCHOR0
- 158 0090 58000000 		.word	.LC2
- 159 0094 80000000 		.word	.LC3
- 160 0098 A8000000 		.word	.LC4
- 161 009c F4000000 		.word	.LC5
- 162 00a0 10010000 		.word	.LC6
- 163              		.cfi_endproc
- 164              	.LFE66:
- 165              		.size	my_isr_UART, .-my_isr_UART
- 166              		.section	.text.main,"ax",%progbits
- 167              		.align	2
- 168              		.global	main
- 169              		.thumb
- 170              		.thumb_func
- 171              		.type	main, %function
- 172              	main:
- 173              	.LFB64:
-  26:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
- 174              		.loc 1 26 0
- 175              		.cfi_startproc
- 176              		@ args = 0, pretend = 0, frame = 56
- 177              		@ frame_needed = 0, uses_anonymous_args = 0
- 178 0000 30B5     		push	{r4, r5, lr}
- 179              		.cfi_def_cfa_offset 12
- 180              		.cfi_offset 4, -12
- 181              		.cfi_offset 5, -8
- 182              		.cfi_offset 14, -4
- 183 0002 8FB0     		sub	sp, sp, #60
- 184              		.cfi_def_cfa_offset 72
+  23:main.c        **** // Interrupts handler prototypes
+  24:main.c        **** CY_ISR_PROTO(my_isr_UART);
+  25:main.c        **** 
+  26:main.c        **** 
   27:main.c        **** 
- 185              		.loc 1 27 0
- 186              		.syntax unified
- 187              	@ 27 "main.c" 1
- 188 0004 62B6     		CPSIE   i
- 189              	@ 0 "" 2
-  30:main.c        ****     isr_UART_StartEx(my_isr_UART);
- 190              		.loc 1 30 0
- 191              		.thumb
- 192              		.syntax unified
- 193 0006 FFF7FEFF 		bl	UART_Start
- 194              	.LVL24:
-  31:main.c        ****     //
- 195              		.loc 1 31 0
- 196 000a 0F48     		ldr	r0, .L21
- 197 000c FFF7FEFF 		bl	isr_UART_StartEx
- 198              	.LVL25:
-  33:main.c        ****     
- 199              		.loc 1 33 0
- 200 0010 FFF7FEFF 		bl	I2C_RTC_Start
- 201              	.LVL26:
-  37:main.c        ****     UART_PutString(projectName);
- 202              		.loc 1 37 0
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 7
+  28:main.c        **** volatile uint8 rtc_data[7];
+  29:main.c        **** 
+  30:main.c        **** int main(void)
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 2
 
 
- 203 0014 01AC     		add	r4, sp, #4
- 204 0016 0D4D     		ldr	r5, .L21+4
- 205 0018 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 206 001a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 207 001c 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
- 208 0020 07C4     		stmia	r4!, {r0, r1, r2}
- 209 0022 2370     		strb	r3, [r4]
- 210 0024 0023     		movs	r3, #0
- 211 0026 CDF82130 		str	r3, [sp, #33]	@ unaligned
- 212 002a CDF82530 		str	r3, [sp, #37]	@ unaligned
- 213 002e CDF82930 		str	r3, [sp, #41]	@ unaligned
- 214 0032 CDF82D30 		str	r3, [sp, #45]	@ unaligned
- 215 0036 CDF83130 		str	r3, [sp, #49]	@ unaligned
- 216 003a 8DF83530 		strb	r3, [sp, #53]
-  38:main.c        ****    
- 217              		.loc 1 38 0
- 218 003e 01A8     		add	r0, sp, #4
- 219 0040 FFF7FEFF 		bl	UART_PutString
- 220              	.LVL27:
- 221              	.L19:
- 222 0044 FEE7     		b	.L19
- 223              	.L22:
- 224 0046 00BF     		.align	2
- 225              	.L21:
- 226 0048 00000000 		.word	my_isr_UART
- 227 004c 00000000 		.word	.LANCHOR1
- 228              		.cfi_endproc
- 229              	.LFE64:
- 230              		.size	main, .-main
- 231              		.section	.text.realTimeClock,"ax",%progbits
- 232              		.align	2
- 233              		.global	realTimeClock
- 234              		.thumb
- 235              		.thumb_func
- 236              		.type	realTimeClock, %function
- 237              	realTimeClock:
- 238              	.LFB65:
-  49:main.c        ****     uint8 i, result = 0;
- 239              		.loc 1 49 0
- 240              		.cfi_startproc
- 241              		@ args = 0, pretend = 0, frame = 24
- 242              		@ frame_needed = 0, uses_anonymous_args = 0
- 243 0000 10B5     		push	{r4, lr}
- 244              		.cfi_def_cfa_offset 8
- 245              		.cfi_offset 4, -8
- 246              		.cfi_offset 14, -4
- 247 0002 86B0     		sub	sp, sp, #24
- 248              		.cfi_def_cfa_offset 32
- 249              	.LVL28:
-  54:main.c        ****     
- 250              		.loc 1 54 0
- 251 0004 0021     		movs	r1, #0
- 252 0006 6820     		movs	r0, #104
- 253 0008 FFF7FEFF 		bl	I2C_RTC_MasterSendStart
- 254              	.LVL29:
-  56:main.c        ****     
- 255              		.loc 1 56 0
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 8
+  31:main.c        **** {
+  28              		.loc 1 31 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 56
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 30B5     		push	{r4, r5, lr}
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 8FB0     		sub	sp, sp, #60
+  38              		.cfi_def_cfa_offset 72
+  32:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  39              		.loc 1 32 0
+  40              		.syntax unified
+  41              	@ 32 "main.c" 1
+  42 0004 62B6     		CPSIE   i
+  43              	@ 0 "" 2
+  33:main.c        **** 
+  34:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  35:main.c        ****     UART_Start();
+  44              		.loc 1 35 0
+  45              		.thumb
+  46              		.syntax unified
+  47 0006 FFF7FEFF 		bl	UART_Start
+  48              	.LVL0:
+  36:main.c        ****     isr_UART_StartEx(my_isr_UART);
+  49              		.loc 1 36 0
+  50 000a 0F48     		ldr	r0, .L4
+  51 000c FFF7FEFF 		bl	isr_UART_StartEx
+  52              	.LVL1:
+  37:main.c        ****     //
+  38:main.c        ****     I2C_RTC_Start();
+  53              		.loc 1 38 0
+  54 0010 FFF7FEFF 		bl	I2C_RTC_Start
+  55              	.LVL2:
+  39:main.c        ****     
+  40:main.c        ****     
+  41:main.c        ****     // test transmition to putty
+  42:main.c        ****     char projectName[50] = "***Green House Project*** \n\r";
+  56              		.loc 1 42 0
+  57 0014 01AC     		add	r4, sp, #4
+  58 0016 0D4D     		ldr	r5, .L4+4
+  59 0018 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+  60 001a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  61 001c 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
+  62 0020 07C4     		stmia	r4!, {r0, r1, r2}
+  63 0022 2370     		strb	r3, [r4]
+  64 0024 0023     		movs	r3, #0
+  65 0026 CDF82130 		str	r3, [sp, #33]	@ unaligned
+  66 002a CDF82530 		str	r3, [sp, #37]	@ unaligned
+  67 002e CDF82930 		str	r3, [sp, #41]	@ unaligned
+  68 0032 CDF82D30 		str	r3, [sp, #45]	@ unaligned
+  69 0036 CDF83130 		str	r3, [sp, #49]	@ unaligned
+  70 003a 8DF83530 		strb	r3, [sp, #53]
+  43:main.c        ****     UART_PutString(projectName);
+  71              		.loc 1 43 0
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 3
 
 
- 256 000c 0020     		movs	r0, #0
- 257 000e FFF7FEFF 		bl	I2C_RTC_MasterWriteByte
- 258              	.LVL30:
-  58:main.c        ****     
- 259              		.loc 1 58 0
- 260 0012 0021     		movs	r1, #0
- 261 0014 6820     		movs	r0, #104
- 262 0016 FFF7FEFF 		bl	I2C_RTC_MasterSendRestart
- 263              	.LVL31:
+  72 003e 01A8     		add	r0, sp, #4
+  73 0040 FFF7FEFF 		bl	UART_PutString
+  74              	.LVL3:
+  75              	.L2:
+  76 0044 FEE7     		b	.L2
+  77              	.L5:
+  78 0046 00BF     		.align	2
+  79              	.L4:
+  80 0048 00000000 		.word	my_isr_UART
+  81 004c 00000000 		.word	.LANCHOR0
+  82              		.cfi_endproc
+  83              	.LFE64:
+  84              		.size	main, .-main
+  85              		.section	.text.realTimeClock,"ax",%progbits
+  86              		.align	2
+  87              		.global	realTimeClock
+  88              		.thumb
+  89              		.thumb_func
+  90              		.type	realTimeClock, %function
+  91              	realTimeClock:
+  92              	.LFB65:
+  44:main.c        ****    
+  45:main.c        ****     
+  46:main.c        ****     for(;;)
+  47:main.c        ****     {
+  48:main.c        ****         /* Place your application code here. */
+  49:main.c        ****        
+  50:main.c        ****     }
+  51:main.c        **** }
+  52:main.c        **** 
+  53:main.c        **** void realTimeClock(void)
+  54:main.c        **** {
+  93              		.loc 1 54 0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 72
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 10B5     		push	{r4, lr}
+  98              		.cfi_def_cfa_offset 8
+  99              		.cfi_offset 4, -8
+ 100              		.cfi_offset 14, -4
+ 101 0002 92B0     		sub	sp, sp, #72
+ 102              		.cfi_def_cfa_offset 80
+ 103              	.L7:
+  55:main.c        ****     uint8 i, result = 0;
+  56:main.c        ****     char debug[50];
+  57:main.c        ****     
+  58:main.c        ****     // read the rtm module data from the i2c master
+  59:main.c        ****     do
   60:main.c        ****     {
- 264              		.loc 1 60 0
- 265 001a 0024     		movs	r4, #0
- 266 001c 06E0     		b	.L24
- 267              	.LVL32:
- 268              	.L25:
-  62:main.c        ****     }
- 269              		.loc 1 62 0 discriminator 3
- 270 001e 0120     		movs	r0, #1
- 271 0020 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
- 272              	.LVL33:
- 273 0024 104B     		ldr	r3, .L29
- 274 0026 1855     		strb	r0, [r3, r4]
-  60:main.c        ****     {
- 275              		.loc 1 60 0 discriminator 3
- 276 0028 0134     		adds	r4, r4, #1
- 277              	.LVL34:
- 278 002a E4B2     		uxtb	r4, r4
- 279              	.LVL35:
- 280              	.L24:
-  60:main.c        ****     {
- 281              		.loc 1 60 0 is_stmt 0 discriminator 1
- 282 002c 052C     		cmp	r4, #5
- 283 002e F6D9     		bls	.L25
+  61:main.c        ****         result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
+ 104              		.loc 1 61 0 discriminator 1
+ 105 0004 0021     		movs	r1, #0
+ 106 0006 6820     		movs	r0, #104
+ 107 0008 FFF7FEFF 		bl	I2C_RTC_MasterSendStart
+ 108              	.LVL4:
+ 109 000c 0446     		mov	r4, r0
+ 110              	.LVL5:
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 4
+
+
+  62:main.c        ****         sprintf(debug,"Endless loop: %d\r\n" , result);
+ 111              		.loc 1 62 0 discriminator 1
+ 112 000e 0246     		mov	r2, r0
+ 113 0010 1949     		ldr	r1, .L13
+ 114 0012 05A8     		add	r0, sp, #20
+ 115              	.LVL6:
+ 116 0014 FFF7FEFF 		bl	sprintf
+ 117              	.LVL7:
+  63:main.c        ****         UART_PutString(debug);
+ 118              		.loc 1 63 0 discriminator 1
+ 119 0018 05A8     		add	r0, sp, #20
+ 120 001a FFF7FEFF 		bl	UART_PutString
+ 121              	.LVL8:
+  64:main.c        ****     }while(result!=I2C_RTC_MSTR_NO_ERROR);
+ 122              		.loc 1 64 0 discriminator 1
+ 123 001e 002C     		cmp	r4, #0
+ 124 0020 F0D1     		bne	.L7
   65:main.c        ****     
- 284              		.loc 1 65 0 is_stmt 1
- 285 0030 0020     		movs	r0, #0
- 286 0032 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
- 287              	.LVL36:
- 288 0036 0C4B     		ldr	r3, .L29
- 289 0038 9871     		strb	r0, [r3, #6]
+  66:main.c        ****     result = I2C_RTC_MasterWriteByte(0x00);
+ 125              		.loc 1 66 0
+ 126 0022 0020     		movs	r0, #0
+ 127 0024 FFF7FEFF 		bl	I2C_RTC_MasterWriteByte
+ 128              	.LVL9:
   67:main.c        ****     
- 290              		.loc 1 67 0
- 291 003a FFF7FEFF 		bl	I2C_RTC_MasterSendStop
- 292              	.LVL37:
+  68:main.c        ****     result = I2C_RTC_MasterSendRestart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
+ 129              		.loc 1 68 0
+ 130 0028 0021     		movs	r1, #0
+ 131 002a 6820     		movs	r0, #104
+ 132 002c FFF7FEFF 		bl	I2C_RTC_MasterSendRestart
+ 133              	.LVL10:
+  69:main.c        ****     
+  70:main.c        ****     for(i=0; i<6; i++)
+ 134              		.loc 1 70 0
+ 135 0030 06E0     		b	.L8
+ 136              	.LVL11:
+ 137              	.L9:
   71:main.c        ****     {
- 293              		.loc 1 71 0
- 294 003e 0024     		movs	r4, #0
- 295 0040 0DE0     		b	.L26
- 296              	.LVL38:
- 297              	.L27:
-  73:main.c        ****         UART_PutString(testData);
- 298              		.loc 1 73 0 discriminator 3
- 299 0042 094B     		ldr	r3, .L29
- 300 0044 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
- 301 0046 C3F30213 		ubfx	r3, r3, #4, #3
- 302 004a 2246     		mov	r2, r4
- 303 004c 0749     		ldr	r1, .L29+4
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 9
+  72:main.c        ****         rtc_data[i] = I2C_RTC_MasterReadByte(I2C_RTC_ACK_DATA);
+ 138              		.loc 1 72 0 discriminator 3
+ 139 0032 0120     		movs	r0, #1
+ 140 0034 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
+ 141              	.LVL12:
+ 142 0038 104B     		ldr	r3, .L13+4
+ 143 003a 1855     		strb	r0, [r3, r4]
+  70:main.c        ****     {
+ 144              		.loc 1 70 0 discriminator 3
+ 145 003c 0134     		adds	r4, r4, #1
+ 146              	.LVL13:
+ 147 003e E4B2     		uxtb	r4, r4
+ 148              	.LVL14:
+ 149              	.L8:
+  70:main.c        ****     {
+ 150              		.loc 1 70 0 is_stmt 0 discriminator 1
+ 151 0040 052C     		cmp	r4, #5
+ 152 0042 F6D9     		bls	.L9
+  73:main.c        ****     }
+  74:main.c        ****     
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 5
 
 
- 304 004e 01A8     		add	r0, sp, #4
- 305 0050 FFF7FEFF 		bl	sprintf
- 306              	.LVL39:
-  74:main.c        ****     }
- 307              		.loc 1 74 0 discriminator 3
- 308 0054 01A8     		add	r0, sp, #4
- 309 0056 FFF7FEFF 		bl	UART_PutString
- 310              	.LVL40:
-  71:main.c        ****     {
- 311              		.loc 1 71 0 discriminator 3
- 312 005a 0134     		adds	r4, r4, #1
- 313              	.LVL41:
- 314 005c E4B2     		uxtb	r4, r4
- 315              	.LVL42:
- 316              	.L26:
-  71:main.c        ****     {
- 317              		.loc 1 71 0 is_stmt 0 discriminator 1
- 318 005e 062C     		cmp	r4, #6
- 319 0060 EFD9     		bls	.L27
-  77:main.c        **** 
- 320              		.loc 1 77 0 is_stmt 1
- 321 0062 06B0     		add	sp, sp, #24
- 322              		.cfi_def_cfa_offset 8
- 323              		@ sp needed
- 324 0064 10BD     		pop	{r4, pc}
- 325              	.LVL43:
- 326              	.L30:
- 327 0066 00BF     		.align	2
- 328              	.L29:
- 329 0068 00000000 		.word	rtc_data
- 330 006c 34010000 		.word	.LC8
- 331              		.cfi_endproc
- 332              	.LFE65:
- 333              		.size	realTimeClock, .-realTimeClock
- 334              		.comm	rtc_data,7,4
- 335              		.section	.rodata
- 336              		.align	2
- 337              		.set	.LANCHOR1,. + 0
- 338              	.LC7:
- 339 0000 2A2A2A47 		.ascii	"***Green House Project*** \012\015\000"
- 339      7265656E 
- 339      20486F75 
- 339      73652050 
- 339      726F6A65 
- 340 001d 00000000 		.space	21
- 340      00000000 
- 340      00000000 
- 340      00000000 
- 340      00000000 
- 341              		.section	.rodata.str1.4,"aMS",%progbits,1
- 342              		.align	2
- 343              	.LC0:
- 344 0000 53657474 		.ascii	"Setting the current time for the device\015\012\000"
- 344      696E6720 
- 344      74686520 
- 344      63757272 
- 344      656E7420 
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 10
+  75:main.c        ****     rtc_data[6] = I2C_RTC_MasterReadByte(I2C_RTC_NAK_DATA);
+ 153              		.loc 1 75 0 is_stmt 1
+ 154 0044 0020     		movs	r0, #0
+ 155 0046 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
+ 156              	.LVL15:
+ 157 004a 0C4B     		ldr	r3, .L13+4
+ 158 004c 9871     		strb	r0, [r3, #6]
+  76:main.c        ****     
+  77:main.c        ****     I2C_RTC_MasterSendStop();
+ 159              		.loc 1 77 0
+ 160 004e FFF7FEFF 		bl	I2C_RTC_MasterSendStop
+ 161              	.LVL16:
+  78:main.c        ****     
+  79:main.c        ****     // send the result to the commad window
+  80:main.c        ****     char testData[20];
+  81:main.c        ****     for(i=0; i<7; i++)
+ 162              		.loc 1 81 0
+ 163 0052 0024     		movs	r4, #0
+ 164 0054 0BE0     		b	.L10
+ 165              	.LVL17:
+ 166              	.L11:
+  82:main.c        ****     {
+  83:main.c        ****         sprintf(testData,"Byte %d : %d\r\n" ,i , rtc_data[i]);
+ 167              		.loc 1 83 0 discriminator 3
+ 168 0056 094B     		ldr	r3, .L13+4
+ 169 0058 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+ 170 005a 2246     		mov	r2, r4
+ 171 005c 0849     		ldr	r1, .L13+8
+ 172 005e 6846     		mov	r0, sp
+ 173 0060 FFF7FEFF 		bl	sprintf
+ 174              	.LVL18:
+  84:main.c        ****         UART_PutString(testData);
+ 175              		.loc 1 84 0 discriminator 3
+ 176 0064 6846     		mov	r0, sp
+ 177 0066 FFF7FEFF 		bl	UART_PutString
+ 178              	.LVL19:
+  81:main.c        ****     {
+ 179              		.loc 1 81 0 discriminator 3
+ 180 006a 0134     		adds	r4, r4, #1
+ 181              	.LVL20:
+ 182 006c E4B2     		uxtb	r4, r4
+ 183              	.LVL21:
+ 184              	.L10:
+  81:main.c        ****     {
+ 185              		.loc 1 81 0 is_stmt 0 discriminator 1
+ 186 006e 062C     		cmp	r4, #6
+ 187 0070 F1D9     		bls	.L11
+  85:main.c        ****     }
+  86:main.c        ****     //rtc_data[i]>>4&0x07
+  87:main.c        **** }
+ 188              		.loc 1 87 0 is_stmt 1
+ 189 0072 12B0     		add	sp, sp, #72
+ 190              		.cfi_def_cfa_offset 8
+ 191              		@ sp needed
+ 192 0074 10BD     		pop	{r4, pc}
+ 193              	.LVL22:
+ 194              	.L14:
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 6
 
 
- 345 002a 0000     		.space	2
- 346              	.LC1:
- 347 002c 53657474 		.ascii	"Setting the current day for the device\015\012\000"
- 347      696E6720 
- 347      74686520 
- 347      63757272 
- 347      656E7420 
- 348 0055 000000   		.space	3
- 349              	.LC2:
- 350 0058 53656E64 		.ascii	"Sending out the current device time\015\012\000"
- 350      696E6720 
- 350      6F757420 
- 350      74686520 
- 350      63757272 
- 351 007e 0000     		.space	2
- 352              	.LC3:
- 353 0080 53656E64 		.ascii	"Sending out the current device day\015\012\000"
- 353      696E6720 
- 353      6F757420 
- 353      74686520 
- 353      63757272 
- 354 00a5 000000   		.space	3
- 355              	.LC4:
- 356 00a8 47726565 		.ascii	"GreenHouse controller 0.1, developed by Yameni Glee"
- 356      6E486F75 
- 356      73652063 
- 356      6F6E7472 
- 356      6F6C6C65 
- 357 00db 6E20616E 		.ascii	"n and Ndassi Harold\015\012\000"
- 357      64204E64 
- 357      61737369 
- 357      20486172 
- 357      6F6C640D 
- 358 00f1 000000   		.space	3
- 359              	.LC5:
- 360 00f4 53656E64 		.ascii	"Sending all saved data...\015\012\000"
- 360      696E6720 
- 360      616C6C20 
- 360      73617665 
- 360      64206461 
- 361              	.LC6:
- 362 0110 436C6561 		.ascii	"Clearing the logging memory...\015\012\000"
- 362      72696E67 
- 362      20746865 
- 362      206C6F67 
- 362      67696E67 
- 363 0131 000000   		.space	3
- 364              	.LC8:
- 365 0134 42697425 		.ascii	"Bit%d : %d\015\012\000"
- 365      64203A20 
- 365      25640D0A 
- 365      00
- 366              		.bss
- 367              		.set	.LANCHOR0,. + 0
- 368              		.type	old_char.6525, %object
- 369              		.size	old_char.6525, 1
- 370              	old_char.6525:
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 11
+ 195 0076 00BF     		.align	2
+ 196              	.L13:
+ 197 0078 00000000 		.word	.LC1
+ 198 007c 00000000 		.word	rtc_data
+ 199 0080 14000000 		.word	.LC2
+ 200              		.cfi_endproc
+ 201              	.LFE65:
+ 202              		.size	realTimeClock, .-realTimeClock
+ 203              		.section	.text.my_isr_UART,"ax",%progbits
+ 204              		.align	2
+ 205              		.global	my_isr_UART
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.type	my_isr_UART, %function
+ 209              	my_isr_UART:
+ 210              	.LFB66:
+  88:main.c        **** 
+  89:main.c        **** 
+  90:main.c        **** CY_ISR(my_isr_UART)
+  91:main.c        **** {   
+ 211              		.loc 1 91 0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215 0000 10B5     		push	{r4, lr}
+ 216              		.cfi_def_cfa_offset 8
+ 217              		.cfi_offset 4, -8
+ 218              		.cfi_offset 14, -4
+  92:main.c        ****     // Testing start
+  93:main.c        ****     realTimeClock();
+ 219              		.loc 1 93 0
+ 220 0002 FFF7FEFF 		bl	realTimeClock
+ 221              	.LVL23:
+  94:main.c        ****     
+  95:main.c        ****     // Testing ends
+  96:main.c        ****     
+  97:main.c        ****     // Terminal Interface Commande
+  98:main.c        ****     static uint8 old_char = 0;
+  99:main.c        ****     uint8 current_char;
+ 100:main.c        ****     current_char = UART_GetChar();
+ 222              		.loc 1 100 0
+ 223 0006 FFF7FEFF 		bl	UART_GetChar
+ 224              	.LVL24:
+ 225 000a 0446     		mov	r4, r0
+ 226              	.LVL25:
+ 101:main.c        ****     
+ 102:main.c        ****     if(current_char == 't' || current_char == 'T')
+ 227              		.loc 1 102 0
+ 228 000c 7428     		cmp	r0, #116
+ 229 000e 01D0     		beq	.L16
+ 230              		.loc 1 102 0 is_stmt 0 discriminator 1
+ 231 0010 5428     		cmp	r0, #84
+ 232 0012 03D1     		bne	.L17
+ 233              	.L16:
+ 103:main.c        ****     {
+ 104:main.c        ****         // Setting the current time for the device
+ 105:main.c        ****         UART_PutString("Setting the current time for the device\r\n");  
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 7
 
 
- 371 0000 00       		.space	1
- 372              		.text
- 373              	.Letext0:
- 374              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 375              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 376              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 377              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
- 378              		.file 6 "Generated_Source\\PSoC5/UART.h"
- 379              		.file 7 "Generated_Source\\PSoC5/isr_UART.h"
- 380              		.file 8 "Generated_Source\\PSoC5/I2C_RTC.h"
- 381              		.file 9 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
- 382              		.section	.debug_info,"",%progbits
- 383              	.Ldebug_info0:
- 384 0000 D0030000 		.4byte	0x3d0
- 385 0004 0400     		.2byte	0x4
- 386 0006 00000000 		.4byte	.Ldebug_abbrev0
- 387 000a 04       		.byte	0x4
- 388 000b 01       		.uleb128 0x1
- 389 000c 72000000 		.4byte	.LASF39
- 390 0010 0C       		.byte	0xc
- 391 0011 F6010000 		.4byte	.LASF40
- 392 0015 96020000 		.4byte	.LASF41
- 393 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 394 001d 00000000 		.4byte	0
- 395 0021 00000000 		.4byte	.Ldebug_line0
- 396 0025 02       		.uleb128 0x2
- 397 0026 01       		.byte	0x1
- 398 0027 06       		.byte	0x6
- 399 0028 79020000 		.4byte	.LASF0
- 400 002c 02       		.uleb128 0x2
- 401 002d 01       		.byte	0x1
- 402 002e 08       		.byte	0x8
- 403 002f 64000000 		.4byte	.LASF1
- 404 0033 02       		.uleb128 0x2
- 405 0034 02       		.byte	0x2
- 406 0035 05       		.byte	0x5
- 407 0036 68010000 		.4byte	.LASF2
- 408 003a 02       		.uleb128 0x2
- 409 003b 02       		.byte	0x2
- 410 003c 07       		.byte	0x7
- 411 003d 12010000 		.4byte	.LASF3
- 412 0041 03       		.uleb128 0x3
- 413 0042 00000000 		.4byte	.LASF9
- 414 0046 02       		.byte	0x2
- 415 0047 3F       		.byte	0x3f
- 416 0048 4C000000 		.4byte	0x4c
- 417 004c 02       		.uleb128 0x2
- 418 004d 04       		.byte	0x4
- 419 004e 05       		.byte	0x5
- 420 004f 31020000 		.4byte	.LASF4
- 421 0053 02       		.uleb128 0x2
- 422 0054 04       		.byte	0x4
- 423 0055 07       		.byte	0x7
- 424 0056 00010000 		.4byte	.LASF5
- 425 005a 02       		.uleb128 0x2
- 426 005b 08       		.byte	0x8
- 427 005c 05       		.byte	0x5
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 12
+ 234              		.loc 1 105 0 is_stmt 1
+ 235 0014 1C48     		ldr	r0, .L30
+ 236              	.LVL26:
+ 237 0016 FFF7FEFF 		bl	UART_PutString
+ 238              	.LVL27:
+ 239 001a 2EE0     		b	.L18
+ 240              	.LVL28:
+ 241              	.L17:
+ 106:main.c        ****     }
+ 107:main.c        ****     else if(current_char == 'd' || current_char == 'D')
+ 242              		.loc 1 107 0
+ 243 001c 6428     		cmp	r0, #100
+ 244 001e 01D0     		beq	.L19
+ 245              		.loc 1 107 0 is_stmt 0 discriminator 1
+ 246 0020 4428     		cmp	r0, #68
+ 247 0022 03D1     		bne	.L20
+ 248              	.L19:
+ 108:main.c        ****     {
+ 109:main.c        ****         // Setting the current day for the device
+ 110:main.c        ****         UART_PutString("Setting the current day for the device\r\n");  
+ 249              		.loc 1 110 0 is_stmt 1
+ 250 0024 1948     		ldr	r0, .L30+4
+ 251              	.LVL29:
+ 252 0026 FFF7FEFF 		bl	UART_PutString
+ 253              	.LVL30:
+ 254 002a 26E0     		b	.L18
+ 255              	.LVL31:
+ 256              	.L20:
+ 111:main.c        ****     }
+ 112:main.c        ****     else if(current_char == '?')
+ 257              		.loc 1 112 0
+ 258 002c 3F28     		cmp	r0, #63
+ 259 002e 15D1     		bne	.L21
+ 113:main.c        ****     {
+ 114:main.c        ****         if(old_char == 't' || old_char == 'T')
+ 260              		.loc 1 114 0
+ 261 0030 174B     		ldr	r3, .L30+8
+ 262 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 263 0034 742B     		cmp	r3, #116
+ 264 0036 01D0     		beq	.L22
+ 265              		.loc 1 114 0 is_stmt 0 discriminator 1
+ 266 0038 542B     		cmp	r3, #84
+ 267 003a 03D1     		bne	.L23
+ 268              	.L22:
+ 115:main.c        ****         {
+ 116:main.c        ****             // Sending out the current device time
+ 117:main.c        ****             UART_PutString("Sending out the current device time\r\n");
+ 269              		.loc 1 117 0 is_stmt 1
+ 270 003c 1548     		ldr	r0, .L30+12
+ 271              	.LVL32:
+ 272 003e FFF7FEFF 		bl	UART_PutString
+ 273              	.LVL33:
+ 274 0042 1AE0     		b	.L18
+ 275              	.LVL34:
+ 276              	.L23:
+ 118:main.c        ****         }
+ 119:main.c        ****         else if(old_char == 'd' || old_char == 'D')
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 8
 
 
- 428 005d E8010000 		.4byte	.LASF6
- 429 0061 02       		.uleb128 0x2
- 430 0062 08       		.byte	0x8
- 431 0063 07       		.byte	0x7
- 432 0064 8D010000 		.4byte	.LASF7
- 433 0068 04       		.uleb128 0x4
- 434 0069 04       		.byte	0x4
- 435 006a 05       		.byte	0x5
- 436 006b 696E7400 		.ascii	"int\000"
- 437 006f 02       		.uleb128 0x2
- 438 0070 04       		.byte	0x4
- 439 0071 07       		.byte	0x7
- 440 0072 80010000 		.4byte	.LASF8
- 441 0076 03       		.uleb128 0x3
- 442 0077 D7010000 		.4byte	.LASF10
- 443 007b 03       		.byte	0x3
- 444 007c 2C       		.byte	0x2c
- 445 007d 41000000 		.4byte	0x41
- 446 0081 05       		.uleb128 0x5
- 447 0082 2B020000 		.4byte	.LASF11
- 448 0086 04       		.byte	0x4
- 449 0087 E401     		.2byte	0x1e4
- 450 0089 2C000000 		.4byte	0x2c
- 451 008d 02       		.uleb128 0x2
- 452 008e 04       		.byte	0x4
- 453 008f 04       		.byte	0x4
- 454 0090 5E000000 		.4byte	.LASF12
- 455 0094 02       		.uleb128 0x2
- 456 0095 08       		.byte	0x8
- 457 0096 04       		.byte	0x4
- 458 0097 61010000 		.4byte	.LASF13
- 459 009b 02       		.uleb128 0x2
- 460 009c 01       		.byte	0x1
- 461 009d 08       		.byte	0x8
- 462 009e FD010000 		.4byte	.LASF14
- 463 00a2 06       		.uleb128 0x6
- 464 00a3 81000000 		.4byte	0x81
- 465 00a7 02       		.uleb128 0x2
- 466 00a8 08       		.byte	0x8
- 467 00a9 04       		.byte	0x4
- 468 00aa 53020000 		.4byte	.LASF15
- 469 00ae 02       		.uleb128 0x2
- 470 00af 04       		.byte	0x4
- 471 00b0 07       		.byte	0x7
- 472 00b1 DF010000 		.4byte	.LASF16
- 473 00b5 07       		.uleb128 0x7
- 474 00b6 CB010000 		.4byte	.LASF20
- 475 00ba 01       		.byte	0x1
- 476 00bb 50       		.byte	0x50
- 477 00bc 00000000 		.4byte	.LFB66
- 478 00c0 A4000000 		.4byte	.LFE66-.LFB66
- 479 00c4 01       		.uleb128 0x1
- 480 00c5 9C       		.byte	0x9c
- 481 00c6 A7010000 		.4byte	0x1a7
- 482 00ca 08       		.uleb128 0x8
- 483 00cb F8020000 		.4byte	.LASF17
- 484 00cf 01       		.byte	0x1
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 13
+ 277              		.loc 1 119 0
+ 278 0044 642B     		cmp	r3, #100
+ 279 0046 01D0     		beq	.L24
+ 280              		.loc 1 119 0 is_stmt 0 discriminator 1
+ 281 0048 442B     		cmp	r3, #68
+ 282 004a 03D1     		bne	.L25
+ 283              	.L24:
+ 120:main.c        ****         {
+ 121:main.c        ****             // Sending out the current device day
+ 122:main.c        ****             UART_PutString("Sending out the current device day\r\n");
+ 284              		.loc 1 122 0 is_stmt 1
+ 285 004c 1248     		ldr	r0, .L30+16
+ 286              	.LVL35:
+ 287 004e FFF7FEFF 		bl	UART_PutString
+ 288              	.LVL36:
+ 289 0052 12E0     		b	.L18
+ 290              	.LVL37:
+ 291              	.L25:
+ 123:main.c        ****         }
+ 124:main.c        ****         else
+ 125:main.c        ****         {
+ 126:main.c        ****             // Sending out indentification information 
+ 127:main.c        ****             UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\
+ 292              		.loc 1 127 0
+ 293 0054 1148     		ldr	r0, .L30+20
+ 294              	.LVL38:
+ 295 0056 FFF7FEFF 		bl	UART_PutString
+ 296              	.LVL39:
+ 297 005a 0EE0     		b	.L18
+ 298              	.LVL40:
+ 299              	.L21:
+ 128:main.c        ****         }
+ 129:main.c        ****     }
+ 130:main.c        ****      else if(current_char == 'a' || current_char == 'A')
+ 300              		.loc 1 130 0
+ 301 005c 6128     		cmp	r0, #97
+ 302 005e 01D0     		beq	.L26
+ 303              		.loc 1 130 0 is_stmt 0 discriminator 1
+ 304 0060 4128     		cmp	r0, #65
+ 305 0062 03D1     		bne	.L27
+ 306              	.L26:
+ 131:main.c        ****     {
+ 132:main.c        ****         // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, s
+ 133:main.c        ****         UART_PutString("Sending all saved data...\r\n");
+ 307              		.loc 1 133 0 is_stmt 1
+ 308 0064 0E48     		ldr	r0, .L30+24
+ 309              	.LVL41:
+ 310 0066 FFF7FEFF 		bl	UART_PutString
+ 311              	.LVL42:
+ 312 006a 06E0     		b	.L18
+ 313              	.LVL43:
+ 314              	.L27:
+ 134:main.c        ****     }
+ 135:main.c        ****      else if(current_char == 'c' || current_char == 'C')
+ 315              		.loc 1 135 0
+ 316 006c 6328     		cmp	r0, #99
+ 317 006e 01D0     		beq	.L28
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 9
 
 
- 485 00d0 58       		.byte	0x58
- 486 00d1 81000000 		.4byte	0x81
- 487 00d5 05       		.uleb128 0x5
- 488 00d6 03       		.byte	0x3
- 489 00d7 00000000 		.4byte	old_char.6525
- 490 00db 09       		.uleb128 0x9
- 491 00dc 3A020000 		.4byte	.LASF18
- 492 00e0 01       		.byte	0x1
- 493 00e1 59       		.byte	0x59
- 494 00e2 81000000 		.4byte	0x81
- 495 00e6 00000000 		.4byte	.LLST0
- 496 00ea 0A       		.uleb128 0xa
- 497 00eb 06000000 		.4byte	.LVL0
- 498 00ef 44030000 		.4byte	0x344
- 499 00f3 0B       		.uleb128 0xb
- 500 00f4 16000000 		.4byte	.LVL3
- 501 00f8 4F030000 		.4byte	0x34f
- 502 00fc 0A010000 		.4byte	0x10a
- 503 0100 0C       		.uleb128 0xc
- 504 0101 01       		.uleb128 0x1
- 505 0102 50       		.byte	0x50
- 506 0103 05       		.uleb128 0x5
- 507 0104 03       		.byte	0x3
- 508 0105 00000000 		.4byte	.LC0
- 509 0109 00       		.byte	0
- 510 010a 0B       		.uleb128 0xb
- 511 010b 26000000 		.4byte	.LVL6
- 512 010f 4F030000 		.4byte	0x34f
- 513 0113 21010000 		.4byte	0x121
- 514 0117 0C       		.uleb128 0xc
- 515 0118 01       		.uleb128 0x1
- 516 0119 50       		.byte	0x50
- 517 011a 05       		.uleb128 0x5
- 518 011b 03       		.byte	0x3
- 519 011c 2C000000 		.4byte	.LC1
- 520 0120 00       		.byte	0
- 521 0121 0B       		.uleb128 0xb
- 522 0122 3E000000 		.4byte	.LVL9
- 523 0126 4F030000 		.4byte	0x34f
- 524 012a 38010000 		.4byte	0x138
- 525 012e 0C       		.uleb128 0xc
- 526 012f 01       		.uleb128 0x1
- 527 0130 50       		.byte	0x50
- 528 0131 05       		.uleb128 0x5
- 529 0132 03       		.byte	0x3
- 530 0133 58000000 		.4byte	.LC2
- 531 0137 00       		.byte	0
- 532 0138 0B       		.uleb128 0xb
- 533 0139 4E000000 		.4byte	.LVL12
- 534 013d 4F030000 		.4byte	0x34f
- 535 0141 4F010000 		.4byte	0x14f
- 536 0145 0C       		.uleb128 0xc
- 537 0146 01       		.uleb128 0x1
- 538 0147 50       		.byte	0x50
- 539 0148 05       		.uleb128 0x5
- 540 0149 03       		.byte	0x3
- 541 014a 80000000 		.4byte	.LC3
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 14
+ 318              		.loc 1 135 0 is_stmt 0 discriminator 1
+ 319 0070 4328     		cmp	r0, #67
+ 320 0072 02D1     		bne	.L18
+ 321              	.L28:
+ 136:main.c        ****     {
+ 137:main.c        ****         // clearing the device data logging memory
+ 138:main.c        ****         UART_PutString("Clearing the logging memory...\r\n");
+ 322              		.loc 1 138 0 is_stmt 1
+ 323 0074 0B48     		ldr	r0, .L30+28
+ 324              	.LVL44:
+ 325 0076 FFF7FEFF 		bl	UART_PutString
+ 326              	.LVL45:
+ 327              	.L18:
+ 139:main.c        ****     }
+ 140:main.c        ****     
+ 141:main.c        ****     old_char = current_char;
+ 328              		.loc 1 141 0
+ 329 007a 054B     		ldr	r3, .L30+8
+ 330 007c 1C70     		strb	r4, [r3]
+ 142:main.c        ****     // Clearing the Interrupt bit and the Receive register
+ 143:main.c        ****     UART_ClearRxBuffer();
+ 331              		.loc 1 143 0
+ 332 007e FFF7FEFF 		bl	UART_ClearRxBuffer
+ 333              	.LVL46:
+ 144:main.c        ****     isr_UART_ClearPending();
+ 334              		.loc 1 144 0
+ 335 0082 FFF7FEFF 		bl	isr_UART_ClearPending
+ 336              	.LVL47:
+ 337 0086 10BD     		pop	{r4, pc}
+ 338              	.L31:
+ 339              		.align	2
+ 340              	.L30:
+ 341 0088 24000000 		.word	.LC3
+ 342 008c 50000000 		.word	.LC4
+ 343 0090 00000000 		.word	.LANCHOR1
+ 344 0094 7C000000 		.word	.LC5
+ 345 0098 A4000000 		.word	.LC6
+ 346 009c CC000000 		.word	.LC7
+ 347 00a0 18010000 		.word	.LC8
+ 348 00a4 34010000 		.word	.LC9
+ 349              		.cfi_endproc
+ 350              	.LFE66:
+ 351              		.size	my_isr_UART, .-my_isr_UART
+ 352              		.comm	rtc_data,7,4
+ 353              		.section	.rodata
+ 354              		.align	2
+ 355              		.set	.LANCHOR0,. + 0
+ 356              	.LC0:
+ 357 0000 2A2A2A47 		.ascii	"***Green House Project*** \012\015\000"
+ 357      7265656E 
+ 357      20486F75 
+ 357      73652050 
+ 357      726F6A65 
+ 358 001d 00000000 		.space	21
+ 358      00000000 
+ 358      00000000 
+ 358      00000000 
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 10
 
 
- 542 014e 00       		.byte	0
- 543 014f 0B       		.uleb128 0xb
- 544 0150 56000000 		.4byte	.LVL15
- 545 0154 4F030000 		.4byte	0x34f
- 546 0158 66010000 		.4byte	0x166
- 547 015c 0C       		.uleb128 0xc
- 548 015d 01       		.uleb128 0x1
- 549 015e 50       		.byte	0x50
- 550 015f 05       		.uleb128 0x5
- 551 0160 03       		.byte	0x3
- 552 0161 A8000000 		.4byte	.LC4
- 553 0165 00       		.byte	0
- 554 0166 0B       		.uleb128 0xb
- 555 0167 66000000 		.4byte	.LVL18
- 556 016b 4F030000 		.4byte	0x34f
- 557 016f 7D010000 		.4byte	0x17d
- 558 0173 0C       		.uleb128 0xc
- 559 0174 01       		.uleb128 0x1
- 560 0175 50       		.byte	0x50
- 561 0176 05       		.uleb128 0x5
- 562 0177 03       		.byte	0x3
- 563 0178 F4000000 		.4byte	.LC5
- 564 017c 00       		.byte	0
- 565 017d 0B       		.uleb128 0xb
- 566 017e 76000000 		.4byte	.LVL21
- 567 0182 4F030000 		.4byte	0x34f
- 568 0186 94010000 		.4byte	0x194
- 569 018a 0C       		.uleb128 0xc
- 570 018b 01       		.uleb128 0x1
- 571 018c 50       		.byte	0x50
- 572 018d 05       		.uleb128 0x5
- 573 018e 03       		.byte	0x3
- 574 018f 10010000 		.4byte	.LC6
- 575 0193 00       		.byte	0
- 576 0194 0A       		.uleb128 0xa
- 577 0195 7E000000 		.4byte	.LVL22
- 578 0199 5A030000 		.4byte	0x35a
- 579 019d 0A       		.uleb128 0xa
- 580 019e 82000000 		.4byte	.LVL23
- 581 01a2 65030000 		.4byte	0x365
- 582 01a6 00       		.byte	0
- 583 01a7 0D       		.uleb128 0xd
- 584 01a8 7B010000 		.4byte	.LASF42
- 585 01ac 01       		.byte	0x1
- 586 01ad 19       		.byte	0x19
- 587 01ae 68000000 		.4byte	0x68
- 588 01b2 00000000 		.4byte	.LFB64
- 589 01b6 50000000 		.4byte	.LFE64-.LFB64
- 590 01ba 01       		.uleb128 0x1
- 591 01bb 9C       		.byte	0x9c
- 592 01bc 09020000 		.4byte	0x209
- 593 01c0 08       		.uleb128 0x8
- 594 01c1 47020000 		.4byte	.LASF19
- 595 01c5 01       		.byte	0x1
- 596 01c6 25       		.byte	0x25
- 597 01c7 09020000 		.4byte	0x209
- 598 01cb 03       		.uleb128 0x3
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 15
+ 358      00000000 
+ 359              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 360              		.align	2
+ 361              	.LC1:
+ 362 0000 456E646C 		.ascii	"Endless loop: %d\015\012\000"
+ 362      65737320 
+ 362      6C6F6F70 
+ 362      3A202564 
+ 362      0D0A00
+ 363 0013 00       		.space	1
+ 364              	.LC2:
+ 365 0014 42797465 		.ascii	"Byte %d : %d\015\012\000"
+ 365      20256420 
+ 365      3A202564 
+ 365      0D0A00
+ 366 0023 00       		.space	1
+ 367              	.LC3:
+ 368 0024 53657474 		.ascii	"Setting the current time for the device\015\012\000"
+ 368      696E6720 
+ 368      74686520 
+ 368      63757272 
+ 368      656E7420 
+ 369 004e 0000     		.space	2
+ 370              	.LC4:
+ 371 0050 53657474 		.ascii	"Setting the current day for the device\015\012\000"
+ 371      696E6720 
+ 371      74686520 
+ 371      63757272 
+ 371      656E7420 
+ 372 0079 000000   		.space	3
+ 373              	.LC5:
+ 374 007c 53656E64 		.ascii	"Sending out the current device time\015\012\000"
+ 374      696E6720 
+ 374      6F757420 
+ 374      74686520 
+ 374      63757272 
+ 375 00a2 0000     		.space	2
+ 376              	.LC6:
+ 377 00a4 53656E64 		.ascii	"Sending out the current device day\015\012\000"
+ 377      696E6720 
+ 377      6F757420 
+ 377      74686520 
+ 377      63757272 
+ 378 00c9 000000   		.space	3
+ 379              	.LC7:
+ 380 00cc 47726565 		.ascii	"GreenHouse controller 0.1, developed by Yameni Glee"
+ 380      6E486F75 
+ 380      73652063 
+ 380      6F6E7472 
+ 380      6F6C6C65 
+ 381 00ff 6E20616E 		.ascii	"n and Ndassi Harold\015\012\000"
+ 381      64204E64 
+ 381      61737369 
+ 381      20486172 
+ 381      6F6C640D 
+ 382 0115 000000   		.space	3
+ 383              	.LC8:
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 11
 
 
- 599 01cc 91       		.byte	0x91
- 600 01cd BC7F     		.sleb128 -68
- 601 01cf 0A       		.uleb128 0xa
- 602 01d0 0A000000 		.4byte	.LVL24
- 603 01d4 70030000 		.4byte	0x370
- 604 01d8 0B       		.uleb128 0xb
- 605 01d9 10000000 		.4byte	.LVL25
- 606 01dd 7B030000 		.4byte	0x37b
- 607 01e1 EF010000 		.4byte	0x1ef
- 608 01e5 0C       		.uleb128 0xc
- 609 01e6 01       		.uleb128 0x1
- 610 01e7 50       		.byte	0x50
- 611 01e8 05       		.uleb128 0x5
- 612 01e9 03       		.byte	0x3
- 613 01ea 00000000 		.4byte	my_isr_UART
- 614 01ee 00       		.byte	0
- 615 01ef 0A       		.uleb128 0xa
- 616 01f0 14000000 		.4byte	.LVL26
- 617 01f4 86030000 		.4byte	0x386
- 618 01f8 0E       		.uleb128 0xe
- 619 01f9 44000000 		.4byte	.LVL27
- 620 01fd 4F030000 		.4byte	0x34f
- 621 0201 0C       		.uleb128 0xc
- 622 0202 01       		.uleb128 0x1
- 623 0203 50       		.byte	0x50
- 624 0204 02       		.uleb128 0x2
- 625 0205 74       		.byte	0x74
- 626 0206 64       		.sleb128 -28
- 627 0207 00       		.byte	0
- 628 0208 00       		.byte	0
- 629 0209 0F       		.uleb128 0xf
- 630 020a 9B000000 		.4byte	0x9b
- 631 020e 19020000 		.4byte	0x219
- 632 0212 10       		.uleb128 0x10
- 633 0213 AE000000 		.4byte	0xae
- 634 0217 31       		.byte	0x31
- 635 0218 00       		.byte	0
- 636 0219 07       		.uleb128 0x7
- 637 021a 0F020000 		.4byte	.LASF21
- 638 021e 01       		.byte	0x1
- 639 021f 30       		.byte	0x30
- 640 0220 00000000 		.4byte	.LFB65
- 641 0224 70000000 		.4byte	.LFE65-.LFB65
- 642 0228 01       		.uleb128 0x1
- 643 0229 9C       		.byte	0x9c
- 644 022a FD020000 		.4byte	0x2fd
- 645 022e 11       		.uleb128 0x11
- 646 022f 6900     		.ascii	"i\000"
- 647 0231 01       		.byte	0x1
- 648 0232 32       		.byte	0x32
- 649 0233 81000000 		.4byte	0x81
- 650 0237 55000000 		.4byte	.LLST1
- 651 023b 12       		.uleb128 0x12
- 652 023c A4010000 		.4byte	.LASF22
- 653 0240 01       		.byte	0x1
- 654 0241 32       		.byte	0x32
- 655 0242 81000000 		.4byte	0x81
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 16
+ 384 0118 53656E64 		.ascii	"Sending all saved data...\015\012\000"
+ 384      696E6720 
+ 384      616C6C20 
+ 384      73617665 
+ 384      64206461 
+ 385              	.LC9:
+ 386 0134 436C6561 		.ascii	"Clearing the logging memory...\015\012\000"
+ 386      72696E67 
+ 386      20746865 
+ 386      206C6F67 
+ 386      67696E67 
+ 387              		.bss
+ 388              		.set	.LANCHOR1,. + 0
+ 389              		.type	old_char.6528, %object
+ 390              		.size	old_char.6528, 1
+ 391              	old_char.6528:
+ 392 0000 00       		.space	1
+ 393              		.text
+ 394              	.Letext0:
+ 395              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 396              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 397              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 398              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 399              		.file 6 "Generated_Source\\PSoC5/UART.h"
+ 400              		.file 7 "Generated_Source\\PSoC5/isr_UART.h"
+ 401              		.file 8 "Generated_Source\\PSoC5/I2C_RTC.h"
+ 402              		.file 9 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 403              		.section	.debug_info,"",%progbits
+ 404              	.Ldebug_info0:
+ 405 0000 22040000 		.4byte	0x422
+ 406 0004 0400     		.2byte	0x4
+ 407 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 408 000a 04       		.byte	0x4
+ 409 000b 01       		.uleb128 0x1
+ 410 000c 86000000 		.4byte	.LASF40
+ 411 0010 0C       		.byte	0xc
+ 412 0011 00020000 		.4byte	.LASF41
+ 413 0015 9C020000 		.4byte	.LASF42
+ 414 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 415 001d 00000000 		.4byte	0
+ 416 0021 00000000 		.4byte	.Ldebug_line0
+ 417 0025 02       		.uleb128 0x2
+ 418 0026 01       		.byte	0x1
+ 419 0027 06       		.byte	0x6
+ 420 0028 7F020000 		.4byte	.LASF0
+ 421 002c 02       		.uleb128 0x2
+ 422 002d 01       		.byte	0x1
+ 423 002e 08       		.byte	0x8
+ 424 002f 78000000 		.4byte	.LASF1
+ 425 0033 02       		.uleb128 0x2
+ 426 0034 02       		.byte	0x2
+ 427 0035 05       		.byte	0x5
+ 428 0036 27020000 		.4byte	.LASF2
+ 429 003a 02       		.uleb128 0x2
+ 430 003b 02       		.byte	0x2
+ 431 003c 07       		.byte	0x7
+ 432 003d 26010000 		.4byte	.LASF3
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 12
 
 
- 656 0246 00       		.byte	0
- 657 0247 08       		.uleb128 0x8
- 658 0248 0A000000 		.4byte	.LASF23
- 659 024c 01       		.byte	0x1
- 660 024d 46       		.byte	0x46
- 661 024e FD020000 		.4byte	0x2fd
- 662 0252 02       		.uleb128 0x2
- 663 0253 91       		.byte	0x91
- 664 0254 64       		.sleb128 -28
- 665 0255 0B       		.uleb128 0xb
- 666 0256 0C000000 		.4byte	.LVL29
- 667 025a 91030000 		.4byte	0x391
- 668 025e 6E020000 		.4byte	0x26e
- 669 0262 0C       		.uleb128 0xc
- 670 0263 01       		.uleb128 0x1
- 671 0264 50       		.byte	0x50
- 672 0265 02       		.uleb128 0x2
- 673 0266 08       		.byte	0x8
- 674 0267 68       		.byte	0x68
- 675 0268 0C       		.uleb128 0xc
- 676 0269 01       		.uleb128 0x1
- 677 026a 51       		.byte	0x51
- 678 026b 01       		.uleb128 0x1
- 679 026c 30       		.byte	0x30
- 680 026d 00       		.byte	0
- 681 026e 0B       		.uleb128 0xb
- 682 026f 12000000 		.4byte	.LVL30
- 683 0273 9C030000 		.4byte	0x39c
- 684 0277 81020000 		.4byte	0x281
- 685 027b 0C       		.uleb128 0xc
- 686 027c 01       		.uleb128 0x1
- 687 027d 50       		.byte	0x50
- 688 027e 01       		.uleb128 0x1
- 689 027f 30       		.byte	0x30
- 690 0280 00       		.byte	0
- 691 0281 0B       		.uleb128 0xb
- 692 0282 1A000000 		.4byte	.LVL31
- 693 0286 A7030000 		.4byte	0x3a7
- 694 028a 9A020000 		.4byte	0x29a
- 695 028e 0C       		.uleb128 0xc
- 696 028f 01       		.uleb128 0x1
- 697 0290 50       		.byte	0x50
- 698 0291 02       		.uleb128 0x2
- 699 0292 08       		.byte	0x8
- 700 0293 68       		.byte	0x68
- 701 0294 0C       		.uleb128 0xc
- 702 0295 01       		.uleb128 0x1
- 703 0296 51       		.byte	0x51
- 704 0297 01       		.uleb128 0x1
- 705 0298 30       		.byte	0x30
- 706 0299 00       		.byte	0
- 707 029a 0B       		.uleb128 0xb
- 708 029b 24000000 		.4byte	.LVL33
- 709 029f B2030000 		.4byte	0x3b2
- 710 02a3 AD020000 		.4byte	0x2ad
- 711 02a7 0C       		.uleb128 0xc
- 712 02a8 01       		.uleb128 0x1
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 17
+ 433 0041 03       		.uleb128 0x3
+ 434 0042 0E000000 		.4byte	.LASF9
+ 435 0046 02       		.byte	0x2
+ 436 0047 3F       		.byte	0x3f
+ 437 0048 4C000000 		.4byte	0x4c
+ 438 004c 02       		.uleb128 0x2
+ 439 004d 04       		.byte	0x4
+ 440 004e 05       		.byte	0x5
+ 441 004f 37020000 		.4byte	.LASF4
+ 442 0053 02       		.uleb128 0x2
+ 443 0054 04       		.byte	0x4
+ 444 0055 07       		.byte	0x7
+ 445 0056 14010000 		.4byte	.LASF5
+ 446 005a 02       		.uleb128 0x2
+ 447 005b 08       		.byte	0x8
+ 448 005c 05       		.byte	0x5
+ 449 005d F2010000 		.4byte	.LASF6
+ 450 0061 02       		.uleb128 0x2
+ 451 0062 08       		.byte	0x8
+ 452 0063 07       		.byte	0x7
+ 453 0064 97010000 		.4byte	.LASF7
+ 454 0068 04       		.uleb128 0x4
+ 455 0069 04       		.byte	0x4
+ 456 006a 05       		.byte	0x5
+ 457 006b 696E7400 		.ascii	"int\000"
+ 458 006f 02       		.uleb128 0x2
+ 459 0070 04       		.byte	0x4
+ 460 0071 07       		.byte	0x7
+ 461 0072 8A010000 		.4byte	.LASF8
+ 462 0076 03       		.uleb128 0x3
+ 463 0077 E1010000 		.4byte	.LASF10
+ 464 007b 03       		.byte	0x3
+ 465 007c 2C       		.byte	0x2c
+ 466 007d 41000000 		.4byte	0x41
+ 467 0081 05       		.uleb128 0x5
+ 468 0082 31020000 		.4byte	.LASF11
+ 469 0086 04       		.byte	0x4
+ 470 0087 E401     		.2byte	0x1e4
+ 471 0089 2C000000 		.4byte	0x2c
+ 472 008d 02       		.uleb128 0x2
+ 473 008e 04       		.byte	0x4
+ 474 008f 04       		.byte	0x4
+ 475 0090 72000000 		.4byte	.LASF12
+ 476 0094 02       		.uleb128 0x2
+ 477 0095 08       		.byte	0x8
+ 478 0096 04       		.byte	0x4
+ 479 0097 75010000 		.4byte	.LASF13
+ 480 009b 02       		.uleb128 0x2
+ 481 009c 01       		.byte	0x1
+ 482 009d 08       		.byte	0x8
+ 483 009e 07020000 		.4byte	.LASF14
+ 484 00a2 06       		.uleb128 0x6
+ 485 00a3 81000000 		.4byte	0x81
+ 486 00a7 02       		.uleb128 0x2
+ 487 00a8 08       		.byte	0x8
+ 488 00a9 04       		.byte	0x4
+ 489 00aa 59020000 		.4byte	.LASF15
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 13
 
 
- 713 02a9 50       		.byte	0x50
- 714 02aa 01       		.uleb128 0x1
- 715 02ab 31       		.byte	0x31
- 716 02ac 00       		.byte	0
- 717 02ad 0B       		.uleb128 0xb
- 718 02ae 36000000 		.4byte	.LVL36
- 719 02b2 B2030000 		.4byte	0x3b2
- 720 02b6 C0020000 		.4byte	0x2c0
- 721 02ba 0C       		.uleb128 0xc
- 722 02bb 01       		.uleb128 0x1
- 723 02bc 50       		.byte	0x50
- 724 02bd 01       		.uleb128 0x1
- 725 02be 30       		.byte	0x30
- 726 02bf 00       		.byte	0
- 727 02c0 0A       		.uleb128 0xa
- 728 02c1 3E000000 		.4byte	.LVL37
- 729 02c5 BD030000 		.4byte	0x3bd
- 730 02c9 0B       		.uleb128 0xb
- 731 02ca 54000000 		.4byte	.LVL39
- 732 02ce C8030000 		.4byte	0x3c8
- 733 02d2 EC020000 		.4byte	0x2ec
- 734 02d6 0C       		.uleb128 0xc
- 735 02d7 01       		.uleb128 0x1
- 736 02d8 50       		.byte	0x50
- 737 02d9 02       		.uleb128 0x2
- 738 02da 91       		.byte	0x91
- 739 02db 64       		.sleb128 -28
- 740 02dc 0C       		.uleb128 0xc
- 741 02dd 01       		.uleb128 0x1
- 742 02de 51       		.byte	0x51
- 743 02df 05       		.uleb128 0x5
- 744 02e0 03       		.byte	0x3
- 745 02e1 34010000 		.4byte	.LC8
- 746 02e5 0C       		.uleb128 0xc
- 747 02e6 01       		.uleb128 0x1
- 748 02e7 52       		.byte	0x52
- 749 02e8 02       		.uleb128 0x2
- 750 02e9 74       		.byte	0x74
- 751 02ea 00       		.sleb128 0
- 752 02eb 00       		.byte	0
- 753 02ec 0E       		.uleb128 0xe
- 754 02ed 5A000000 		.4byte	.LVL40
- 755 02f1 4F030000 		.4byte	0x34f
- 756 02f5 0C       		.uleb128 0xc
- 757 02f6 01       		.uleb128 0x1
- 758 02f7 50       		.byte	0x50
- 759 02f8 02       		.uleb128 0x2
- 760 02f9 91       		.byte	0x91
- 761 02fa 64       		.sleb128 -28
- 762 02fb 00       		.byte	0
- 763 02fc 00       		.byte	0
- 764 02fd 0F       		.uleb128 0xf
- 765 02fe 9B000000 		.4byte	0x9b
- 766 0302 0D030000 		.4byte	0x30d
- 767 0306 10       		.uleb128 0x10
- 768 0307 AE000000 		.4byte	0xae
- 769 030b 13       		.byte	0x13
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 18
+ 490 00ae 02       		.uleb128 0x2
+ 491 00af 04       		.byte	0x4
+ 492 00b0 07       		.byte	0x7
+ 493 00b1 E9010000 		.4byte	.LASF16
+ 494 00b5 07       		.uleb128 0x7
+ 495 00b6 7C010000 		.4byte	.LASF43
+ 496 00ba 01       		.byte	0x1
+ 497 00bb 1E       		.byte	0x1e
+ 498 00bc 68000000 		.4byte	0x68
+ 499 00c0 00000000 		.4byte	.LFB64
+ 500 00c4 50000000 		.4byte	.LFE64-.LFB64
+ 501 00c8 01       		.uleb128 0x1
+ 502 00c9 9C       		.byte	0x9c
+ 503 00ca 17010000 		.4byte	0x117
+ 504 00ce 08       		.uleb128 0x8
+ 505 00cf 4D020000 		.4byte	.LASF17
+ 506 00d3 01       		.byte	0x1
+ 507 00d4 2A       		.byte	0x2a
+ 508 00d5 17010000 		.4byte	0x117
+ 509 00d9 03       		.uleb128 0x3
+ 510 00da 91       		.byte	0x91
+ 511 00db BC7F     		.sleb128 -68
+ 512 00dd 09       		.uleb128 0x9
+ 513 00de 0A000000 		.4byte	.LVL0
+ 514 00e2 96030000 		.4byte	0x396
+ 515 00e6 0A       		.uleb128 0xa
+ 516 00e7 10000000 		.4byte	.LVL1
+ 517 00eb A1030000 		.4byte	0x3a1
+ 518 00ef FD000000 		.4byte	0xfd
+ 519 00f3 0B       		.uleb128 0xb
+ 520 00f4 01       		.uleb128 0x1
+ 521 00f5 50       		.byte	0x50
+ 522 00f6 05       		.uleb128 0x5
+ 523 00f7 03       		.byte	0x3
+ 524 00f8 00000000 		.4byte	my_isr_UART
+ 525 00fc 00       		.byte	0
+ 526 00fd 09       		.uleb128 0x9
+ 527 00fe 14000000 		.4byte	.LVL2
+ 528 0102 AC030000 		.4byte	0x3ac
+ 529 0106 0C       		.uleb128 0xc
+ 530 0107 44000000 		.4byte	.LVL3
+ 531 010b B7030000 		.4byte	0x3b7
+ 532 010f 0B       		.uleb128 0xb
+ 533 0110 01       		.uleb128 0x1
+ 534 0111 50       		.byte	0x50
+ 535 0112 02       		.uleb128 0x2
+ 536 0113 74       		.byte	0x74
+ 537 0114 64       		.sleb128 -28
+ 538 0115 00       		.byte	0
+ 539 0116 00       		.byte	0
+ 540 0117 0D       		.uleb128 0xd
+ 541 0118 9B000000 		.4byte	0x9b
+ 542 011c 27010000 		.4byte	0x127
+ 543 0120 0E       		.uleb128 0xe
+ 544 0121 AE000000 		.4byte	0xae
+ 545 0125 31       		.byte	0x31
+ 546 0126 00       		.byte	0
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 14
 
 
- 770 030c 00       		.byte	0
- 771 030d 13       		.uleb128 0x13
- 772 030e 3D010000 		.4byte	.LASF24
- 773 0312 05       		.byte	0x5
- 774 0313 1207     		.2byte	0x712
- 775 0315 19030000 		.4byte	0x319
- 776 0319 06       		.uleb128 0x6
- 777 031a 76000000 		.4byte	0x76
- 778 031e 0F       		.uleb128 0xf
- 779 031f A2000000 		.4byte	0xa2
- 780 0323 2E030000 		.4byte	0x32e
- 781 0327 10       		.uleb128 0x10
- 782 0328 AE000000 		.4byte	0xae
- 783 032c 06       		.byte	0x6
- 784 032d 00       		.byte	0
- 785 032e 14       		.uleb128 0x14
- 786 032f 72010000 		.4byte	.LASF25
- 787 0333 01       		.byte	0x1
- 788 0334 17       		.byte	0x17
- 789 0335 3F030000 		.4byte	0x33f
- 790 0339 05       		.uleb128 0x5
- 791 033a 03       		.byte	0x3
- 792 033b 00000000 		.4byte	rtc_data
- 793 033f 06       		.uleb128 0x6
- 794 0340 1E030000 		.4byte	0x31e
- 795 0344 15       		.uleb128 0x15
- 796 0345 02020000 		.4byte	.LASF26
- 797 0349 02020000 		.4byte	.LASF26
- 798 034d 06       		.byte	0x6
- 799 034e 71       		.byte	0x71
- 800 034f 15       		.uleb128 0x15
- 801 0350 E9020000 		.4byte	.LASF27
- 802 0354 E9020000 		.4byte	.LASF27
- 803 0358 06       		.byte	0x6
- 804 0359 8B       		.byte	0x8b
- 805 035a 15       		.uleb128 0x15
- 806 035b 13000000 		.4byte	.LASF28
- 807 035f 13000000 		.4byte	.LASF28
- 808 0363 06       		.byte	0x6
- 809 0364 75       		.byte	0x75
- 810 0365 15       		.uleb128 0x15
- 811 0366 48000000 		.4byte	.LASF29
- 812 036a 48000000 		.4byte	.LASF29
- 813 036e 07       		.byte	0x7
- 814 036f 28       		.byte	0x28
- 815 0370 15       		.uleb128 0x15
- 816 0371 26000000 		.4byte	.LASF30
- 817 0375 26000000 		.4byte	.LASF30
- 818 0379 06       		.byte	0x6
- 819 037a 54       		.byte	0x54
- 820 037b 15       		.uleb128 0x15
- 821 037c 85020000 		.4byte	.LASF31
- 822 0380 85020000 		.4byte	.LASF31
- 823 0384 07       		.byte	0x7
- 824 0385 18       		.byte	0x18
- 825 0386 15       		.uleb128 0x15
- 826 0387 1D020000 		.4byte	.LASF32
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 19
+ 547 0127 0F       		.uleb128 0xf
+ 548 0128 19020000 		.4byte	.LASF21
+ 549 012c 01       		.byte	0x1
+ 550 012d 35       		.byte	0x35
+ 551 012e 00000000 		.4byte	.LFB65
+ 552 0132 84000000 		.4byte	.LFE65-.LFB65
+ 553 0136 01       		.uleb128 0x1
+ 554 0137 9C       		.byte	0x9c
+ 555 0138 54020000 		.4byte	0x254
+ 556 013c 10       		.uleb128 0x10
+ 557 013d 6900     		.ascii	"i\000"
+ 558 013f 01       		.byte	0x1
+ 559 0140 37       		.byte	0x37
+ 560 0141 81000000 		.4byte	0x81
+ 561 0145 00000000 		.4byte	.LLST0
+ 562 0149 11       		.uleb128 0x11
+ 563 014a AE010000 		.4byte	.LASF18
+ 564 014e 01       		.byte	0x1
+ 565 014f 37       		.byte	0x37
+ 566 0150 81000000 		.4byte	0x81
+ 567 0154 4C000000 		.4byte	.LLST1
+ 568 0158 08       		.uleb128 0x8
+ 569 0159 6C000000 		.4byte	.LASF19
+ 570 015d 01       		.byte	0x1
+ 571 015e 38       		.byte	0x38
+ 572 015f 17010000 		.4byte	0x117
+ 573 0163 02       		.uleb128 0x2
+ 574 0164 91       		.byte	0x91
+ 575 0165 44       		.sleb128 -60
+ 576 0166 08       		.uleb128 0x8
+ 577 0167 18000000 		.4byte	.LASF20
+ 578 016b 01       		.byte	0x1
+ 579 016c 50       		.byte	0x50
+ 580 016d 54020000 		.4byte	0x254
+ 581 0171 03       		.uleb128 0x3
+ 582 0172 91       		.byte	0x91
+ 583 0173 B07F     		.sleb128 -80
+ 584 0175 0A       		.uleb128 0xa
+ 585 0176 0C000000 		.4byte	.LVL4
+ 586 017a C2030000 		.4byte	0x3c2
+ 587 017e 8E010000 		.4byte	0x18e
+ 588 0182 0B       		.uleb128 0xb
+ 589 0183 01       		.uleb128 0x1
+ 590 0184 50       		.byte	0x50
+ 591 0185 02       		.uleb128 0x2
+ 592 0186 08       		.byte	0x8
+ 593 0187 68       		.byte	0x68
+ 594 0188 0B       		.uleb128 0xb
+ 595 0189 01       		.uleb128 0x1
+ 596 018a 51       		.byte	0x51
+ 597 018b 01       		.uleb128 0x1
+ 598 018c 30       		.byte	0x30
+ 599 018d 00       		.byte	0
+ 600 018e 0A       		.uleb128 0xa
+ 601 018f 18000000 		.4byte	.LVL7
+ 602 0193 CD030000 		.4byte	0x3cd
+ 603 0197 B1010000 		.4byte	0x1b1
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 15
 
 
- 827 038b 1D020000 		.4byte	.LASF32
- 828 038f 08       		.byte	0x8
- 829 0390 93       		.byte	0x93
- 830 0391 15       		.uleb128 0x15
- 831 0392 AB010000 		.4byte	.LASF33
- 832 0396 AB010000 		.4byte	.LASF33
- 833 039a 08       		.byte	0x8
- 834 039b B1       		.byte	0xb1
- 835 039c 15       		.uleb128 0x15
- 836 039d 25010000 		.4byte	.LASF34
- 837 03a1 25010000 		.4byte	.LASF34
- 838 03a5 08       		.byte	0x8
- 839 03a6 B6       		.byte	0xb6
- 840 03a7 15       		.uleb128 0x15
- 841 03a8 5F020000 		.4byte	.LASF35
- 842 03ac 5F020000 		.4byte	.LASF35
- 843 03b0 08       		.byte	0x8
- 844 03b1 B3       		.byte	0xb3
- 845 03b2 15       		.uleb128 0x15
- 846 03b3 31000000 		.4byte	.LASF36
- 847 03b7 31000000 		.4byte	.LASF36
- 848 03bb 08       		.byte	0x8
- 849 03bc B7       		.byte	0xb7
- 850 03bd 15       		.uleb128 0x15
- 851 03be 4A010000 		.4byte	.LASF37
- 852 03c2 4A010000 		.4byte	.LASF37
- 853 03c6 08       		.byte	0x8
- 854 03c7 B5       		.byte	0xb5
- 855 03c8 15       		.uleb128 0x15
- 856 03c9 C3010000 		.4byte	.LASF38
- 857 03cd C3010000 		.4byte	.LASF38
- 858 03d1 09       		.byte	0x9
- 859 03d2 E7       		.byte	0xe7
- 860 03d3 00       		.byte	0
- 861              		.section	.debug_abbrev,"",%progbits
- 862              	.Ldebug_abbrev0:
- 863 0000 01       		.uleb128 0x1
- 864 0001 11       		.uleb128 0x11
- 865 0002 01       		.byte	0x1
- 866 0003 25       		.uleb128 0x25
- 867 0004 0E       		.uleb128 0xe
- 868 0005 13       		.uleb128 0x13
- 869 0006 0B       		.uleb128 0xb
- 870 0007 03       		.uleb128 0x3
- 871 0008 0E       		.uleb128 0xe
- 872 0009 1B       		.uleb128 0x1b
- 873 000a 0E       		.uleb128 0xe
- 874 000b 55       		.uleb128 0x55
- 875 000c 17       		.uleb128 0x17
- 876 000d 11       		.uleb128 0x11
- 877 000e 01       		.uleb128 0x1
- 878 000f 10       		.uleb128 0x10
- 879 0010 17       		.uleb128 0x17
- 880 0011 00       		.byte	0
- 881 0012 00       		.byte	0
- 882 0013 02       		.uleb128 0x2
- 883 0014 24       		.uleb128 0x24
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 20
+ 604 019b 0B       		.uleb128 0xb
+ 605 019c 01       		.uleb128 0x1
+ 606 019d 50       		.byte	0x50
+ 607 019e 02       		.uleb128 0x2
+ 608 019f 91       		.byte	0x91
+ 609 01a0 44       		.sleb128 -60
+ 610 01a1 0B       		.uleb128 0xb
+ 611 01a2 01       		.uleb128 0x1
+ 612 01a3 51       		.byte	0x51
+ 613 01a4 05       		.uleb128 0x5
+ 614 01a5 03       		.byte	0x3
+ 615 01a6 00000000 		.4byte	.LC1
+ 616 01aa 0B       		.uleb128 0xb
+ 617 01ab 01       		.uleb128 0x1
+ 618 01ac 52       		.byte	0x52
+ 619 01ad 02       		.uleb128 0x2
+ 620 01ae 74       		.byte	0x74
+ 621 01af 00       		.sleb128 0
+ 622 01b0 00       		.byte	0
+ 623 01b1 0A       		.uleb128 0xa
+ 624 01b2 1E000000 		.4byte	.LVL8
+ 625 01b6 B7030000 		.4byte	0x3b7
+ 626 01ba C5010000 		.4byte	0x1c5
+ 627 01be 0B       		.uleb128 0xb
+ 628 01bf 01       		.uleb128 0x1
+ 629 01c0 50       		.byte	0x50
+ 630 01c1 02       		.uleb128 0x2
+ 631 01c2 91       		.byte	0x91
+ 632 01c3 44       		.sleb128 -60
+ 633 01c4 00       		.byte	0
+ 634 01c5 0A       		.uleb128 0xa
+ 635 01c6 28000000 		.4byte	.LVL9
+ 636 01ca D8030000 		.4byte	0x3d8
+ 637 01ce D8010000 		.4byte	0x1d8
+ 638 01d2 0B       		.uleb128 0xb
+ 639 01d3 01       		.uleb128 0x1
+ 640 01d4 50       		.byte	0x50
+ 641 01d5 01       		.uleb128 0x1
+ 642 01d6 30       		.byte	0x30
+ 643 01d7 00       		.byte	0
+ 644 01d8 0A       		.uleb128 0xa
+ 645 01d9 30000000 		.4byte	.LVL10
+ 646 01dd E3030000 		.4byte	0x3e3
+ 647 01e1 F1010000 		.4byte	0x1f1
+ 648 01e5 0B       		.uleb128 0xb
+ 649 01e6 01       		.uleb128 0x1
+ 650 01e7 50       		.byte	0x50
+ 651 01e8 02       		.uleb128 0x2
+ 652 01e9 08       		.byte	0x8
+ 653 01ea 68       		.byte	0x68
+ 654 01eb 0B       		.uleb128 0xb
+ 655 01ec 01       		.uleb128 0x1
+ 656 01ed 51       		.byte	0x51
+ 657 01ee 01       		.uleb128 0x1
+ 658 01ef 30       		.byte	0x30
+ 659 01f0 00       		.byte	0
+ 660 01f1 0A       		.uleb128 0xa
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 16
 
 
- 884 0015 00       		.byte	0
- 885 0016 0B       		.uleb128 0xb
- 886 0017 0B       		.uleb128 0xb
- 887 0018 3E       		.uleb128 0x3e
- 888 0019 0B       		.uleb128 0xb
- 889 001a 03       		.uleb128 0x3
- 890 001b 0E       		.uleb128 0xe
- 891 001c 00       		.byte	0
- 892 001d 00       		.byte	0
- 893 001e 03       		.uleb128 0x3
- 894 001f 16       		.uleb128 0x16
- 895 0020 00       		.byte	0
- 896 0021 03       		.uleb128 0x3
- 897 0022 0E       		.uleb128 0xe
- 898 0023 3A       		.uleb128 0x3a
- 899 0024 0B       		.uleb128 0xb
- 900 0025 3B       		.uleb128 0x3b
- 901 0026 0B       		.uleb128 0xb
- 902 0027 49       		.uleb128 0x49
- 903 0028 13       		.uleb128 0x13
- 904 0029 00       		.byte	0
- 905 002a 00       		.byte	0
- 906 002b 04       		.uleb128 0x4
- 907 002c 24       		.uleb128 0x24
- 908 002d 00       		.byte	0
- 909 002e 0B       		.uleb128 0xb
- 910 002f 0B       		.uleb128 0xb
- 911 0030 3E       		.uleb128 0x3e
- 912 0031 0B       		.uleb128 0xb
- 913 0032 03       		.uleb128 0x3
- 914 0033 08       		.uleb128 0x8
- 915 0034 00       		.byte	0
- 916 0035 00       		.byte	0
- 917 0036 05       		.uleb128 0x5
- 918 0037 16       		.uleb128 0x16
- 919 0038 00       		.byte	0
- 920 0039 03       		.uleb128 0x3
- 921 003a 0E       		.uleb128 0xe
- 922 003b 3A       		.uleb128 0x3a
- 923 003c 0B       		.uleb128 0xb
- 924 003d 3B       		.uleb128 0x3b
- 925 003e 05       		.uleb128 0x5
- 926 003f 49       		.uleb128 0x49
- 927 0040 13       		.uleb128 0x13
- 928 0041 00       		.byte	0
- 929 0042 00       		.byte	0
- 930 0043 06       		.uleb128 0x6
- 931 0044 35       		.uleb128 0x35
- 932 0045 00       		.byte	0
- 933 0046 49       		.uleb128 0x49
- 934 0047 13       		.uleb128 0x13
- 935 0048 00       		.byte	0
- 936 0049 00       		.byte	0
- 937 004a 07       		.uleb128 0x7
- 938 004b 2E       		.uleb128 0x2e
- 939 004c 01       		.byte	0x1
- 940 004d 3F       		.uleb128 0x3f
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 21
+ 661 01f2 38000000 		.4byte	.LVL12
+ 662 01f6 EE030000 		.4byte	0x3ee
+ 663 01fa 04020000 		.4byte	0x204
+ 664 01fe 0B       		.uleb128 0xb
+ 665 01ff 01       		.uleb128 0x1
+ 666 0200 50       		.byte	0x50
+ 667 0201 01       		.uleb128 0x1
+ 668 0202 31       		.byte	0x31
+ 669 0203 00       		.byte	0
+ 670 0204 0A       		.uleb128 0xa
+ 671 0205 4A000000 		.4byte	.LVL15
+ 672 0209 EE030000 		.4byte	0x3ee
+ 673 020d 17020000 		.4byte	0x217
+ 674 0211 0B       		.uleb128 0xb
+ 675 0212 01       		.uleb128 0x1
+ 676 0213 50       		.byte	0x50
+ 677 0214 01       		.uleb128 0x1
+ 678 0215 30       		.byte	0x30
+ 679 0216 00       		.byte	0
+ 680 0217 09       		.uleb128 0x9
+ 681 0218 52000000 		.4byte	.LVL16
+ 682 021c F9030000 		.4byte	0x3f9
+ 683 0220 0A       		.uleb128 0xa
+ 684 0221 64000000 		.4byte	.LVL18
+ 685 0225 CD030000 		.4byte	0x3cd
+ 686 0229 43020000 		.4byte	0x243
+ 687 022d 0B       		.uleb128 0xb
+ 688 022e 01       		.uleb128 0x1
+ 689 022f 50       		.byte	0x50
+ 690 0230 02       		.uleb128 0x2
+ 691 0231 7D       		.byte	0x7d
+ 692 0232 00       		.sleb128 0
+ 693 0233 0B       		.uleb128 0xb
+ 694 0234 01       		.uleb128 0x1
+ 695 0235 51       		.byte	0x51
+ 696 0236 05       		.uleb128 0x5
+ 697 0237 03       		.byte	0x3
+ 698 0238 14000000 		.4byte	.LC2
+ 699 023c 0B       		.uleb128 0xb
+ 700 023d 01       		.uleb128 0x1
+ 701 023e 52       		.byte	0x52
+ 702 023f 02       		.uleb128 0x2
+ 703 0240 74       		.byte	0x74
+ 704 0241 00       		.sleb128 0
+ 705 0242 00       		.byte	0
+ 706 0243 0C       		.uleb128 0xc
+ 707 0244 6A000000 		.4byte	.LVL19
+ 708 0248 B7030000 		.4byte	0x3b7
+ 709 024c 0B       		.uleb128 0xb
+ 710 024d 01       		.uleb128 0x1
+ 711 024e 50       		.byte	0x50
+ 712 024f 02       		.uleb128 0x2
+ 713 0250 7D       		.byte	0x7d
+ 714 0251 00       		.sleb128 0
+ 715 0252 00       		.byte	0
+ 716 0253 00       		.byte	0
+ 717 0254 0D       		.uleb128 0xd
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 17
 
 
- 941 004e 19       		.uleb128 0x19
- 942 004f 03       		.uleb128 0x3
- 943 0050 0E       		.uleb128 0xe
- 944 0051 3A       		.uleb128 0x3a
- 945 0052 0B       		.uleb128 0xb
- 946 0053 3B       		.uleb128 0x3b
- 947 0054 0B       		.uleb128 0xb
- 948 0055 27       		.uleb128 0x27
- 949 0056 19       		.uleb128 0x19
- 950 0057 11       		.uleb128 0x11
- 951 0058 01       		.uleb128 0x1
- 952 0059 12       		.uleb128 0x12
- 953 005a 06       		.uleb128 0x6
- 954 005b 40       		.uleb128 0x40
- 955 005c 18       		.uleb128 0x18
- 956 005d 9742     		.uleb128 0x2117
- 957 005f 19       		.uleb128 0x19
- 958 0060 01       		.uleb128 0x1
- 959 0061 13       		.uleb128 0x13
- 960 0062 00       		.byte	0
- 961 0063 00       		.byte	0
- 962 0064 08       		.uleb128 0x8
- 963 0065 34       		.uleb128 0x34
- 964 0066 00       		.byte	0
- 965 0067 03       		.uleb128 0x3
- 966 0068 0E       		.uleb128 0xe
- 967 0069 3A       		.uleb128 0x3a
- 968 006a 0B       		.uleb128 0xb
- 969 006b 3B       		.uleb128 0x3b
- 970 006c 0B       		.uleb128 0xb
- 971 006d 49       		.uleb128 0x49
- 972 006e 13       		.uleb128 0x13
- 973 006f 02       		.uleb128 0x2
- 974 0070 18       		.uleb128 0x18
- 975 0071 00       		.byte	0
- 976 0072 00       		.byte	0
- 977 0073 09       		.uleb128 0x9
- 978 0074 34       		.uleb128 0x34
- 979 0075 00       		.byte	0
- 980 0076 03       		.uleb128 0x3
- 981 0077 0E       		.uleb128 0xe
- 982 0078 3A       		.uleb128 0x3a
- 983 0079 0B       		.uleb128 0xb
- 984 007a 3B       		.uleb128 0x3b
- 985 007b 0B       		.uleb128 0xb
- 986 007c 49       		.uleb128 0x49
- 987 007d 13       		.uleb128 0x13
- 988 007e 02       		.uleb128 0x2
- 989 007f 17       		.uleb128 0x17
- 990 0080 00       		.byte	0
- 991 0081 00       		.byte	0
- 992 0082 0A       		.uleb128 0xa
- 993 0083 898201   		.uleb128 0x4109
- 994 0086 00       		.byte	0
- 995 0087 11       		.uleb128 0x11
- 996 0088 01       		.uleb128 0x1
- 997 0089 31       		.uleb128 0x31
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 22
+ 718 0255 9B000000 		.4byte	0x9b
+ 719 0259 64020000 		.4byte	0x264
+ 720 025d 0E       		.uleb128 0xe
+ 721 025e AE000000 		.4byte	0xae
+ 722 0262 13       		.byte	0x13
+ 723 0263 00       		.byte	0
+ 724 0264 0F       		.uleb128 0xf
+ 725 0265 D5010000 		.4byte	.LASF22
+ 726 0269 01       		.byte	0x1
+ 727 026a 5A       		.byte	0x5a
+ 728 026b 00000000 		.4byte	.LFB66
+ 729 026f A8000000 		.4byte	.LFE66-.LFB66
+ 730 0273 01       		.uleb128 0x1
+ 731 0274 9C       		.byte	0x9c
+ 732 0275 5F030000 		.4byte	0x35f
+ 733 0279 08       		.uleb128 0x8
+ 734 027a FE020000 		.4byte	.LASF23
+ 735 027e 01       		.byte	0x1
+ 736 027f 62       		.byte	0x62
+ 737 0280 81000000 		.4byte	0x81
+ 738 0284 05       		.uleb128 0x5
+ 739 0285 03       		.byte	0x3
+ 740 0286 00000000 		.4byte	old_char.6528
+ 741 028a 11       		.uleb128 0x11
+ 742 028b 40020000 		.4byte	.LASF24
+ 743 028f 01       		.byte	0x1
+ 744 0290 63       		.byte	0x63
+ 745 0291 81000000 		.4byte	0x81
+ 746 0295 5F000000 		.4byte	.LLST2
+ 747 0299 09       		.uleb128 0x9
+ 748 029a 06000000 		.4byte	.LVL23
+ 749 029e 27010000 		.4byte	0x127
+ 750 02a2 09       		.uleb128 0x9
+ 751 02a3 0A000000 		.4byte	.LVL24
+ 752 02a7 04040000 		.4byte	0x404
+ 753 02ab 0A       		.uleb128 0xa
+ 754 02ac 1A000000 		.4byte	.LVL27
+ 755 02b0 B7030000 		.4byte	0x3b7
+ 756 02b4 C2020000 		.4byte	0x2c2
+ 757 02b8 0B       		.uleb128 0xb
+ 758 02b9 01       		.uleb128 0x1
+ 759 02ba 50       		.byte	0x50
+ 760 02bb 05       		.uleb128 0x5
+ 761 02bc 03       		.byte	0x3
+ 762 02bd 24000000 		.4byte	.LC3
+ 763 02c1 00       		.byte	0
+ 764 02c2 0A       		.uleb128 0xa
+ 765 02c3 2A000000 		.4byte	.LVL30
+ 766 02c7 B7030000 		.4byte	0x3b7
+ 767 02cb D9020000 		.4byte	0x2d9
+ 768 02cf 0B       		.uleb128 0xb
+ 769 02d0 01       		.uleb128 0x1
+ 770 02d1 50       		.byte	0x50
+ 771 02d2 05       		.uleb128 0x5
+ 772 02d3 03       		.byte	0x3
+ 773 02d4 50000000 		.4byte	.LC4
+ 774 02d8 00       		.byte	0
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 18
 
 
- 998 008a 13       		.uleb128 0x13
- 999 008b 00       		.byte	0
- 1000 008c 00       		.byte	0
- 1001 008d 0B       		.uleb128 0xb
- 1002 008e 898201   		.uleb128 0x4109
- 1003 0091 01       		.byte	0x1
- 1004 0092 11       		.uleb128 0x11
- 1005 0093 01       		.uleb128 0x1
- 1006 0094 31       		.uleb128 0x31
- 1007 0095 13       		.uleb128 0x13
- 1008 0096 01       		.uleb128 0x1
- 1009 0097 13       		.uleb128 0x13
- 1010 0098 00       		.byte	0
- 1011 0099 00       		.byte	0
- 1012 009a 0C       		.uleb128 0xc
- 1013 009b 8A8201   		.uleb128 0x410a
- 1014 009e 00       		.byte	0
- 1015 009f 02       		.uleb128 0x2
- 1016 00a0 18       		.uleb128 0x18
- 1017 00a1 9142     		.uleb128 0x2111
- 1018 00a3 18       		.uleb128 0x18
- 1019 00a4 00       		.byte	0
- 1020 00a5 00       		.byte	0
- 1021 00a6 0D       		.uleb128 0xd
- 1022 00a7 2E       		.uleb128 0x2e
- 1023 00a8 01       		.byte	0x1
- 1024 00a9 3F       		.uleb128 0x3f
- 1025 00aa 19       		.uleb128 0x19
- 1026 00ab 03       		.uleb128 0x3
- 1027 00ac 0E       		.uleb128 0xe
- 1028 00ad 3A       		.uleb128 0x3a
- 1029 00ae 0B       		.uleb128 0xb
- 1030 00af 3B       		.uleb128 0x3b
- 1031 00b0 0B       		.uleb128 0xb
- 1032 00b1 27       		.uleb128 0x27
- 1033 00b2 19       		.uleb128 0x19
- 1034 00b3 49       		.uleb128 0x49
- 1035 00b4 13       		.uleb128 0x13
- 1036 00b5 8701     		.uleb128 0x87
- 1037 00b7 19       		.uleb128 0x19
- 1038 00b8 11       		.uleb128 0x11
- 1039 00b9 01       		.uleb128 0x1
- 1040 00ba 12       		.uleb128 0x12
- 1041 00bb 06       		.uleb128 0x6
- 1042 00bc 40       		.uleb128 0x40
- 1043 00bd 18       		.uleb128 0x18
- 1044 00be 9742     		.uleb128 0x2117
- 1045 00c0 19       		.uleb128 0x19
- 1046 00c1 01       		.uleb128 0x1
- 1047 00c2 13       		.uleb128 0x13
- 1048 00c3 00       		.byte	0
- 1049 00c4 00       		.byte	0
- 1050 00c5 0E       		.uleb128 0xe
- 1051 00c6 898201   		.uleb128 0x4109
- 1052 00c9 01       		.byte	0x1
- 1053 00ca 11       		.uleb128 0x11
- 1054 00cb 01       		.uleb128 0x1
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 23
+ 775 02d9 0A       		.uleb128 0xa
+ 776 02da 42000000 		.4byte	.LVL33
+ 777 02de B7030000 		.4byte	0x3b7
+ 778 02e2 F0020000 		.4byte	0x2f0
+ 779 02e6 0B       		.uleb128 0xb
+ 780 02e7 01       		.uleb128 0x1
+ 781 02e8 50       		.byte	0x50
+ 782 02e9 05       		.uleb128 0x5
+ 783 02ea 03       		.byte	0x3
+ 784 02eb 7C000000 		.4byte	.LC5
+ 785 02ef 00       		.byte	0
+ 786 02f0 0A       		.uleb128 0xa
+ 787 02f1 52000000 		.4byte	.LVL36
+ 788 02f5 B7030000 		.4byte	0x3b7
+ 789 02f9 07030000 		.4byte	0x307
+ 790 02fd 0B       		.uleb128 0xb
+ 791 02fe 01       		.uleb128 0x1
+ 792 02ff 50       		.byte	0x50
+ 793 0300 05       		.uleb128 0x5
+ 794 0301 03       		.byte	0x3
+ 795 0302 A4000000 		.4byte	.LC6
+ 796 0306 00       		.byte	0
+ 797 0307 0A       		.uleb128 0xa
+ 798 0308 5A000000 		.4byte	.LVL39
+ 799 030c B7030000 		.4byte	0x3b7
+ 800 0310 1E030000 		.4byte	0x31e
+ 801 0314 0B       		.uleb128 0xb
+ 802 0315 01       		.uleb128 0x1
+ 803 0316 50       		.byte	0x50
+ 804 0317 05       		.uleb128 0x5
+ 805 0318 03       		.byte	0x3
+ 806 0319 CC000000 		.4byte	.LC7
+ 807 031d 00       		.byte	0
+ 808 031e 0A       		.uleb128 0xa
+ 809 031f 6A000000 		.4byte	.LVL42
+ 810 0323 B7030000 		.4byte	0x3b7
+ 811 0327 35030000 		.4byte	0x335
+ 812 032b 0B       		.uleb128 0xb
+ 813 032c 01       		.uleb128 0x1
+ 814 032d 50       		.byte	0x50
+ 815 032e 05       		.uleb128 0x5
+ 816 032f 03       		.byte	0x3
+ 817 0330 18010000 		.4byte	.LC8
+ 818 0334 00       		.byte	0
+ 819 0335 0A       		.uleb128 0xa
+ 820 0336 7A000000 		.4byte	.LVL45
+ 821 033a B7030000 		.4byte	0x3b7
+ 822 033e 4C030000 		.4byte	0x34c
+ 823 0342 0B       		.uleb128 0xb
+ 824 0343 01       		.uleb128 0x1
+ 825 0344 50       		.byte	0x50
+ 826 0345 05       		.uleb128 0x5
+ 827 0346 03       		.byte	0x3
+ 828 0347 34010000 		.4byte	.LC9
+ 829 034b 00       		.byte	0
+ 830 034c 09       		.uleb128 0x9
+ 831 034d 82000000 		.4byte	.LVL46
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 19
 
 
- 1055 00cc 31       		.uleb128 0x31
- 1056 00cd 13       		.uleb128 0x13
- 1057 00ce 00       		.byte	0
- 1058 00cf 00       		.byte	0
- 1059 00d0 0F       		.uleb128 0xf
- 1060 00d1 01       		.uleb128 0x1
- 1061 00d2 01       		.byte	0x1
- 1062 00d3 49       		.uleb128 0x49
- 1063 00d4 13       		.uleb128 0x13
- 1064 00d5 01       		.uleb128 0x1
- 1065 00d6 13       		.uleb128 0x13
- 1066 00d7 00       		.byte	0
- 1067 00d8 00       		.byte	0
- 1068 00d9 10       		.uleb128 0x10
- 1069 00da 21       		.uleb128 0x21
- 1070 00db 00       		.byte	0
- 1071 00dc 49       		.uleb128 0x49
- 1072 00dd 13       		.uleb128 0x13
- 1073 00de 2F       		.uleb128 0x2f
- 1074 00df 0B       		.uleb128 0xb
- 1075 00e0 00       		.byte	0
- 1076 00e1 00       		.byte	0
- 1077 00e2 11       		.uleb128 0x11
- 1078 00e3 34       		.uleb128 0x34
- 1079 00e4 00       		.byte	0
- 1080 00e5 03       		.uleb128 0x3
- 1081 00e6 08       		.uleb128 0x8
- 1082 00e7 3A       		.uleb128 0x3a
- 1083 00e8 0B       		.uleb128 0xb
- 1084 00e9 3B       		.uleb128 0x3b
- 1085 00ea 0B       		.uleb128 0xb
- 1086 00eb 49       		.uleb128 0x49
- 1087 00ec 13       		.uleb128 0x13
- 1088 00ed 02       		.uleb128 0x2
- 1089 00ee 17       		.uleb128 0x17
- 1090 00ef 00       		.byte	0
- 1091 00f0 00       		.byte	0
- 1092 00f1 12       		.uleb128 0x12
- 1093 00f2 34       		.uleb128 0x34
- 1094 00f3 00       		.byte	0
- 1095 00f4 03       		.uleb128 0x3
- 1096 00f5 0E       		.uleb128 0xe
- 1097 00f6 3A       		.uleb128 0x3a
- 1098 00f7 0B       		.uleb128 0xb
- 1099 00f8 3B       		.uleb128 0x3b
- 1100 00f9 0B       		.uleb128 0xb
- 1101 00fa 49       		.uleb128 0x49
- 1102 00fb 13       		.uleb128 0x13
- 1103 00fc 1C       		.uleb128 0x1c
- 1104 00fd 0B       		.uleb128 0xb
- 1105 00fe 00       		.byte	0
- 1106 00ff 00       		.byte	0
- 1107 0100 13       		.uleb128 0x13
- 1108 0101 34       		.uleb128 0x34
- 1109 0102 00       		.byte	0
- 1110 0103 03       		.uleb128 0x3
- 1111 0104 0E       		.uleb128 0xe
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 24
+ 832 0351 0F040000 		.4byte	0x40f
+ 833 0355 09       		.uleb128 0x9
+ 834 0356 86000000 		.4byte	.LVL47
+ 835 035a 1A040000 		.4byte	0x41a
+ 836 035e 00       		.byte	0
+ 837 035f 12       		.uleb128 0x12
+ 838 0360 51010000 		.4byte	.LASF25
+ 839 0364 05       		.byte	0x5
+ 840 0365 1207     		.2byte	0x712
+ 841 0367 6B030000 		.4byte	0x36b
+ 842 036b 06       		.uleb128 0x6
+ 843 036c 76000000 		.4byte	0x76
+ 844 0370 0D       		.uleb128 0xd
+ 845 0371 A2000000 		.4byte	0xa2
+ 846 0375 80030000 		.4byte	0x380
+ 847 0379 0E       		.uleb128 0xe
+ 848 037a AE000000 		.4byte	0xae
+ 849 037e 06       		.byte	0x6
+ 850 037f 00       		.byte	0
+ 851 0380 13       		.uleb128 0x13
+ 852 0381 81010000 		.4byte	.LASF26
+ 853 0385 01       		.byte	0x1
+ 854 0386 1C       		.byte	0x1c
+ 855 0387 91030000 		.4byte	0x391
+ 856 038b 05       		.uleb128 0x5
+ 857 038c 03       		.byte	0x3
+ 858 038d 00000000 		.4byte	rtc_data
+ 859 0391 06       		.uleb128 0x6
+ 860 0392 70030000 		.4byte	0x370
+ 861 0396 14       		.uleb128 0x14
+ 862 0397 34000000 		.4byte	.LASF27
+ 863 039b 34000000 		.4byte	.LASF27
+ 864 039f 06       		.byte	0x6
+ 865 03a0 54       		.byte	0x54
+ 866 03a1 14       		.uleb128 0x14
+ 867 03a2 8B020000 		.4byte	.LASF28
+ 868 03a6 8B020000 		.4byte	.LASF28
+ 869 03aa 07       		.byte	0x7
+ 870 03ab 18       		.byte	0x18
+ 871 03ac 14       		.uleb128 0x14
+ 872 03ad 00000000 		.4byte	.LASF29
+ 873 03b1 00000000 		.4byte	.LASF29
+ 874 03b5 08       		.byte	0x8
+ 875 03b6 93       		.byte	0x93
+ 876 03b7 14       		.uleb128 0x14
+ 877 03b8 EF020000 		.4byte	.LASF30
+ 878 03bc EF020000 		.4byte	.LASF30
+ 879 03c0 06       		.byte	0x6
+ 880 03c1 8B       		.byte	0x8b
+ 881 03c2 14       		.uleb128 0x14
+ 882 03c3 B5010000 		.4byte	.LASF31
+ 883 03c7 B5010000 		.4byte	.LASF31
+ 884 03cb 08       		.byte	0x8
+ 885 03cc B1       		.byte	0xb1
+ 886 03cd 14       		.uleb128 0x14
+ 887 03ce CD010000 		.4byte	.LASF32
+ 888 03d2 CD010000 		.4byte	.LASF32
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 20
 
 
- 1112 0105 3A       		.uleb128 0x3a
- 1113 0106 0B       		.uleb128 0xb
- 1114 0107 3B       		.uleb128 0x3b
- 1115 0108 05       		.uleb128 0x5
- 1116 0109 49       		.uleb128 0x49
- 1117 010a 13       		.uleb128 0x13
- 1118 010b 3F       		.uleb128 0x3f
- 1119 010c 19       		.uleb128 0x19
- 1120 010d 3C       		.uleb128 0x3c
- 1121 010e 19       		.uleb128 0x19
- 1122 010f 00       		.byte	0
- 1123 0110 00       		.byte	0
- 1124 0111 14       		.uleb128 0x14
- 1125 0112 34       		.uleb128 0x34
- 1126 0113 00       		.byte	0
- 1127 0114 03       		.uleb128 0x3
- 1128 0115 0E       		.uleb128 0xe
- 1129 0116 3A       		.uleb128 0x3a
- 1130 0117 0B       		.uleb128 0xb
- 1131 0118 3B       		.uleb128 0x3b
- 1132 0119 0B       		.uleb128 0xb
- 1133 011a 49       		.uleb128 0x49
- 1134 011b 13       		.uleb128 0x13
- 1135 011c 3F       		.uleb128 0x3f
- 1136 011d 19       		.uleb128 0x19
- 1137 011e 02       		.uleb128 0x2
- 1138 011f 18       		.uleb128 0x18
- 1139 0120 00       		.byte	0
- 1140 0121 00       		.byte	0
- 1141 0122 15       		.uleb128 0x15
- 1142 0123 2E       		.uleb128 0x2e
- 1143 0124 00       		.byte	0
- 1144 0125 3F       		.uleb128 0x3f
- 1145 0126 19       		.uleb128 0x19
- 1146 0127 3C       		.uleb128 0x3c
- 1147 0128 19       		.uleb128 0x19
- 1148 0129 6E       		.uleb128 0x6e
- 1149 012a 0E       		.uleb128 0xe
- 1150 012b 03       		.uleb128 0x3
- 1151 012c 0E       		.uleb128 0xe
- 1152 012d 3A       		.uleb128 0x3a
- 1153 012e 0B       		.uleb128 0xb
- 1154 012f 3B       		.uleb128 0x3b
- 1155 0130 0B       		.uleb128 0xb
- 1156 0131 00       		.byte	0
- 1157 0132 00       		.byte	0
- 1158 0133 00       		.byte	0
- 1159              		.section	.debug_loc,"",%progbits
- 1160              	.Ldebug_loc0:
- 1161              	.LLST0:
- 1162 0000 08000000 		.4byte	.LVL1
- 1163 0004 12000000 		.4byte	.LVL2
- 1164 0008 0100     		.2byte	0x1
- 1165 000a 50       		.byte	0x50
- 1166 000b 18000000 		.4byte	.LVL4
- 1167 000f 22000000 		.4byte	.LVL5
- 1168 0013 0100     		.2byte	0x1
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 25
+ 889 03d6 09       		.byte	0x9
+ 890 03d7 E7       		.byte	0xe7
+ 891 03d8 14       		.uleb128 0x14
+ 892 03d9 39010000 		.4byte	.LASF33
+ 893 03dd 39010000 		.4byte	.LASF33
+ 894 03e1 08       		.byte	0x8
+ 895 03e2 B6       		.byte	0xb6
+ 896 03e3 14       		.uleb128 0x14
+ 897 03e4 65020000 		.4byte	.LASF34
+ 898 03e8 65020000 		.4byte	.LASF34
+ 899 03ec 08       		.byte	0x8
+ 900 03ed B3       		.byte	0xb3
+ 901 03ee 14       		.uleb128 0x14
+ 902 03ef 3F000000 		.4byte	.LASF35
+ 903 03f3 3F000000 		.4byte	.LASF35
+ 904 03f7 08       		.byte	0x8
+ 905 03f8 B7       		.byte	0xb7
+ 906 03f9 14       		.uleb128 0x14
+ 907 03fa 5E010000 		.4byte	.LASF36
+ 908 03fe 5E010000 		.4byte	.LASF36
+ 909 0402 08       		.byte	0x8
+ 910 0403 B5       		.byte	0xb5
+ 911 0404 14       		.uleb128 0x14
+ 912 0405 0C020000 		.4byte	.LASF37
+ 913 0409 0C020000 		.4byte	.LASF37
+ 914 040d 06       		.byte	0x6
+ 915 040e 71       		.byte	0x71
+ 916 040f 14       		.uleb128 0x14
+ 917 0410 21000000 		.4byte	.LASF38
+ 918 0414 21000000 		.4byte	.LASF38
+ 919 0418 06       		.byte	0x6
+ 920 0419 75       		.byte	0x75
+ 921 041a 14       		.uleb128 0x14
+ 922 041b 56000000 		.4byte	.LASF39
+ 923 041f 56000000 		.4byte	.LASF39
+ 924 0423 07       		.byte	0x7
+ 925 0424 28       		.byte	0x28
+ 926 0425 00       		.byte	0
+ 927              		.section	.debug_abbrev,"",%progbits
+ 928              	.Ldebug_abbrev0:
+ 929 0000 01       		.uleb128 0x1
+ 930 0001 11       		.uleb128 0x11
+ 931 0002 01       		.byte	0x1
+ 932 0003 25       		.uleb128 0x25
+ 933 0004 0E       		.uleb128 0xe
+ 934 0005 13       		.uleb128 0x13
+ 935 0006 0B       		.uleb128 0xb
+ 936 0007 03       		.uleb128 0x3
+ 937 0008 0E       		.uleb128 0xe
+ 938 0009 1B       		.uleb128 0x1b
+ 939 000a 0E       		.uleb128 0xe
+ 940 000b 55       		.uleb128 0x55
+ 941 000c 17       		.uleb128 0x17
+ 942 000d 11       		.uleb128 0x11
+ 943 000e 01       		.uleb128 0x1
+ 944 000f 10       		.uleb128 0x10
+ 945 0010 17       		.uleb128 0x17
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 21
 
 
- 1169 0015 50       		.byte	0x50
- 1170 0016 28000000 		.4byte	.LVL7
- 1171 001a 3A000000 		.4byte	.LVL8
- 1172 001e 0100     		.2byte	0x1
- 1173 0020 50       		.byte	0x50
- 1174 0021 40000000 		.4byte	.LVL10
- 1175 0025 4A000000 		.4byte	.LVL11
- 1176 0029 0100     		.2byte	0x1
- 1177 002b 50       		.byte	0x50
- 1178 002c 50000000 		.4byte	.LVL13
- 1179 0030 52000000 		.4byte	.LVL14
- 1180 0034 0100     		.2byte	0x1
- 1181 0036 50       		.byte	0x50
- 1182 0037 58000000 		.4byte	.LVL16
- 1183 003b 62000000 		.4byte	.LVL17
- 1184 003f 0100     		.2byte	0x1
- 1185 0041 50       		.byte	0x50
- 1186 0042 68000000 		.4byte	.LVL19
- 1187 0046 72000000 		.4byte	.LVL20
- 1188 004a 0100     		.2byte	0x1
- 1189 004c 50       		.byte	0x50
- 1190 004d 00000000 		.4byte	0
- 1191 0051 00000000 		.4byte	0
- 1192              	.LLST1:
- 1193 0055 1A000000 		.4byte	.LVL31
- 1194 0059 1E000000 		.4byte	.LVL32
- 1195 005d 0200     		.2byte	0x2
- 1196 005f 30       		.byte	0x30
- 1197 0060 9F       		.byte	0x9f
- 1198 0061 1E000000 		.4byte	.LVL32
- 1199 0065 2A000000 		.4byte	.LVL34
- 1200 0069 0100     		.2byte	0x1
- 1201 006b 54       		.byte	0x54
- 1202 006c 2C000000 		.4byte	.LVL35
- 1203 0070 3E000000 		.4byte	.LVL37
- 1204 0074 0100     		.2byte	0x1
- 1205 0076 54       		.byte	0x54
- 1206 0077 3E000000 		.4byte	.LVL37
- 1207 007b 42000000 		.4byte	.LVL38
- 1208 007f 0200     		.2byte	0x2
- 1209 0081 30       		.byte	0x30
- 1210 0082 9F       		.byte	0x9f
- 1211 0083 42000000 		.4byte	.LVL38
- 1212 0087 5C000000 		.4byte	.LVL41
- 1213 008b 0100     		.2byte	0x1
- 1214 008d 54       		.byte	0x54
- 1215 008e 5E000000 		.4byte	.LVL42
- 1216 0092 66000000 		.4byte	.LVL43
- 1217 0096 0100     		.2byte	0x1
- 1218 0098 54       		.byte	0x54
- 1219 0099 00000000 		.4byte	0
- 1220 009d 00000000 		.4byte	0
- 1221              		.section	.debug_aranges,"",%progbits
- 1222 0000 2C000000 		.4byte	0x2c
- 1223 0004 0200     		.2byte	0x2
- 1224 0006 00000000 		.4byte	.Ldebug_info0
- 1225 000a 04       		.byte	0x4
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 26
+ 946 0011 00       		.byte	0
+ 947 0012 00       		.byte	0
+ 948 0013 02       		.uleb128 0x2
+ 949 0014 24       		.uleb128 0x24
+ 950 0015 00       		.byte	0
+ 951 0016 0B       		.uleb128 0xb
+ 952 0017 0B       		.uleb128 0xb
+ 953 0018 3E       		.uleb128 0x3e
+ 954 0019 0B       		.uleb128 0xb
+ 955 001a 03       		.uleb128 0x3
+ 956 001b 0E       		.uleb128 0xe
+ 957 001c 00       		.byte	0
+ 958 001d 00       		.byte	0
+ 959 001e 03       		.uleb128 0x3
+ 960 001f 16       		.uleb128 0x16
+ 961 0020 00       		.byte	0
+ 962 0021 03       		.uleb128 0x3
+ 963 0022 0E       		.uleb128 0xe
+ 964 0023 3A       		.uleb128 0x3a
+ 965 0024 0B       		.uleb128 0xb
+ 966 0025 3B       		.uleb128 0x3b
+ 967 0026 0B       		.uleb128 0xb
+ 968 0027 49       		.uleb128 0x49
+ 969 0028 13       		.uleb128 0x13
+ 970 0029 00       		.byte	0
+ 971 002a 00       		.byte	0
+ 972 002b 04       		.uleb128 0x4
+ 973 002c 24       		.uleb128 0x24
+ 974 002d 00       		.byte	0
+ 975 002e 0B       		.uleb128 0xb
+ 976 002f 0B       		.uleb128 0xb
+ 977 0030 3E       		.uleb128 0x3e
+ 978 0031 0B       		.uleb128 0xb
+ 979 0032 03       		.uleb128 0x3
+ 980 0033 08       		.uleb128 0x8
+ 981 0034 00       		.byte	0
+ 982 0035 00       		.byte	0
+ 983 0036 05       		.uleb128 0x5
+ 984 0037 16       		.uleb128 0x16
+ 985 0038 00       		.byte	0
+ 986 0039 03       		.uleb128 0x3
+ 987 003a 0E       		.uleb128 0xe
+ 988 003b 3A       		.uleb128 0x3a
+ 989 003c 0B       		.uleb128 0xb
+ 990 003d 3B       		.uleb128 0x3b
+ 991 003e 05       		.uleb128 0x5
+ 992 003f 49       		.uleb128 0x49
+ 993 0040 13       		.uleb128 0x13
+ 994 0041 00       		.byte	0
+ 995 0042 00       		.byte	0
+ 996 0043 06       		.uleb128 0x6
+ 997 0044 35       		.uleb128 0x35
+ 998 0045 00       		.byte	0
+ 999 0046 49       		.uleb128 0x49
+ 1000 0047 13       		.uleb128 0x13
+ 1001 0048 00       		.byte	0
+ 1002 0049 00       		.byte	0
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 22
 
 
- 1226 000b 00       		.byte	0
- 1227 000c 0000     		.2byte	0
- 1228 000e 0000     		.2byte	0
- 1229 0010 00000000 		.4byte	.LFB66
- 1230 0014 A4000000 		.4byte	.LFE66-.LFB66
- 1231 0018 00000000 		.4byte	.LFB64
- 1232 001c 50000000 		.4byte	.LFE64-.LFB64
- 1233 0020 00000000 		.4byte	.LFB65
- 1234 0024 70000000 		.4byte	.LFE65-.LFB65
- 1235 0028 00000000 		.4byte	0
- 1236 002c 00000000 		.4byte	0
- 1237              		.section	.debug_ranges,"",%progbits
- 1238              	.Ldebug_ranges0:
- 1239 0000 00000000 		.4byte	.LFB66
- 1240 0004 A4000000 		.4byte	.LFE66
- 1241 0008 00000000 		.4byte	.LFB64
- 1242 000c 50000000 		.4byte	.LFE64
- 1243 0010 00000000 		.4byte	.LFB65
- 1244 0014 70000000 		.4byte	.LFE65
- 1245 0018 00000000 		.4byte	0
- 1246 001c 00000000 		.4byte	0
- 1247              		.section	.debug_line,"",%progbits
- 1248              	.Ldebug_line0:
- 1249 0000 8C020000 		.section	.debug_str,"MS",%progbits,1
- 1249      0200E401 
- 1249      00000201 
- 1249      FB0E0D00 
- 1249      01010101 
- 1250              	.LASF9:
- 1251 0000 5F5F696E 		.ascii	"__int32_t\000"
- 1251      7433325F 
- 1251      7400
- 1252              	.LASF23:
- 1253 000a 74657374 		.ascii	"testData\000"
- 1253      44617461 
- 1253      00
- 1254              	.LASF28:
- 1255 0013 55415254 		.ascii	"UART_ClearRxBuffer\000"
- 1255      5F436C65 
- 1255      61725278 
- 1255      42756666 
- 1255      657200
- 1256              	.LASF30:
- 1257 0026 55415254 		.ascii	"UART_Start\000"
- 1257      5F537461 
- 1257      727400
- 1258              	.LASF36:
- 1259 0031 4932435F 		.ascii	"I2C_RTC_MasterReadByte\000"
- 1259      5254435F 
- 1259      4D617374 
- 1259      65725265 
- 1259      61644279 
- 1260              	.LASF29:
- 1261 0048 6973725F 		.ascii	"isr_UART_ClearPending\000"
- 1261      55415254 
- 1261      5F436C65 
- 1261      61725065 
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 27
+ 1003 004a 07       		.uleb128 0x7
+ 1004 004b 2E       		.uleb128 0x2e
+ 1005 004c 01       		.byte	0x1
+ 1006 004d 3F       		.uleb128 0x3f
+ 1007 004e 19       		.uleb128 0x19
+ 1008 004f 03       		.uleb128 0x3
+ 1009 0050 0E       		.uleb128 0xe
+ 1010 0051 3A       		.uleb128 0x3a
+ 1011 0052 0B       		.uleb128 0xb
+ 1012 0053 3B       		.uleb128 0x3b
+ 1013 0054 0B       		.uleb128 0xb
+ 1014 0055 27       		.uleb128 0x27
+ 1015 0056 19       		.uleb128 0x19
+ 1016 0057 49       		.uleb128 0x49
+ 1017 0058 13       		.uleb128 0x13
+ 1018 0059 8701     		.uleb128 0x87
+ 1019 005b 19       		.uleb128 0x19
+ 1020 005c 11       		.uleb128 0x11
+ 1021 005d 01       		.uleb128 0x1
+ 1022 005e 12       		.uleb128 0x12
+ 1023 005f 06       		.uleb128 0x6
+ 1024 0060 40       		.uleb128 0x40
+ 1025 0061 18       		.uleb128 0x18
+ 1026 0062 9742     		.uleb128 0x2117
+ 1027 0064 19       		.uleb128 0x19
+ 1028 0065 01       		.uleb128 0x1
+ 1029 0066 13       		.uleb128 0x13
+ 1030 0067 00       		.byte	0
+ 1031 0068 00       		.byte	0
+ 1032 0069 08       		.uleb128 0x8
+ 1033 006a 34       		.uleb128 0x34
+ 1034 006b 00       		.byte	0
+ 1035 006c 03       		.uleb128 0x3
+ 1036 006d 0E       		.uleb128 0xe
+ 1037 006e 3A       		.uleb128 0x3a
+ 1038 006f 0B       		.uleb128 0xb
+ 1039 0070 3B       		.uleb128 0x3b
+ 1040 0071 0B       		.uleb128 0xb
+ 1041 0072 49       		.uleb128 0x49
+ 1042 0073 13       		.uleb128 0x13
+ 1043 0074 02       		.uleb128 0x2
+ 1044 0075 18       		.uleb128 0x18
+ 1045 0076 00       		.byte	0
+ 1046 0077 00       		.byte	0
+ 1047 0078 09       		.uleb128 0x9
+ 1048 0079 898201   		.uleb128 0x4109
+ 1049 007c 00       		.byte	0
+ 1050 007d 11       		.uleb128 0x11
+ 1051 007e 01       		.uleb128 0x1
+ 1052 007f 31       		.uleb128 0x31
+ 1053 0080 13       		.uleb128 0x13
+ 1054 0081 00       		.byte	0
+ 1055 0082 00       		.byte	0
+ 1056 0083 0A       		.uleb128 0xa
+ 1057 0084 898201   		.uleb128 0x4109
+ 1058 0087 01       		.byte	0x1
+ 1059 0088 11       		.uleb128 0x11
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 23
 
 
- 1261      6E64696E 
- 1262              	.LASF12:
- 1263 005e 666C6F61 		.ascii	"float\000"
- 1263      7400
- 1264              	.LASF1:
- 1265 0064 756E7369 		.ascii	"unsigned char\000"
- 1265      676E6564 
- 1265      20636861 
- 1265      7200
- 1266              	.LASF39:
- 1267 0072 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1267      43313120 
- 1267      352E342E 
- 1267      31203230 
- 1267      31363036 
- 1268 00a5 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 1268      20726576 
- 1268      6973696F 
- 1268      6E203233 
- 1268      37373135 
- 1269 00d8 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 1269      66756E63 
- 1269      74696F6E 
- 1269      2D736563 
- 1269      74696F6E 
- 1270              	.LASF5:
- 1271 0100 6C6F6E67 		.ascii	"long unsigned int\000"
- 1271      20756E73 
- 1271      69676E65 
- 1271      6420696E 
- 1271      7400
- 1272              	.LASF3:
- 1273 0112 73686F72 		.ascii	"short unsigned int\000"
- 1273      7420756E 
- 1273      7369676E 
- 1273      65642069 
- 1273      6E7400
- 1274              	.LASF34:
- 1275 0125 4932435F 		.ascii	"I2C_RTC_MasterWriteByte\000"
- 1275      5254435F 
- 1275      4D617374 
- 1275      65725772 
- 1275      69746542 
- 1276              	.LASF24:
- 1277 013d 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 1277      52784275 
- 1277      66666572 
- 1277      00
- 1278              	.LASF37:
- 1279 014a 4932435F 		.ascii	"I2C_RTC_MasterSendStop\000"
- 1279      5254435F 
- 1279      4D617374 
- 1279      65725365 
- 1279      6E645374 
- 1280              	.LASF13:
- 1281 0161 646F7562 		.ascii	"double\000"
- 1281      6C6500
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 28
+ 1060 0089 01       		.uleb128 0x1
+ 1061 008a 31       		.uleb128 0x31
+ 1062 008b 13       		.uleb128 0x13
+ 1063 008c 01       		.uleb128 0x1
+ 1064 008d 13       		.uleb128 0x13
+ 1065 008e 00       		.byte	0
+ 1066 008f 00       		.byte	0
+ 1067 0090 0B       		.uleb128 0xb
+ 1068 0091 8A8201   		.uleb128 0x410a
+ 1069 0094 00       		.byte	0
+ 1070 0095 02       		.uleb128 0x2
+ 1071 0096 18       		.uleb128 0x18
+ 1072 0097 9142     		.uleb128 0x2111
+ 1073 0099 18       		.uleb128 0x18
+ 1074 009a 00       		.byte	0
+ 1075 009b 00       		.byte	0
+ 1076 009c 0C       		.uleb128 0xc
+ 1077 009d 898201   		.uleb128 0x4109
+ 1078 00a0 01       		.byte	0x1
+ 1079 00a1 11       		.uleb128 0x11
+ 1080 00a2 01       		.uleb128 0x1
+ 1081 00a3 31       		.uleb128 0x31
+ 1082 00a4 13       		.uleb128 0x13
+ 1083 00a5 00       		.byte	0
+ 1084 00a6 00       		.byte	0
+ 1085 00a7 0D       		.uleb128 0xd
+ 1086 00a8 01       		.uleb128 0x1
+ 1087 00a9 01       		.byte	0x1
+ 1088 00aa 49       		.uleb128 0x49
+ 1089 00ab 13       		.uleb128 0x13
+ 1090 00ac 01       		.uleb128 0x1
+ 1091 00ad 13       		.uleb128 0x13
+ 1092 00ae 00       		.byte	0
+ 1093 00af 00       		.byte	0
+ 1094 00b0 0E       		.uleb128 0xe
+ 1095 00b1 21       		.uleb128 0x21
+ 1096 00b2 00       		.byte	0
+ 1097 00b3 49       		.uleb128 0x49
+ 1098 00b4 13       		.uleb128 0x13
+ 1099 00b5 2F       		.uleb128 0x2f
+ 1100 00b6 0B       		.uleb128 0xb
+ 1101 00b7 00       		.byte	0
+ 1102 00b8 00       		.byte	0
+ 1103 00b9 0F       		.uleb128 0xf
+ 1104 00ba 2E       		.uleb128 0x2e
+ 1105 00bb 01       		.byte	0x1
+ 1106 00bc 3F       		.uleb128 0x3f
+ 1107 00bd 19       		.uleb128 0x19
+ 1108 00be 03       		.uleb128 0x3
+ 1109 00bf 0E       		.uleb128 0xe
+ 1110 00c0 3A       		.uleb128 0x3a
+ 1111 00c1 0B       		.uleb128 0xb
+ 1112 00c2 3B       		.uleb128 0x3b
+ 1113 00c3 0B       		.uleb128 0xb
+ 1114 00c4 27       		.uleb128 0x27
+ 1115 00c5 19       		.uleb128 0x19
+ 1116 00c6 11       		.uleb128 0x11
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 24
 
 
- 1282              	.LASF2:
- 1283 0168 73686F72 		.ascii	"short int\000"
- 1283      7420696E 
- 1283      7400
- 1284              	.LASF25:
- 1285 0172 7274635F 		.ascii	"rtc_data\000"
- 1285      64617461 
- 1285      00
- 1286              	.LASF42:
- 1287 017b 6D61696E 		.ascii	"main\000"
- 1287      00
- 1288              	.LASF8:
- 1289 0180 756E7369 		.ascii	"unsigned int\000"
- 1289      676E6564 
- 1289      20696E74 
- 1289      00
- 1290              	.LASF7:
- 1291 018d 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1291      206C6F6E 
- 1291      6720756E 
- 1291      7369676E 
- 1291      65642069 
- 1292              	.LASF22:
- 1293 01a4 72657375 		.ascii	"result\000"
- 1293      6C7400
- 1294              	.LASF33:
- 1295 01ab 4932435F 		.ascii	"I2C_RTC_MasterSendStart\000"
- 1295      5254435F 
- 1295      4D617374 
- 1295      65725365 
- 1295      6E645374 
- 1296              	.LASF38:
- 1297 01c3 73707269 		.ascii	"sprintf\000"
- 1297      6E746600 
- 1298              	.LASF20:
- 1299 01cb 6D795F69 		.ascii	"my_isr_UART\000"
- 1299      73725F55 
- 1299      41525400 
- 1300              	.LASF10:
- 1301 01d7 696E7433 		.ascii	"int32_t\000"
- 1301      325F7400 
- 1302              	.LASF16:
- 1303 01df 73697A65 		.ascii	"sizetype\000"
- 1303      74797065 
- 1303      00
- 1304              	.LASF6:
- 1305 01e8 6C6F6E67 		.ascii	"long long int\000"
- 1305      206C6F6E 
- 1305      6720696E 
- 1305      7400
- 1306              	.LASF40:
- 1307 01f6 6D61696E 		.ascii	"main.c\000"
- 1307      2E6300
- 1308              	.LASF14:
- 1309 01fd 63686172 		.ascii	"char\000"
- 1309      00
- 1310              	.LASF26:
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 29
+ 1117 00c7 01       		.uleb128 0x1
+ 1118 00c8 12       		.uleb128 0x12
+ 1119 00c9 06       		.uleb128 0x6
+ 1120 00ca 40       		.uleb128 0x40
+ 1121 00cb 18       		.uleb128 0x18
+ 1122 00cc 9742     		.uleb128 0x2117
+ 1123 00ce 19       		.uleb128 0x19
+ 1124 00cf 01       		.uleb128 0x1
+ 1125 00d0 13       		.uleb128 0x13
+ 1126 00d1 00       		.byte	0
+ 1127 00d2 00       		.byte	0
+ 1128 00d3 10       		.uleb128 0x10
+ 1129 00d4 34       		.uleb128 0x34
+ 1130 00d5 00       		.byte	0
+ 1131 00d6 03       		.uleb128 0x3
+ 1132 00d7 08       		.uleb128 0x8
+ 1133 00d8 3A       		.uleb128 0x3a
+ 1134 00d9 0B       		.uleb128 0xb
+ 1135 00da 3B       		.uleb128 0x3b
+ 1136 00db 0B       		.uleb128 0xb
+ 1137 00dc 49       		.uleb128 0x49
+ 1138 00dd 13       		.uleb128 0x13
+ 1139 00de 02       		.uleb128 0x2
+ 1140 00df 17       		.uleb128 0x17
+ 1141 00e0 00       		.byte	0
+ 1142 00e1 00       		.byte	0
+ 1143 00e2 11       		.uleb128 0x11
+ 1144 00e3 34       		.uleb128 0x34
+ 1145 00e4 00       		.byte	0
+ 1146 00e5 03       		.uleb128 0x3
+ 1147 00e6 0E       		.uleb128 0xe
+ 1148 00e7 3A       		.uleb128 0x3a
+ 1149 00e8 0B       		.uleb128 0xb
+ 1150 00e9 3B       		.uleb128 0x3b
+ 1151 00ea 0B       		.uleb128 0xb
+ 1152 00eb 49       		.uleb128 0x49
+ 1153 00ec 13       		.uleb128 0x13
+ 1154 00ed 02       		.uleb128 0x2
+ 1155 00ee 17       		.uleb128 0x17
+ 1156 00ef 00       		.byte	0
+ 1157 00f0 00       		.byte	0
+ 1158 00f1 12       		.uleb128 0x12
+ 1159 00f2 34       		.uleb128 0x34
+ 1160 00f3 00       		.byte	0
+ 1161 00f4 03       		.uleb128 0x3
+ 1162 00f5 0E       		.uleb128 0xe
+ 1163 00f6 3A       		.uleb128 0x3a
+ 1164 00f7 0B       		.uleb128 0xb
+ 1165 00f8 3B       		.uleb128 0x3b
+ 1166 00f9 05       		.uleb128 0x5
+ 1167 00fa 49       		.uleb128 0x49
+ 1168 00fb 13       		.uleb128 0x13
+ 1169 00fc 3F       		.uleb128 0x3f
+ 1170 00fd 19       		.uleb128 0x19
+ 1171 00fe 3C       		.uleb128 0x3c
+ 1172 00ff 19       		.uleb128 0x19
+ 1173 0100 00       		.byte	0
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 25
 
 
- 1311 0202 55415254 		.ascii	"UART_GetChar\000"
- 1311      5F476574 
- 1311      43686172 
- 1311      00
- 1312              	.LASF21:
- 1313 020f 7265616C 		.ascii	"realTimeClock\000"
- 1313      54696D65 
- 1313      436C6F63 
- 1313      6B00
- 1314              	.LASF32:
- 1315 021d 4932435F 		.ascii	"I2C_RTC_Start\000"
- 1315      5254435F 
- 1315      53746172 
- 1315      7400
- 1316              	.LASF11:
- 1317 022b 75696E74 		.ascii	"uint8\000"
- 1317      3800
- 1318              	.LASF4:
- 1319 0231 6C6F6E67 		.ascii	"long int\000"
- 1319      20696E74 
- 1319      00
- 1320              	.LASF18:
- 1321 023a 63757272 		.ascii	"current_char\000"
- 1321      656E745F 
- 1321      63686172 
- 1321      00
+ 1174 0101 00       		.byte	0
+ 1175 0102 13       		.uleb128 0x13
+ 1176 0103 34       		.uleb128 0x34
+ 1177 0104 00       		.byte	0
+ 1178 0105 03       		.uleb128 0x3
+ 1179 0106 0E       		.uleb128 0xe
+ 1180 0107 3A       		.uleb128 0x3a
+ 1181 0108 0B       		.uleb128 0xb
+ 1182 0109 3B       		.uleb128 0x3b
+ 1183 010a 0B       		.uleb128 0xb
+ 1184 010b 49       		.uleb128 0x49
+ 1185 010c 13       		.uleb128 0x13
+ 1186 010d 3F       		.uleb128 0x3f
+ 1187 010e 19       		.uleb128 0x19
+ 1188 010f 02       		.uleb128 0x2
+ 1189 0110 18       		.uleb128 0x18
+ 1190 0111 00       		.byte	0
+ 1191 0112 00       		.byte	0
+ 1192 0113 14       		.uleb128 0x14
+ 1193 0114 2E       		.uleb128 0x2e
+ 1194 0115 00       		.byte	0
+ 1195 0116 3F       		.uleb128 0x3f
+ 1196 0117 19       		.uleb128 0x19
+ 1197 0118 3C       		.uleb128 0x3c
+ 1198 0119 19       		.uleb128 0x19
+ 1199 011a 6E       		.uleb128 0x6e
+ 1200 011b 0E       		.uleb128 0xe
+ 1201 011c 03       		.uleb128 0x3
+ 1202 011d 0E       		.uleb128 0xe
+ 1203 011e 3A       		.uleb128 0x3a
+ 1204 011f 0B       		.uleb128 0xb
+ 1205 0120 3B       		.uleb128 0x3b
+ 1206 0121 0B       		.uleb128 0xb
+ 1207 0122 00       		.byte	0
+ 1208 0123 00       		.byte	0
+ 1209 0124 00       		.byte	0
+ 1210              		.section	.debug_loc,"",%progbits
+ 1211              	.Ldebug_loc0:
+ 1212              	.LLST0:
+ 1213 0000 30000000 		.4byte	.LVL10
+ 1214 0004 32000000 		.4byte	.LVL11
+ 1215 0008 0200     		.2byte	0x2
+ 1216 000a 30       		.byte	0x30
+ 1217 000b 9F       		.byte	0x9f
+ 1218 000c 32000000 		.4byte	.LVL11
+ 1219 0010 3E000000 		.4byte	.LVL13
+ 1220 0014 0100     		.2byte	0x1
+ 1221 0016 54       		.byte	0x54
+ 1222 0017 40000000 		.4byte	.LVL14
+ 1223 001b 52000000 		.4byte	.LVL16
+ 1224 001f 0100     		.2byte	0x1
+ 1225 0021 54       		.byte	0x54
+ 1226 0022 52000000 		.4byte	.LVL16
+ 1227 0026 56000000 		.4byte	.LVL17
+ 1228 002a 0200     		.2byte	0x2
+ 1229 002c 30       		.byte	0x30
+ 1230 002d 9F       		.byte	0x9f
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 26
+
+
+ 1231 002e 56000000 		.4byte	.LVL17
+ 1232 0032 6C000000 		.4byte	.LVL20
+ 1233 0036 0100     		.2byte	0x1
+ 1234 0038 54       		.byte	0x54
+ 1235 0039 6E000000 		.4byte	.LVL21
+ 1236 003d 76000000 		.4byte	.LVL22
+ 1237 0041 0100     		.2byte	0x1
+ 1238 0043 54       		.byte	0x54
+ 1239 0044 00000000 		.4byte	0
+ 1240 0048 00000000 		.4byte	0
+ 1241              	.LLST1:
+ 1242 004c 0E000000 		.4byte	.LVL5
+ 1243 0050 14000000 		.4byte	.LVL6
+ 1244 0054 0100     		.2byte	0x1
+ 1245 0056 50       		.byte	0x50
+ 1246 0057 00000000 		.4byte	0
+ 1247 005b 00000000 		.4byte	0
+ 1248              	.LLST2:
+ 1249 005f 0C000000 		.4byte	.LVL25
+ 1250 0063 16000000 		.4byte	.LVL26
+ 1251 0067 0100     		.2byte	0x1
+ 1252 0069 50       		.byte	0x50
+ 1253 006a 1C000000 		.4byte	.LVL28
+ 1254 006e 26000000 		.4byte	.LVL29
+ 1255 0072 0100     		.2byte	0x1
+ 1256 0074 50       		.byte	0x50
+ 1257 0075 2C000000 		.4byte	.LVL31
+ 1258 0079 3E000000 		.4byte	.LVL32
+ 1259 007d 0100     		.2byte	0x1
+ 1260 007f 50       		.byte	0x50
+ 1261 0080 44000000 		.4byte	.LVL34
+ 1262 0084 4E000000 		.4byte	.LVL35
+ 1263 0088 0100     		.2byte	0x1
+ 1264 008a 50       		.byte	0x50
+ 1265 008b 54000000 		.4byte	.LVL37
+ 1266 008f 56000000 		.4byte	.LVL38
+ 1267 0093 0100     		.2byte	0x1
+ 1268 0095 50       		.byte	0x50
+ 1269 0096 5C000000 		.4byte	.LVL40
+ 1270 009a 66000000 		.4byte	.LVL41
+ 1271 009e 0100     		.2byte	0x1
+ 1272 00a0 50       		.byte	0x50
+ 1273 00a1 6C000000 		.4byte	.LVL43
+ 1274 00a5 76000000 		.4byte	.LVL44
+ 1275 00a9 0100     		.2byte	0x1
+ 1276 00ab 50       		.byte	0x50
+ 1277 00ac 00000000 		.4byte	0
+ 1278 00b0 00000000 		.4byte	0
+ 1279              		.section	.debug_aranges,"",%progbits
+ 1280 0000 2C000000 		.4byte	0x2c
+ 1281 0004 0200     		.2byte	0x2
+ 1282 0006 00000000 		.4byte	.Ldebug_info0
+ 1283 000a 04       		.byte	0x4
+ 1284 000b 00       		.byte	0
+ 1285 000c 0000     		.2byte	0
+ 1286 000e 0000     		.2byte	0
+ 1287 0010 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 27
+
+
+ 1288 0014 50000000 		.4byte	.LFE64-.LFB64
+ 1289 0018 00000000 		.4byte	.LFB65
+ 1290 001c 84000000 		.4byte	.LFE65-.LFB65
+ 1291 0020 00000000 		.4byte	.LFB66
+ 1292 0024 A8000000 		.4byte	.LFE66-.LFB66
+ 1293 0028 00000000 		.4byte	0
+ 1294 002c 00000000 		.4byte	0
+ 1295              		.section	.debug_ranges,"",%progbits
+ 1296              	.Ldebug_ranges0:
+ 1297 0000 00000000 		.4byte	.LFB64
+ 1298 0004 50000000 		.4byte	.LFE64
+ 1299 0008 00000000 		.4byte	.LFB65
+ 1300 000c 84000000 		.4byte	.LFE65
+ 1301 0010 00000000 		.4byte	.LFB66
+ 1302 0014 A8000000 		.4byte	.LFE66
+ 1303 0018 00000000 		.4byte	0
+ 1304 001c 00000000 		.4byte	0
+ 1305              		.section	.debug_line,"",%progbits
+ 1306              	.Ldebug_line0:
+ 1307 0000 9E020000 		.section	.debug_str,"MS",%progbits,1
+ 1307      0200E401 
+ 1307      00000201 
+ 1307      FB0E0D00 
+ 1307      01010101 
+ 1308              	.LASF29:
+ 1309 0000 4932435F 		.ascii	"I2C_RTC_Start\000"
+ 1309      5254435F 
+ 1309      53746172 
+ 1309      7400
+ 1310              	.LASF9:
+ 1311 000e 5F5F696E 		.ascii	"__int32_t\000"
+ 1311      7433325F 
+ 1311      7400
+ 1312              	.LASF20:
+ 1313 0018 74657374 		.ascii	"testData\000"
+ 1313      44617461 
+ 1313      00
+ 1314              	.LASF38:
+ 1315 0021 55415254 		.ascii	"UART_ClearRxBuffer\000"
+ 1315      5F436C65 
+ 1315      61725278 
+ 1315      42756666 
+ 1315      657200
+ 1316              	.LASF27:
+ 1317 0034 55415254 		.ascii	"UART_Start\000"
+ 1317      5F537461 
+ 1317      727400
+ 1318              	.LASF35:
+ 1319 003f 4932435F 		.ascii	"I2C_RTC_MasterReadByte\000"
+ 1319      5254435F 
+ 1319      4D617374 
+ 1319      65725265 
+ 1319      61644279 
+ 1320              	.LASF39:
+ 1321 0056 6973725F 		.ascii	"isr_UART_ClearPending\000"
+ 1321      55415254 
+ 1321      5F436C65 
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 28
+
+
+ 1321      61725065 
+ 1321      6E64696E 
  1322              	.LASF19:
- 1323 0247 70726F6A 		.ascii	"projectName\000"
- 1323      6563744E 
- 1323      616D6500 
- 1324              	.LASF15:
- 1325 0253 6C6F6E67 		.ascii	"long double\000"
- 1325      20646F75 
- 1325      626C6500 
- 1326              	.LASF35:
- 1327 025f 4932435F 		.ascii	"I2C_RTC_MasterSendRestart\000"
- 1327      5254435F 
- 1327      4D617374 
- 1327      65725365 
- 1327      6E645265 
- 1328              	.LASF0:
- 1329 0279 7369676E 		.ascii	"signed char\000"
- 1329      65642063 
- 1329      68617200 
- 1330              	.LASF31:
- 1331 0285 6973725F 		.ascii	"isr_UART_StartEx\000"
- 1331      55415254 
- 1331      5F537461 
- 1331      72744578 
- 1331      00
- 1332              	.LASF41:
- 1333 0296 433A5C55 		.ascii	"C:\\Users\\yamen\\OneDrive\\Dokumente\\GitHub\\Gree"
- 1333      73657273 
- 1333      5C79616D 
- 1333      656E5C4F 
- 1333      6E654472 
- 1334 02c3 6E2D486F 		.ascii	"n-House\\Green_House\\Green_House.cydsn\000"
-ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccBoADrj.s 			page 30
+ 1323 006c 64656275 		.ascii	"debug\000"
+ 1323      6700
+ 1324              	.LASF12:
+ 1325 0072 666C6F61 		.ascii	"float\000"
+ 1325      7400
+ 1326              	.LASF1:
+ 1327 0078 756E7369 		.ascii	"unsigned char\000"
+ 1327      676E6564 
+ 1327      20636861 
+ 1327      7200
+ 1328              	.LASF40:
+ 1329 0086 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1329      43313120 
+ 1329      352E342E 
+ 1329      31203230 
+ 1329      31363036 
+ 1330 00b9 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1330      20726576 
+ 1330      6973696F 
+ 1330      6E203233 
+ 1330      37373135 
+ 1331 00ec 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1331      66756E63 
+ 1331      74696F6E 
+ 1331      2D736563 
+ 1331      74696F6E 
+ 1332              	.LASF5:
+ 1333 0114 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1333      20756E73 
+ 1333      69676E65 
+ 1333      6420696E 
+ 1333      7400
+ 1334              	.LASF3:
+ 1335 0126 73686F72 		.ascii	"short unsigned int\000"
+ 1335      7420756E 
+ 1335      7369676E 
+ 1335      65642069 
+ 1335      6E7400
+ 1336              	.LASF33:
+ 1337 0139 4932435F 		.ascii	"I2C_RTC_MasterWriteByte\000"
+ 1337      5254435F 
+ 1337      4D617374 
+ 1337      65725772 
+ 1337      69746542 
+ 1338              	.LASF25:
+ 1339 0151 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1339      52784275 
+ 1339      66666572 
+ 1339      00
+ 1340              	.LASF36:
+ 1341 015e 4932435F 		.ascii	"I2C_RTC_MasterSendStop\000"
+ 1341      5254435F 
+ 1341      4D617374 
+ 1341      65725365 
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 29
 
 
- 1334      7573655C 
- 1334      47726565 
- 1334      6E5F486F 
- 1334      7573655C 
- 1335              	.LASF27:
- 1336 02e9 55415254 		.ascii	"UART_PutString\000"
- 1336      5F507574 
- 1336      53747269 
- 1336      6E6700
- 1337              	.LASF17:
- 1338 02f8 6F6C645F 		.ascii	"old_char\000"
- 1338      63686172 
- 1338      00
- 1339              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1341      6E645374 
+ 1342              	.LASF13:
+ 1343 0175 646F7562 		.ascii	"double\000"
+ 1343      6C6500
+ 1344              	.LASF43:
+ 1345 017c 6D61696E 		.ascii	"main\000"
+ 1345      00
+ 1346              	.LASF26:
+ 1347 0181 7274635F 		.ascii	"rtc_data\000"
+ 1347      64617461 
+ 1347      00
+ 1348              	.LASF8:
+ 1349 018a 756E7369 		.ascii	"unsigned int\000"
+ 1349      676E6564 
+ 1349      20696E74 
+ 1349      00
+ 1350              	.LASF7:
+ 1351 0197 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1351      206C6F6E 
+ 1351      6720756E 
+ 1351      7369676E 
+ 1351      65642069 
+ 1352              	.LASF18:
+ 1353 01ae 72657375 		.ascii	"result\000"
+ 1353      6C7400
+ 1354              	.LASF31:
+ 1355 01b5 4932435F 		.ascii	"I2C_RTC_MasterSendStart\000"
+ 1355      5254435F 
+ 1355      4D617374 
+ 1355      65725365 
+ 1355      6E645374 
+ 1356              	.LASF32:
+ 1357 01cd 73707269 		.ascii	"sprintf\000"
+ 1357      6E746600 
+ 1358              	.LASF22:
+ 1359 01d5 6D795F69 		.ascii	"my_isr_UART\000"
+ 1359      73725F55 
+ 1359      41525400 
+ 1360              	.LASF10:
+ 1361 01e1 696E7433 		.ascii	"int32_t\000"
+ 1361      325F7400 
+ 1362              	.LASF16:
+ 1363 01e9 73697A65 		.ascii	"sizetype\000"
+ 1363      74797065 
+ 1363      00
+ 1364              	.LASF6:
+ 1365 01f2 6C6F6E67 		.ascii	"long long int\000"
+ 1365      206C6F6E 
+ 1365      6720696E 
+ 1365      7400
+ 1366              	.LASF41:
+ 1367 0200 6D61696E 		.ascii	"main.c\000"
+ 1367      2E6300
+ 1368              	.LASF14:
+ 1369 0207 63686172 		.ascii	"char\000"
+ 1369      00
+ 1370              	.LASF37:
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 30
+
+
+ 1371 020c 55415254 		.ascii	"UART_GetChar\000"
+ 1371      5F476574 
+ 1371      43686172 
+ 1371      00
+ 1372              	.LASF21:
+ 1373 0219 7265616C 		.ascii	"realTimeClock\000"
+ 1373      54696D65 
+ 1373      436C6F63 
+ 1373      6B00
+ 1374              	.LASF2:
+ 1375 0227 73686F72 		.ascii	"short int\000"
+ 1375      7420696E 
+ 1375      7400
+ 1376              	.LASF11:
+ 1377 0231 75696E74 		.ascii	"uint8\000"
+ 1377      3800
+ 1378              	.LASF4:
+ 1379 0237 6C6F6E67 		.ascii	"long int\000"
+ 1379      20696E74 
+ 1379      00
+ 1380              	.LASF24:
+ 1381 0240 63757272 		.ascii	"current_char\000"
+ 1381      656E745F 
+ 1381      63686172 
+ 1381      00
+ 1382              	.LASF17:
+ 1383 024d 70726F6A 		.ascii	"projectName\000"
+ 1383      6563744E 
+ 1383      616D6500 
+ 1384              	.LASF15:
+ 1385 0259 6C6F6E67 		.ascii	"long double\000"
+ 1385      20646F75 
+ 1385      626C6500 
+ 1386              	.LASF34:
+ 1387 0265 4932435F 		.ascii	"I2C_RTC_MasterSendRestart\000"
+ 1387      5254435F 
+ 1387      4D617374 
+ 1387      65725365 
+ 1387      6E645265 
+ 1388              	.LASF0:
+ 1389 027f 7369676E 		.ascii	"signed char\000"
+ 1389      65642063 
+ 1389      68617200 
+ 1390              	.LASF28:
+ 1391 028b 6973725F 		.ascii	"isr_UART_StartEx\000"
+ 1391      55415254 
+ 1391      5F537461 
+ 1391      72744578 
+ 1391      00
+ 1392              	.LASF42:
+ 1393 029c 433A5C55 		.ascii	"C:\\Users\\yamen\\OneDrive\\Dokumente\\GitHub\\Gree"
+ 1393      73657273 
+ 1393      5C79616D 
+ 1393      656E5C4F 
+ 1393      6E654472 
+ 1394 02c9 6E2D486F 		.ascii	"n-House\\Green_House\\Green_House.cydsn\000"
+ 1394      7573655C 
+ARM GAS  C:\Users\yamen\AppData\Local\Temp\ccSR0pfa.s 			page 31
+
+
+ 1394      47726565 
+ 1394      6E5F486F 
+ 1394      7573655C 
+ 1395              	.LASF30:
+ 1396 02ef 55415254 		.ascii	"UART_PutString\000"
+ 1396      5F507574 
+ 1396      53747269 
+ 1396      6E6700
+ 1397              	.LASF23:
+ 1398 02fe 6F6C645F 		.ascii	"old_char\000"
+ 1398      63686172 
+ 1398      00
+ 1399              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -12,6 +12,11 @@
 #include "project.h"
 #include <stdio.h>
 
+// Define and global variables
+# define RTC_slaveAddress 0x68
+# define True 1
+# define False 0
+
 // Function prototypes
 void realTimeClock(void);
 
@@ -48,14 +53,19 @@ int main(void)
 void realTimeClock(void)
 {
     uint8 i, result = 0;
+    char debug[50];
     
     // read the rtm module data from the i2c master
-  
-    I2C_RTC_MasterSendStart(0x68, I2C_RTC_WRITE_XFER_MODE);
+    do
+    {
+        result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
+        sprintf(debug,"Endless loop: %d\r\n" , result);
+        UART_PutString(debug);
+    }while(result!=I2C_RTC_MSTR_NO_ERROR);
     
-    I2C_RTC_MasterWriteByte(0x00);
+    result = I2C_RTC_MasterWriteByte(0x00);
     
-    I2C_RTC_MasterSendRestart(0x68, I2C_RTC_WRITE_XFER_MODE);
+    result = I2C_RTC_MasterSendRestart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
     
     for(i=0; i<6; i++)
     {
@@ -70,17 +80,17 @@ void realTimeClock(void)
     char testData[20];
     for(i=0; i<7; i++)
     {
-        sprintf(testData,"Bit%d : %d\r\n" ,i , rtc_data[i]>>4&0x07);
+        sprintf(testData,"Byte %d : %d\r\n" ,i , rtc_data[i]);
         UART_PutString(testData);
     }
-
+    //rtc_data[i]>>4&0x07
 }
 
 
 CY_ISR(my_isr_UART)
 {   
-    // Testing
-    //realTimeClock();
+    // Testing start
+    realTimeClock();
     
     // Testing ends
     
