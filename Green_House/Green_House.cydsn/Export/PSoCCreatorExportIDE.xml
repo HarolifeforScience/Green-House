@@ -114,6 +114,23 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Clock.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\PWM_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_PWM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_PWM.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_Timer.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_Timer.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\Export\ARM_GCC_Generic">

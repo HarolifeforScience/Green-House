@@ -16,16 +16,24 @@
 # define RTC_slaveAddress 0x68
 # define True 1
 # define False 0
+# define Servo_First_Position 899
 
 // Function prototypes
-void realTimeClock(void);
+void read_Room_Temp(void);
+void window_position_control(void);
+void heating_control(void);
+void real_Time_Clock(void);
 
 // Interrupts handler prototypes
 CY_ISR_PROTO(my_isr_UART);
-
+CY_ISR_PROTO(my_isr_TIMER);
+CY_ISR_PROTO(my_isr_PWM);
 
 
 volatile uint8 rtc_data[7];
+volatile uint8 room_temp = 0;
+volatile uint8 window_position_index = 0;
+volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
 
 int main(void)
 {
@@ -34,6 +42,13 @@ int main(void)
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     UART_Start();
     isr_UART_StartEx(my_isr_UART);
+    
+    Timer_Start();
+    isr_Timer_StartEx(my_isr_TIMER);
+    
+    PWM_Start();
+    isr_PWM_StartEx(my_isr_PWM);
+    
     //
     I2C_RTC_Start();
     
@@ -50,12 +65,66 @@ int main(void)
     }
 }
 
-void realTimeClock(void)
+void heating_control(void)
+{
+    if (room_temp < 5)
+    {
+        LED_Heating_Write(True);    // Turns on extra heating if temperature falls below +5C
+    }
+    else if (room_temp > 10)
+    {
+        LED_Heating_Write(False);   //  Turns off extra heating if temperature rises above +10C
+    }
+}
+
+void window_position_control(void)
+{
+    if (room_temp>=25)
+    {
+        window_position_index = 5;    // Fully opened
+    }
+    else if (room_temp>=24)
+    {
+        window_position_index = 4;
+    }
+    else if (room_temp>=23)
+    {
+        window_position_index = 3;
+    }
+    else if (room_temp>=22)
+    {
+        window_position_index = 2;
+    }
+    else if (room_temp>=21)
+    {
+        window_position_index = 1;
+    }
+    else
+    {
+        window_position_index = 0;    // Fully closed
+    }
+}
+void read_Room_Temp(void)
+{
+    
+    
+    // ***To-Do**
+    //  Read, Calculate and convert the tempearture
+    //
+    
+    window_position_control();
+    
+    heating_control();
+    
+}
+
+
+void real_Time_Clock(void)
 {
     uint8 i, result = 0;
     char debug[50];
     
-    // read the rtm module data from the i2c master
+    // read the real time clock module data from the i2c master
     do
     {
         result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
@@ -90,7 +159,7 @@ void realTimeClock(void)
 CY_ISR(my_isr_UART)
 {   
     // Testing start
-    realTimeClock();
+    real_Time_Clock();
     
     // Testing ends
     
@@ -143,6 +212,25 @@ CY_ISR(my_isr_UART)
     UART_ClearRxBuffer();
     isr_UART_ClearPending();
     
+}
+
+CY_ISR(my_isr_TIMER)
+{
+    read_Room_Temp();               // Read the temperature every second
+    
+    Timer_ReadStatusRegister();     // Clear the interrupt flag
+}
+
+CY_ISR(my_isr_PWM)
+{
+    static uint16 actualPosition = Servo_First_Position;    // actual position of the Servo Motor
+    
+    if (actualPosition > window_position[window_position_index]) actualPosition -= 1; // smooth the servo movement by gradualy incrementing/decrementing the position
+    if (actualPosition < window_position[window_position_index]) actualPosition += 1;
+    
+    PWM_WriteCompare(actualPosition);   // Move the Servo to the desired position
+    
+    PWM_ReadStatusRegister();           // Clear the interrupt flag
 }
 
 /* [] END OF FILE */
