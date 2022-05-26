@@ -11,6 +11,7 @@
 */
 #include "project.h"
 #include <stdio.h>
+#include <OneWireLab.h>
 
 // Define and global variables
 # define RTC_slaveAddress 0x68
@@ -34,6 +35,7 @@ volatile uint8 rtc_data[7];
 volatile uint8 room_temp = 0;
 volatile uint8 window_position_index = 0;
 volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
+volatile uint16 OneWireVal = 0 ;
 
 int main(void)
 {
@@ -52,6 +54,7 @@ int main(void)
     //
     I2C_RTC_Start();
     
+    OneWire_start();
     
     // test transmition to putty
     char projectName[50] = "***Green House Project*** \n\r";
@@ -159,7 +162,14 @@ void real_Time_Clock(void)
 CY_ISR(my_isr_UART)
 {   
     // Testing start
-    real_Time_Clock();
+   // real_Time_Clock();
+    OneWireVal = OneWire_read_data();
+    char testData[20];
+    
+    sprintf(testData," Temp One wire = %u \r\n" ,OneWireVal);
+    
+    UART_PutString(testData);
+    
     
     // Testing ends
     

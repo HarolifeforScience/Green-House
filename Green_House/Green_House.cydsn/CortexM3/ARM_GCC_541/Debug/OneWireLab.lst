@@ -1,0 +1,2368 @@
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"OneWireLab.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.OW_Reset,"ax",%progbits
+  20              		.align	2
+  21              		.global	OW_Reset
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	OW_Reset, %function
+  25              	OW_Reset:
+  26              	.LFB66:
+  27              		.file 1 "OneWireLab.c"
+   1:OneWireLab.c  **** /* ========================================
+   2:OneWireLab.c  ****  *
+   3:OneWireLab.c  ****  * Copyright YOUR COMPANY, THE YEAR
+   4:OneWireLab.c  ****  * All Rights Reserved
+   5:OneWireLab.c  ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:OneWireLab.c  ****  *
+   7:OneWireLab.c  ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:OneWireLab.c  ****  * WHICH IS THE PROPERTY OF your company.
+   9:OneWireLab.c  ****  *
+  10:OneWireLab.c  ****  * ========================================
+  11:OneWireLab.c  **** */
+  12:OneWireLab.c  **** 
+  13:OneWireLab.c  **** #include <project.h>
+  14:OneWireLab.c  **** #include "OneWireLab.h"
+  15:OneWireLab.c  **** #include "stdio.h"
+  16:OneWireLab.c  **** 
+  17:OneWireLab.c  **** 
+  18:OneWireLab.c  **** #define RESET_PULSE 480
+  19:OneWireLab.c  **** #define PRESENCE_PULSE 70
+  20:OneWireLab.c  **** #define END_SLOT 410
+  21:OneWireLab.c  **** #define TIME_SLOT 60
+  22:OneWireLab.c  **** #define RECOVERY_TIME 10
+  23:OneWireLab.c  **** #define WRITE_0_SLOT 60
+  24:OneWireLab.c  **** #define WRITE_1_SLOT 10
+  25:OneWireLab.c  **** #define READ_INIT_DELAY 6
+  26:OneWireLab.c  **** #define READ_VALID_DELAY 6
+  27:OneWireLab.c  **** 
+  28:OneWireLab.c  **** #define SKIP_ROM 0xCC
+  29:OneWireLab.c  **** #define WRITE_SCRPAD 0x4E
+  30:OneWireLab.c  **** #define RESOL_12BIT 0x7F
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 2
+
+
+  31:OneWireLab.c  **** #define START_CONVERT 0x44
+  32:OneWireLab.c  **** #define READ_SCRPAD 0xBE
+  33:OneWireLab.c  **** 
+  34:OneWireLab.c  **** 
+  35:OneWireLab.c  **** /* Variable diclaration */ 
+  36:OneWireLab.c  **** float32 OneWire1_sum = 0.0;
+  37:OneWireLab.c  **** float32 OneWire2_sum = 0.0;
+  38:OneWireLab.c  **** int OneWire1_cnt = 0;
+  39:OneWireLab.c  **** int OneWire2_cnt = 0;
+  40:OneWireLab.c  **** float temp1_res = 0.0;
+  41:OneWireLab.c  **** float temp2_res = 0.0;
+  42:OneWireLab.c  **** int i;
+  43:OneWireLab.c  **** int16_t temp1x16 ;
+  44:OneWireLab.c  **** int16_t temp2x16 ;
+  45:OneWireLab.c  **** char scratchpad1[10];
+  46:OneWireLab.c  **** char scratchpad2[10];
+  47:OneWireLab.c  **** int temp_lsb1,temp_msb1;
+  48:OneWireLab.c  **** int temp_lsb2,temp_msb2;
+  49:OneWireLab.c  **** 
+  50:OneWireLab.c  **** 
+  51:OneWireLab.c  **** void OneWire_start(){
+  52:OneWireLab.c  ****     /*One Wire */
+  53:OneWireLab.c  ****     OW_Reset();
+  54:OneWireLab.c  ****     /* As only single sensor is present in channel-Skip command */
+  55:OneWireLab.c  ****     OW_Write_Byte(SKIP_ROM);
+  56:OneWireLab.c  ****     /*Write Scratch Pad command*/
+  57:OneWireLab.c  ****     OW_Write_Byte(WRITE_SCRPAD);
+  58:OneWireLab.c  ****     
+  59:OneWireLab.c  ****     /* Alarm registers are unused, Writing Random values*/
+  60:OneWireLab.c  ****     /*TH*/
+  61:OneWireLab.c  ****     OW_Write_Byte(0x55);
+  62:OneWireLab.c  ****     /*TL*/
+  63:OneWireLab.c  ****     OW_Write_Byte(0xA2);
+  64:OneWireLab.c  ****     /* Config(resoluion)7F- 12 bit resolution */
+  65:OneWireLab.c  ****     OW_Write_Byte(RESOL_12BIT);
+  66:OneWireLab.c  ****     
+  67:OneWireLab.c  **** /* For the 2nd 1-Wire */
+  68:OneWireLab.c  ****     /*One Wire */
+  69:OneWireLab.c  **** //    OW2_Reset();
+  70:OneWireLab.c  **** //    /* As only single sensor is present in channel-Skip command */
+  71:OneWireLab.c  **** //    OW2_Write_Byte(SKIP_ROM);
+  72:OneWireLab.c  **** //    /*Write Scratch Pad command*/
+  73:OneWireLab.c  **** //    OW2_Write_Byte(WRITE_SCRPAD);
+  74:OneWireLab.c  **** //    
+  75:OneWireLab.c  **** //    /* Alarm registers are unused, Writing Random values*/
+  76:OneWireLab.c  **** //    /*TH*/
+  77:OneWireLab.c  **** //    OW2_Write_Byte(0x55);
+  78:OneWireLab.c  **** //    /*TL*/
+  79:OneWireLab.c  **** //    OW2_Write_Byte(0xA2);
+  80:OneWireLab.c  **** //    /* Config(resoluion)7F- 12 bit resolution */
+  81:OneWireLab.c  **** //    OW2_Write_Byte(RESOL_12BIT);
+  82:OneWireLab.c  ****  
+  83:OneWireLab.c  ****     
+  84:OneWireLab.c  **** }
+  85:OneWireLab.c  **** 
+  86:OneWireLab.c  **** float OneWire_read_data(){
+  87:OneWireLab.c  ****        OW_Reset();
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 3
+
+
+  88:OneWireLab.c  ****        /*Skip address check command */
+  89:OneWireLab.c  ****        OW_Write_Byte(SKIP_ROM); 
+  90:OneWireLab.c  ****        /* Start Convert*/
+  91:OneWireLab.c  ****        OW_Write_Byte(START_CONVERT);
+  92:OneWireLab.c  ****     
+  93:OneWireLab.c  ****        /* Wait until conversion completes */
+  94:OneWireLab.c  ****        CyDelayUs(110);
+  95:OneWireLab.c  ****        OW_Reset();
+  96:OneWireLab.c  ****        
+  97:OneWireLab.c  ****        /*Skip address check command */
+  98:OneWireLab.c  ****        OW_Write_Byte(SKIP_ROM);
+  99:OneWireLab.c  ****        /*Read Scratch Pad command*/
+ 100:OneWireLab.c  ****        OW_Write_Byte(READ_SCRPAD);
+ 101:OneWireLab.c  ****     
+ 102:OneWireLab.c  **** /* For the 2nd 1-Wire */
+ 103:OneWireLab.c  **** //       OW2_Reset();
+ 104:OneWireLab.c  **** //       /*Skip address check command */
+ 105:OneWireLab.c  **** //       OW2_Write_Byte(SKIP_ROM); 
+ 106:OneWireLab.c  **** //       /* Start Convert*/
+ 107:OneWireLab.c  **** //       OW2_Write_Byte(START_CONVERT);
+ 108:OneWireLab.c  **** //    
+ 109:OneWireLab.c  **** //       /* Wait until conversion completes */
+ 110:OneWireLab.c  **** //       CyDelayUs(110);
+ 111:OneWireLab.c  **** //       OW2_Reset();
+ 112:OneWireLab.c  **** //       
+ 113:OneWireLab.c  **** //       /*Skip address check command */
+ 114:OneWireLab.c  **** //       OW2_Write_Byte(SKIP_ROM);
+ 115:OneWireLab.c  **** //       /*Read Scratch Pad command*/
+ 116:OneWireLab.c  **** //       OW2_Write_Byte(READ_SCRPAD);
+ 117:OneWireLab.c  **** //  
+ 118:OneWireLab.c  ****     
+ 119:OneWireLab.c  ****         /*Copy the scratpad from slave*/
+ 120:OneWireLab.c  ****         for( i=0;i<9;i++)
+ 121:OneWireLab.c  ****         {
+ 122:OneWireLab.c  ****         scratchpad1[i] = OW_Read_Byte();
+ 123:OneWireLab.c  ****        // scratchpad2[i] = OW2_Read_Byte();
+ 124:OneWireLab.c  ****         }
+ 125:OneWireLab.c  ****         temp_msb1 = scratchpad1[1] ; /*   S,   S,   S,   S,    S,  2^6,  2^5,  2^4 */
+ 126:OneWireLab.c  ****         temp_lsb1 = scratchpad1[0] ; /* 2^3, 2^2, 2^1, 2^0, 2^-1, 2^-2, 2^-3, 2^-4 */
+ 127:OneWireLab.c  ****         //temp_msb2 = scratchpad2[1] ; /*   S,   S,   S,   S,    S,  2^6,  2^5,  2^4 */
+ 128:OneWireLab.c  ****         //temp_lsb2 = scratchpad2[0] ; /* 2^3, 2^2, 2^1, 2^0, 2^-1, 2^-2, 2^-3, 2^-4 */
+ 129:OneWireLab.c  ****         temp1x16 = (temp_msb1 << 8) | temp_lsb1 ; /* make a int16_t from 2 bytes */
+ 130:OneWireLab.c  ****        // temp2x16 = (temp_msb2 << 8) | temp_lsb2 ; /* make a int16_t from 2 bytes */
+ 131:OneWireLab.c  ****         if (temp1x16 >= 0x800) //temperture is negative 
+ 132:OneWireLab.c  ****         {
+ 133:OneWireLab.c  ****             /* Tow's complement for reading negative temperatue */
+ 134:OneWireLab.c  ****             temp1x16 = (~temp1x16)+1;
+ 135:OneWireLab.c  ****             temp1x16 = ((-1)*temp1x16);
+ 136:OneWireLab.c  ****         }
+ 137:OneWireLab.c  **** //        if (temp2x16 >= 0x800) //temperture is negative 
+ 138:OneWireLab.c  **** //        {
+ 139:OneWireLab.c  **** //            /* Tow's complement for reading negative temperatue */
+ 140:OneWireLab.c  **** //            temp2x16 = (~temp2x16)+1;
+ 141:OneWireLab.c  **** //            temp2x16 = ((-1)*temp2x16);
+ 142:OneWireLab.c  **** //        }
+ 143:OneWireLab.c  ****         /* read the temperature with fraction */
+ 144:OneWireLab.c  ****         temp1_res = temp1x16 / 16.0;
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 4
+
+
+ 145:OneWireLab.c  ****         /* Sum of the samples */
+ 146:OneWireLab.c  ****         OneWire1_sum += temp1_res;
+ 147:OneWireLab.c  ****         /* Number of samples */
+ 148:OneWireLab.c  ****         OneWire1_cnt++;
+ 149:OneWireLab.c  ****         /* read the temperature with fraction */
+ 150:OneWireLab.c  ****         //temp2_res = temp2x16 / 16.0;
+ 151:OneWireLab.c  ****         /* Sum of the samples */
+ 152:OneWireLab.c  ****         //OneWire2_sum += temp2_res;
+ 153:OneWireLab.c  ****         /* Number of samples */
+ 154:OneWireLab.c  ****        // OneWire2_cnt++;   
+ 155:OneWireLab.c  ****         return OneWire1_sum ;
+ 156:OneWireLab.c  **** }
+ 157:OneWireLab.c  **** int OW_Reset(void)
+ 158:OneWireLab.c  **** {
+  28              		.loc 1 158 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+ 159:OneWireLab.c  **** int presence;
+ 160:OneWireLab.c  **** OneWirePin_Write(0); //pull DQ line low
+  36              		.loc 1 160 0
+  37 0002 0020     		movs	r0, #0
+  38 0004 FFF7FEFF 		bl	OneWirePin_Write
+  39              	.LVL0:
+ 161:OneWireLab.c  **** CyDelayUs(RESET_PULSE); // leave it low for 480us
+  40              		.loc 1 161 0
+  41 0008 4FF4F070 		mov	r0, #480
+  42 000c FFF7FEFF 		bl	CyDelayUs
+  43              	.LVL1:
+ 162:OneWireLab.c  **** OneWirePin_Write(1); // allow line to return high
+  44              		.loc 1 162 0
+  45 0010 0120     		movs	r0, #1
+  46 0012 FFF7FEFF 		bl	OneWirePin_Write
+  47              	.LVL2:
+ 163:OneWireLab.c  **** CyDelayUs(PRESENCE_PULSE); // wait for presence
+  48              		.loc 1 163 0
+  49 0016 4620     		movs	r0, #70
+  50 0018 FFF7FEFF 		bl	CyDelayUs
+  51              	.LVL3:
+ 164:OneWireLab.c  **** presence = OneWirePin_Read(); // get presence signal
+  52              		.loc 1 164 0
+  53 001c FFF7FEFF 		bl	OneWirePin_Read
+  54              	.LVL4:
+  55 0020 0446     		mov	r4, r0
+  56              	.LVL5:
+ 165:OneWireLab.c  **** CyDelayUs(END_SLOT); // wait for end of timeslot
+  57              		.loc 1 165 0
+  58 0022 4FF4CD70 		mov	r0, #410
+  59              	.LVL6:
+  60 0026 FFF7FEFF 		bl	CyDelayUs
+  61              	.LVL7:
+ 166:OneWireLab.c  **** return presence; // presence signal returned
+ 167:OneWireLab.c  **** } // 0=presence, 1 = no part
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 5
+
+
+  62              		.loc 1 167 0
+  63 002a 2046     		mov	r0, r4
+  64 002c 10BD     		pop	{r4, pc}
+  65              		.cfi_endproc
+  66              	.LFE66:
+  67              		.size	OW_Reset, .-OW_Reset
+  68 002e 00BF     		.section	.text.OW_Write_Bit,"ax",%progbits
+  69              		.align	2
+  70              		.global	OW_Write_Bit
+  71              		.thumb
+  72              		.thumb_func
+  73              		.type	OW_Write_Bit, %function
+  74              	OW_Write_Bit:
+  75              	.LFB67:
+ 168:OneWireLab.c  **** 
+ 169:OneWireLab.c  **** 
+ 170:OneWireLab.c  **** /* For the 2nd 1-Wire */
+ 171:OneWireLab.c  **** /*int OW2_Reset(void)
+ 172:OneWireLab.c  **** {
+ 173:OneWireLab.c  **** int presence;
+ 174:OneWireLab.c  **** OneWire_Pin2_Write(0); //pull DQ line low
+ 175:OneWireLab.c  **** CyDelayUs(RESET_PULSE); // leave it low for 480us
+ 176:OneWireLab.c  **** OneWire_Pin2_Write(1); // allow line to return high
+ 177:OneWireLab.c  **** CyDelayUs(PRESENCE_PULSE); // wait for presence
+ 178:OneWireLab.c  **** presence = OneWire_Pin2_Read(); // get presence signal
+ 179:OneWireLab.c  **** CyDelayUs(END_SLOT); // wait for end of timeslot
+ 180:OneWireLab.c  **** return presence; // presence signal returned
+ 181:OneWireLab.c  **** } // 0=presence, 1 = no part
+ 182:OneWireLab.c  **** */
+ 183:OneWireLab.c  **** 
+ 184:OneWireLab.c  **** void OW_Write_Bit(int bit)
+ 185:OneWireLab.c  **** {   
+  76              		.loc 1 185 0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              	.LVL8:
+  81 0000 10B5     		push	{r4, lr}
+  82              		.cfi_def_cfa_offset 8
+  83              		.cfi_offset 4, -8
+  84              		.cfi_offset 14, -4
+  85 0002 0446     		mov	r4, r0
+ 186:OneWireLab.c  ****     
+ 187:OneWireLab.c  ****     /* Write is initiated from this step*/
+ 188:OneWireLab.c  ****     OneWirePin_Write(0); 
+  86              		.loc 1 188 0
+  87 0004 0020     		movs	r0, #0
+  88              	.LVL9:
+  89 0006 FFF7FEFF 		bl	OneWirePin_Write
+  90              	.LVL10:
+ 189:OneWireLab.c  ****     
+ 190:OneWireLab.c  ****     // Write '0' bit
+ 191:OneWireLab.c  ****     if(bit==0)
+  91              		.loc 1 191 0
+  92 000a 34B9     		cbnz	r4, .L4
+ 192:OneWireLab.c  ****     {
+ 193:OneWireLab.c  ****         /* Minimum 60us for logic_0 */
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 6
+
+
+ 194:OneWireLab.c  ****         CyDelayUs(WRITE_0_SLOT);
+  93              		.loc 1 194 0
+  94 000c 3C20     		movs	r0, #60
+  95 000e FFF7FEFF 		bl	CyDelayUs
+  96              	.LVL11:
+ 195:OneWireLab.c  ****         // Releases the bus
+ 196:OneWireLab.c  ****        OneWirePin_Write(1);
+  97              		.loc 1 196 0
+  98 0012 0120     		movs	r0, #1
+  99 0014 FFF7FEFF 		bl	OneWirePin_Write
+ 100              	.LVL12:
+ 101 0018 08E0     		b	.L5
+ 102              	.L4:
+ 197:OneWireLab.c  ****     }
+ 198:OneWireLab.c  ****     // Write '1' bit
+ 199:OneWireLab.c  ****     else
+ 200:OneWireLab.c  ****     {
+ 201:OneWireLab.c  ****         /* Release to 1 before 15us for logic_1 */
+ 202:OneWireLab.c  ****         CyDelayUs(WRITE_1_SLOT);
+ 103              		.loc 1 202 0
+ 104 001a 0A20     		movs	r0, #10
+ 105 001c FFF7FEFF 		bl	CyDelayUs
+ 106              	.LVL13:
+ 203:OneWireLab.c  ****         // Releases the bus
+ 204:OneWireLab.c  ****         OneWirePin_Write(1);
+ 107              		.loc 1 204 0
+ 108 0020 0120     		movs	r0, #1
+ 109 0022 FFF7FEFF 		bl	OneWirePin_Write
+ 110              	.LVL14:
+ 205:OneWireLab.c  ****         // Complete the time slot
+ 206:OneWireLab.c  ****         CyDelayUs(50);
+ 111              		.loc 1 206 0
+ 112 0026 3220     		movs	r0, #50
+ 113 0028 FFF7FEFF 		bl	CyDelayUs
+ 114              	.LVL15:
+ 115              	.L5:
+ 207:OneWireLab.c  ****        
+ 208:OneWireLab.c  ****     }
+ 209:OneWireLab.c  ****      
+ 210:OneWireLab.c  ****     /* Minimum recovery time 1us between write steps is ncessary, 10us is used */
+ 211:OneWireLab.c  ****     CyDelayUs(RECOVERY_TIME);
+ 116              		.loc 1 211 0
+ 117 002c 0A20     		movs	r0, #10
+ 118 002e FFF7FEFF 		bl	CyDelayUs
+ 119              	.LVL16:
+ 120 0032 10BD     		pop	{r4, pc}
+ 121              		.cfi_endproc
+ 122              	.LFE67:
+ 123              		.size	OW_Write_Bit, .-OW_Write_Bit
+ 124              		.section	.text.OW_Read_Bit,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	OW_Read_Bit
+ 127              		.thumb
+ 128              		.thumb_func
+ 129              		.type	OW_Read_Bit, %function
+ 130              	OW_Read_Bit:
+ 131              	.LFB68:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 7
+
+
+ 212:OneWireLab.c  **** }
+ 213:OneWireLab.c  **** 
+ 214:OneWireLab.c  **** ///* For the 2nd 1-Wire */
+ 215:OneWireLab.c  **** //void OW2_Write_Bit(int bit)
+ 216:OneWireLab.c  **** //{
+ 217:OneWireLab.c  **** //    /* Write is initiated from this step*/
+ 218:OneWireLab.c  **** //    OneWirePin_Write(0); 
+ 219:OneWireLab.c  **** //    
+ 220:OneWireLab.c  **** //    // Write '0' bit
+ 221:OneWireLab.c  **** //    if(bit==0)
+ 222:OneWireLab.c  **** //    {
+ 223:OneWireLab.c  **** //        /* Minimum 60us for logic_0 */
+ 224:OneWireLab.c  **** //        CyDelayUs(WRITE_0_SLOT);
+ 225:OneWireLab.c  **** //        // Releases the bus
+ 226:OneWireLab.c  **** //       OneWire_Pin2_Write(1);
+ 227:OneWireLab.c  **** //    }
+ 228:OneWireLab.c  **** //    // Write '1' bit
+ 229:OneWireLab.c  **** //    else
+ 230:OneWireLab.c  **** //    {
+ 231:OneWireLab.c  **** //        /* Release to 1 before 15us for logic_1 */
+ 232:OneWireLab.c  **** //        CyDelayUs(WRITE_1_SLOT);
+ 233:OneWireLab.c  **** //        // Releases the bus
+ 234:OneWireLab.c  **** //        OneWire_Pin2_Write(1);
+ 235:OneWireLab.c  **** //        // Complete the time slot
+ 236:OneWireLab.c  **** //        CyDelayUs(50);
+ 237:OneWireLab.c  **** //       
+ 238:OneWireLab.c  **** //    }
+ 239:OneWireLab.c  **** //     
+ 240:OneWireLab.c  **** //    /* Minimum recovery time 1us between write steps is ncessary, 10us is used */
+ 241:OneWireLab.c  **** //    CyDelayUs(RECOVERY_TIME);
+ 242:OneWireLab.c  **** //}
+ 243:OneWireLab.c  **** 
+ 244:OneWireLab.c  **** 
+ 245:OneWireLab.c  **** 
+ 246:OneWireLab.c  **** 
+ 247:OneWireLab.c  **** int OW_Read_Bit(void)
+ 248:OneWireLab.c  **** {
+ 132              		.loc 1 248 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136 0000 10B5     		push	{r4, lr}
+ 137              		.cfi_def_cfa_offset 8
+ 138              		.cfi_offset 4, -8
+ 139              		.cfi_offset 14, -4
+ 249:OneWireLab.c  ****     int result;
+ 250:OneWireLab.c  ****     /* Initiate read by pulling line low */
+ 251:OneWireLab.c  ****     OneWirePin_Write(0);
+ 140              		.loc 1 251 0
+ 141 0002 0020     		movs	r0, #0
+ 142 0004 FFF7FEFF 		bl	OneWirePin_Write
+ 143              	.LVL17:
+ 252:OneWireLab.c  ****     OneWirePin_Write(1);
+ 144              		.loc 1 252 0
+ 145 0008 0120     		movs	r0, #1
+ 146 000a FFF7FEFF 		bl	OneWirePin_Write
+ 147              	.LVL18:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 8
+
+
+ 253:OneWireLab.c  ****     /* Data valid before 15us, should be sampled before that*/
+ 254:OneWireLab.c  ****     result = OneWirePin_Read();
+ 148              		.loc 1 254 0
+ 149 000e FFF7FEFF 		bl	OneWirePin_Read
+ 150              	.LVL19:
+ 151 0012 0446     		mov	r4, r0
+ 152              	.LVL20:
+ 255:OneWireLab.c  ****     // Complete the time slot and 10us recovery
+ 256:OneWireLab.c  ****     CyDelayUs(55);
+ 153              		.loc 1 256 0
+ 154 0014 3720     		movs	r0, #55
+ 155              	.LVL21:
+ 156 0016 FFF7FEFF 		bl	CyDelayUs
+ 157              	.LVL22:
+ 257:OneWireLab.c  ****     // Sample the bit value from the slave
+ 258:OneWireLab.c  ****     return result;
+ 259:OneWireLab.c  **** }
+ 158              		.loc 1 259 0
+ 159 001a 2046     		mov	r0, r4
+ 160 001c 10BD     		pop	{r4, pc}
+ 161              		.cfi_endproc
+ 162              	.LFE68:
+ 163              		.size	OW_Read_Bit, .-OW_Read_Bit
+ 164 001e 00BF     		.section	.text.OW_Write_Byte,"ax",%progbits
+ 165              		.align	2
+ 166              		.global	OW_Write_Byte
+ 167              		.thumb
+ 168              		.thumb_func
+ 169              		.type	OW_Write_Byte, %function
+ 170              	OW_Write_Byte:
+ 171              	.LFB69:
+ 260:OneWireLab.c  **** 
+ 261:OneWireLab.c  **** /* For the 2nd 1-Wire */
+ 262:OneWireLab.c  **** //int OW2_Read_Bit(void)
+ 263:OneWireLab.c  **** //{
+ 264:OneWireLab.c  **** //    int result;
+ 265:OneWireLab.c  **** //    /* Initiate read by pulling line low */
+ 266:OneWireLab.c  **** //    OneWire_Pin2_Write(0);
+ 267:OneWireLab.c  **** //
+ 268:OneWireLab.c  **** //    OneWire_Pin2_Write(1);
+ 269:OneWireLab.c  **** //    /* Data valid before 15us, should be sampled before that*/
+ 270:OneWireLab.c  **** //    result = OneWire_Pin2_Read();
+ 271:OneWireLab.c  **** //    // Complete the time slot and 10us recovery
+ 272:OneWireLab.c  **** //    CyDelayUs(55);
+ 273:OneWireLab.c  **** //    // Sample the bit value from the slave
+ 274:OneWireLab.c  **** //    return result;
+ 275:OneWireLab.c  **** //}
+ 276:OneWireLab.c  **** 
+ 277:OneWireLab.c  **** //-----------------------------------------------------------------------------
+ 278:OneWireLab.c  **** // Write 1-Wire data byte
+ 279:OneWireLab.c  **** //
+ 280:OneWireLab.c  **** void OW_Write_Byte(int data)
+ 281:OneWireLab.c  **** {
+ 172              		.loc 1 281 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 9
+
+
+ 176              	.LVL23:
+ 177 0000 38B5     		push	{r3, r4, r5, lr}
+ 178              		.cfi_def_cfa_offset 16
+ 179              		.cfi_offset 3, -16
+ 180              		.cfi_offset 4, -12
+ 181              		.cfi_offset 5, -8
+ 182              		.cfi_offset 14, -4
+ 183 0002 0546     		mov	r5, r0
+ 184              	.LVL24:
+ 282:OneWireLab.c  ****         int loop;
+ 283:OneWireLab.c  **** 
+ 284:OneWireLab.c  ****         // Loop to write each bit in the byte, LS-bit first
+ 285:OneWireLab.c  ****         for (loop = 0; loop < 8; loop++)
+ 185              		.loc 1 285 0
+ 186 0004 0024     		movs	r4, #0
+ 187 0006 05E0     		b	.L10
+ 188              	.LVL25:
+ 189              	.L11:
+ 286:OneWireLab.c  ****         {
+ 287:OneWireLab.c  ****                 OW_Write_Bit(data & 0x01);
+ 190              		.loc 1 287 0 discriminator 3
+ 191 0008 05F00100 		and	r0, r5, #1
+ 192 000c FFF7FEFF 		bl	OW_Write_Bit
+ 193              	.LVL26:
+ 288:OneWireLab.c  **** 
+ 289:OneWireLab.c  ****                 // shift the data byte for the next bit
+ 290:OneWireLab.c  ****                 data >>= 1;
+ 194              		.loc 1 290 0 discriminator 3
+ 195 0010 6D10     		asrs	r5, r5, #1
+ 196              	.LVL27:
+ 285:OneWireLab.c  ****         {
+ 197              		.loc 1 285 0 discriminator 3
+ 198 0012 0134     		adds	r4, r4, #1
+ 199              	.LVL28:
+ 200              	.L10:
+ 285:OneWireLab.c  ****         {
+ 201              		.loc 1 285 0 is_stmt 0 discriminator 1
+ 202 0014 072C     		cmp	r4, #7
+ 203 0016 F7DD     		ble	.L11
+ 291:OneWireLab.c  ****         }
+ 292:OneWireLab.c  **** }
+ 204              		.loc 1 292 0 is_stmt 1
+ 205 0018 38BD     		pop	{r3, r4, r5, pc}
+ 206              		.cfi_endproc
+ 207              	.LFE69:
+ 208              		.size	OW_Write_Byte, .-OW_Write_Byte
+ 209 001a 00BF     		.section	.text.OneWire_start,"ax",%progbits
+ 210              		.align	2
+ 211              		.global	OneWire_start
+ 212              		.thumb
+ 213              		.thumb_func
+ 214              		.type	OneWire_start, %function
+ 215              	OneWire_start:
+ 216              	.LFB64:
+  51:OneWireLab.c  ****     /*One Wire */
+ 217              		.loc 1 51 0
+ 218              		.cfi_startproc
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 10
+
+
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221 0000 08B5     		push	{r3, lr}
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 3, -8
+ 224              		.cfi_offset 14, -4
+  53:OneWireLab.c  ****     /* As only single sensor is present in channel-Skip command */
+ 225              		.loc 1 53 0
+ 226 0002 FFF7FEFF 		bl	OW_Reset
+ 227              	.LVL29:
+  55:OneWireLab.c  ****     /*Write Scratch Pad command*/
+ 228              		.loc 1 55 0
+ 229 0006 CC20     		movs	r0, #204
+ 230 0008 FFF7FEFF 		bl	OW_Write_Byte
+ 231              	.LVL30:
+  57:OneWireLab.c  ****     
+ 232              		.loc 1 57 0
+ 233 000c 4E20     		movs	r0, #78
+ 234 000e FFF7FEFF 		bl	OW_Write_Byte
+ 235              	.LVL31:
+  61:OneWireLab.c  ****     /*TL*/
+ 236              		.loc 1 61 0
+ 237 0012 5520     		movs	r0, #85
+ 238 0014 FFF7FEFF 		bl	OW_Write_Byte
+ 239              	.LVL32:
+  63:OneWireLab.c  ****     /* Config(resoluion)7F- 12 bit resolution */
+ 240              		.loc 1 63 0
+ 241 0018 A220     		movs	r0, #162
+ 242 001a FFF7FEFF 		bl	OW_Write_Byte
+ 243              	.LVL33:
+  65:OneWireLab.c  ****     
+ 244              		.loc 1 65 0
+ 245 001e 7F20     		movs	r0, #127
+ 246 0020 FFF7FEFF 		bl	OW_Write_Byte
+ 247              	.LVL34:
+ 248 0024 08BD     		pop	{r3, pc}
+ 249              		.cfi_endproc
+ 250              	.LFE64:
+ 251              		.size	OneWire_start, .-OneWire_start
+ 252 0026 00BF     		.section	.text.OW_Read_Byte,"ax",%progbits
+ 253              		.align	2
+ 254              		.global	OW_Read_Byte
+ 255              		.thumb
+ 256              		.thumb_func
+ 257              		.type	OW_Read_Byte, %function
+ 258              	OW_Read_Byte:
+ 259              	.LFB70:
+ 293:OneWireLab.c  **** 
+ 294:OneWireLab.c  **** /* For the 2nd 1-Wire */
+ 295:OneWireLab.c  **** //void OW2_Write_Byte(int data)
+ 296:OneWireLab.c  **** //{
+ 297:OneWireLab.c  **** //        int loop;
+ 298:OneWireLab.c  **** //
+ 299:OneWireLab.c  **** //        // Loop to write each bit in the byte, LS-bit first
+ 300:OneWireLab.c  **** //        for (loop = 0; loop < 8; loop++)
+ 301:OneWireLab.c  **** //        {
+ 302:OneWireLab.c  **** //                OW2_Write_Bit(data & 0x01);
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 11
+
+
+ 303:OneWireLab.c  **** //
+ 304:OneWireLab.c  **** //                // shift the data byte for the next bit
+ 305:OneWireLab.c  **** //                data >>= 1;
+ 306:OneWireLab.c  **** //        }
+ 307:OneWireLab.c  **** //}
+ 308:OneWireLab.c  **** 
+ 309:OneWireLab.c  **** //-----------------------------------------------------------------------------
+ 310:OneWireLab.c  **** // Read 1-Wire data byte and return it
+ 311:OneWireLab.c  **** //
+ 312:OneWireLab.c  **** int OW_Read_Byte(void)
+ 313:OneWireLab.c  **** {
+ 260              		.loc 1 313 0
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 0
+ 263              		@ frame_needed = 0, uses_anonymous_args = 0
+ 264 0000 38B5     		push	{r3, r4, r5, lr}
+ 265              		.cfi_def_cfa_offset 16
+ 266              		.cfi_offset 3, -16
+ 267              		.cfi_offset 4, -12
+ 268              		.cfi_offset 5, -8
+ 269              		.cfi_offset 14, -4
+ 270              	.LVL35:
+ 314:OneWireLab.c  ****         int loop, result=0;
+ 271              		.loc 1 314 0
+ 272 0002 0024     		movs	r4, #0
+ 315:OneWireLab.c  **** 
+ 316:OneWireLab.c  ****         for (loop = 0; loop < 8; loop++)
+ 273              		.loc 1 316 0
+ 274 0004 2546     		mov	r5, r4
+ 275 0006 06E0     		b	.L16
+ 276              	.LVL36:
+ 277              	.L18:
+ 317:OneWireLab.c  ****         {
+ 318:OneWireLab.c  ****                 // shift the result to get it ready for the next bit
+ 319:OneWireLab.c  ****                 result >>= 1;
+ 278              		.loc 1 319 0
+ 279 0008 6410     		asrs	r4, r4, #1
+ 280              	.LVL37:
+ 320:OneWireLab.c  **** 
+ 321:OneWireLab.c  ****                 // if result is one, then set MS bit
+ 322:OneWireLab.c  ****                 if (OW_Read_Bit())
+ 281              		.loc 1 322 0
+ 282 000a FFF7FEFF 		bl	OW_Read_Bit
+ 283              	.LVL38:
+ 284 000e 08B1     		cbz	r0, .L17
+ 323:OneWireLab.c  ****                         result |= 0x80;
+ 285              		.loc 1 323 0
+ 286 0010 44F08004 		orr	r4, r4, #128
+ 287              	.LVL39:
+ 288              	.L17:
+ 316:OneWireLab.c  ****         {
+ 289              		.loc 1 316 0 discriminator 2
+ 290 0014 0135     		adds	r5, r5, #1
+ 291              	.LVL40:
+ 292              	.L16:
+ 316:OneWireLab.c  ****         {
+ 293              		.loc 1 316 0 is_stmt 0 discriminator 1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 12
+
+
+ 294 0016 072D     		cmp	r5, #7
+ 295 0018 F6DD     		ble	.L18
+ 324:OneWireLab.c  ****         }
+ 325:OneWireLab.c  ****         return result;
+ 326:OneWireLab.c  **** }
+ 296              		.loc 1 326 0 is_stmt 1
+ 297 001a 2046     		mov	r0, r4
+ 298 001c 38BD     		pop	{r3, r4, r5, pc}
+ 299              		.cfi_endproc
+ 300              	.LFE70:
+ 301              		.size	OW_Read_Byte, .-OW_Read_Byte
+ 302              		.global	__aeabi_i2d
+ 303              		.global	__aeabi_dmul
+ 304              		.global	__aeabi_d2f
+ 305              		.global	__aeabi_fadd
+ 306 001e 00BF     		.section	.text.OneWire_read_data,"ax",%progbits
+ 307              		.align	2
+ 308              		.global	OneWire_read_data
+ 309              		.thumb
+ 310              		.thumb_func
+ 311              		.type	OneWire_read_data, %function
+ 312              	OneWire_read_data:
+ 313              	.LFB65:
+  86:OneWireLab.c  ****        OW_Reset();
+ 314              		.loc 1 86 0
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318 0000 10B5     		push	{r4, lr}
+ 319              		.cfi_def_cfa_offset 8
+ 320              		.cfi_offset 4, -8
+ 321              		.cfi_offset 14, -4
+  87:OneWireLab.c  ****        /*Skip address check command */
+ 322              		.loc 1 87 0
+ 323 0002 FFF7FEFF 		bl	OW_Reset
+ 324              	.LVL41:
+  89:OneWireLab.c  ****        /* Start Convert*/
+ 325              		.loc 1 89 0
+ 326 0006 CC20     		movs	r0, #204
+ 327 0008 FFF7FEFF 		bl	OW_Write_Byte
+ 328              	.LVL42:
+  91:OneWireLab.c  ****     
+ 329              		.loc 1 91 0
+ 330 000c 4420     		movs	r0, #68
+ 331 000e FFF7FEFF 		bl	OW_Write_Byte
+ 332              	.LVL43:
+  94:OneWireLab.c  ****        OW_Reset();
+ 333              		.loc 1 94 0
+ 334 0012 6E20     		movs	r0, #110
+ 335 0014 FFF7FEFF 		bl	CyDelayUs
+ 336              	.LVL44:
+  95:OneWireLab.c  ****        
+ 337              		.loc 1 95 0
+ 338 0018 FFF7FEFF 		bl	OW_Reset
+ 339              	.LVL45:
+  98:OneWireLab.c  ****        /*Read Scratch Pad command*/
+ 340              		.loc 1 98 0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 13
+
+
+ 341 001c CC20     		movs	r0, #204
+ 342 001e FFF7FEFF 		bl	OW_Write_Byte
+ 343              	.LVL46:
+ 100:OneWireLab.c  ****     
+ 344              		.loc 1 100 0
+ 345 0022 BE20     		movs	r0, #190
+ 346 0024 FFF7FEFF 		bl	OW_Write_Byte
+ 347              	.LVL47:
+ 120:OneWireLab.c  ****         {
+ 348              		.loc 1 120 0
+ 349 0028 0022     		movs	r2, #0
+ 350 002a 184B     		ldr	r3, .L25
+ 351 002c 1A60     		str	r2, [r3]
+ 352 002e 07E0     		b	.L21
+ 353              	.L22:
+ 122:OneWireLab.c  ****        // scratchpad2[i] = OW2_Read_Byte();
+ 354              		.loc 1 122 0 discriminator 3
+ 355 0030 FFF7FEFF 		bl	OW_Read_Byte
+ 356              	.LVL48:
+ 357 0034 164B     		ldr	r3, .L25+4
+ 358 0036 1855     		strb	r0, [r3, r4]
+ 120:OneWireLab.c  ****         {
+ 359              		.loc 1 120 0 discriminator 3
+ 360 0038 144A     		ldr	r2, .L25
+ 361 003a 1368     		ldr	r3, [r2]
+ 362 003c 0133     		adds	r3, r3, #1
+ 363 003e 1360     		str	r3, [r2]
+ 364              	.L21:
+ 120:OneWireLab.c  ****         {
+ 365              		.loc 1 120 0 is_stmt 0 discriminator 1
+ 366 0040 124B     		ldr	r3, .L25
+ 367 0042 1C68     		ldr	r4, [r3]
+ 368 0044 082C     		cmp	r4, #8
+ 369 0046 F3DD     		ble	.L22
+ 125:OneWireLab.c  ****         temp_lsb1 = scratchpad1[0] ; /* 2^3, 2^2, 2^1, 2^0, 2^-1, 2^-2, 2^-3, 2^-4 */
+ 370              		.loc 1 125 0 is_stmt 1
+ 371 0048 114B     		ldr	r3, .L25+4
+ 372 004a 5A78     		ldrb	r2, [r3, #1]	@ zero_extendqisi2
+ 373 004c 1149     		ldr	r1, .L25+8
+ 374 004e 0A60     		str	r2, [r1]
+ 126:OneWireLab.c  ****         //temp_msb2 = scratchpad2[1] ; /*   S,   S,   S,   S,    S,  2^6,  2^5,  2^4 */
+ 375              		.loc 1 126 0
+ 376 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 377 0052 1149     		ldr	r1, .L25+12
+ 378 0054 0B60     		str	r3, [r1]
+ 129:OneWireLab.c  ****        // temp2x16 = (temp_msb2 << 8) | temp_lsb2 ; /* make a int16_t from 2 bytes */
+ 379              		.loc 1 129 0
+ 380 0056 43EA0223 		orr	r3, r3, r2, lsl #8
+ 381 005a 1BB2     		sxth	r3, r3
+ 382 005c 0F4A     		ldr	r2, .L25+16
+ 383 005e 1380     		strh	r3, [r2]	@ movhi
+ 144:OneWireLab.c  ****         /* Sum of the samples */
+ 384              		.loc 1 144 0
+ 385 0060 0E4B     		ldr	r3, .L25+16
+ 386 0062 B3F90000 		ldrsh	r0, [r3]
+ 387 0066 FFF7FEFF 		bl	__aeabi_i2d
+ 388              	.LVL49:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 14
+
+
+ 389 006a 0022     		movs	r2, #0
+ 390 006c 0C4B     		ldr	r3, .L25+20
+ 391 006e FFF7FEFF 		bl	__aeabi_dmul
+ 392              	.LVL50:
+ 393 0072 FFF7FEFF 		bl	__aeabi_d2f
+ 394              	.LVL51:
+ 395 0076 0B4C     		ldr	r4, .L25+24
+ 396 0078 2060     		str	r0, [r4]	@ float
+ 146:OneWireLab.c  ****         /* Number of samples */
+ 397              		.loc 1 146 0
+ 398 007a 6168     		ldr	r1, [r4, #4]	@ float
+ 399 007c FFF7FEFF 		bl	__aeabi_fadd
+ 400              	.LVL52:
+ 401 0080 6060     		str	r0, [r4, #4]	@ float
+ 148:OneWireLab.c  ****         /* read the temperature with fraction */
+ 402              		.loc 1 148 0
+ 403 0082 A368     		ldr	r3, [r4, #8]
+ 404 0084 0133     		adds	r3, r3, #1
+ 405 0086 A360     		str	r3, [r4, #8]
+ 156:OneWireLab.c  **** int OW_Reset(void)
+ 406              		.loc 1 156 0
+ 407 0088 10BD     		pop	{r4, pc}
+ 408              	.L26:
+ 409 008a 00BF     		.align	2
+ 410              	.L25:
+ 411 008c 00000000 		.word	i
+ 412 0090 00000000 		.word	scratchpad1
+ 413 0094 00000000 		.word	temp_msb1
+ 414 0098 00000000 		.word	temp_lsb1
+ 415 009c 00000000 		.word	temp1x16
+ 416 00a0 0000B03F 		.word	1068498944
+ 417 00a4 00000000 		.word	.LANCHOR0
+ 418              		.cfi_endproc
+ 419              	.LFE65:
+ 420              		.size	OneWire_read_data, .-OneWire_read_data
+ 421              		.comm	temp_msb2,4,4
+ 422              		.comm	temp_lsb2,4,4
+ 423              		.comm	temp_msb1,4,4
+ 424              		.comm	temp_lsb1,4,4
+ 425              		.comm	scratchpad2,10,4
+ 426              		.comm	scratchpad1,10,4
+ 427              		.comm	temp2x16,2,2
+ 428              		.comm	temp1x16,2,2
+ 429              		.comm	i,4,4
+ 430              		.global	temp2_res
+ 431              		.global	temp1_res
+ 432              		.global	OneWire2_cnt
+ 433              		.global	OneWire1_cnt
+ 434              		.global	OneWire2_sum
+ 435              		.global	OneWire1_sum
+ 436              		.bss
+ 437              		.align	2
+ 438              		.set	.LANCHOR0,. + 0
+ 439              		.type	temp1_res, %object
+ 440              		.size	temp1_res, 4
+ 441              	temp1_res:
+ 442 0000 00000000 		.space	4
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 15
+
+
+ 443              		.type	OneWire1_sum, %object
+ 444              		.size	OneWire1_sum, 4
+ 445              	OneWire1_sum:
+ 446 0004 00000000 		.space	4
+ 447              		.type	OneWire1_cnt, %object
+ 448              		.size	OneWire1_cnt, 4
+ 449              	OneWire1_cnt:
+ 450 0008 00000000 		.space	4
+ 451              		.type	temp2_res, %object
+ 452              		.size	temp2_res, 4
+ 453              	temp2_res:
+ 454 000c 00000000 		.space	4
+ 455              		.type	OneWire2_cnt, %object
+ 456              		.size	OneWire2_cnt, 4
+ 457              	OneWire2_cnt:
+ 458 0010 00000000 		.space	4
+ 459              		.type	OneWire2_sum, %object
+ 460              		.size	OneWire2_sum, 4
+ 461              	OneWire2_sum:
+ 462 0014 00000000 		.space	4
+ 463              		.text
+ 464              	.Letext0:
+ 465              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 466              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 467              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 468              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 469              		.file 6 "Generated_Source\\PSoC5/OneWirePin.h"
+ 470              		.file 7 "Generated_Source\\PSoC5/CyLib.h"
+ 471              		.section	.debug_info,"",%progbits
+ 472              	.Ldebug_info0:
+ 473 0000 49050000 		.4byte	0x549
+ 474 0004 0400     		.2byte	0x4
+ 475 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 476 000a 04       		.byte	0x4
+ 477 000b 01       		.uleb128 0x1
+ 478 000c 96000000 		.4byte	.LASF48
+ 479 0010 0C       		.byte	0xc
+ 480 0011 7F000000 		.4byte	.LASF49
+ 481 0015 75020000 		.4byte	.LASF50
+ 482 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 483 001d 00000000 		.4byte	0
+ 484 0021 00000000 		.4byte	.Ldebug_line0
+ 485 0025 02       		.uleb128 0x2
+ 486 0026 01       		.byte	0x1
+ 487 0027 06       		.byte	0x6
+ 488 0028 0D000000 		.4byte	.LASF0
+ 489 002c 02       		.uleb128 0x2
+ 490 002d 01       		.byte	0x1
+ 491 002e 08       		.byte	0x8
+ 492 002f 75010000 		.4byte	.LASF1
+ 493 0033 03       		.uleb128 0x3
+ 494 0034 19000000 		.4byte	.LASF4
+ 495 0038 02       		.byte	0x2
+ 496 0039 29       		.byte	0x29
+ 497 003a 3E000000 		.4byte	0x3e
+ 498 003e 02       		.uleb128 0x2
+ 499 003f 02       		.byte	0x2
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 16
+
+
+ 500 0040 05       		.byte	0x5
+ 501 0041 58020000 		.4byte	.LASF2
+ 502 0045 02       		.uleb128 0x2
+ 503 0046 02       		.byte	0x2
+ 504 0047 07       		.byte	0x7
+ 505 0048 49010000 		.4byte	.LASF3
+ 506 004c 03       		.uleb128 0x3
+ 507 004d 37000000 		.4byte	.LASF5
+ 508 0051 02       		.byte	0x2
+ 509 0052 3F       		.byte	0x3f
+ 510 0053 57000000 		.4byte	0x57
+ 511 0057 02       		.uleb128 0x2
+ 512 0058 04       		.byte	0x4
+ 513 0059 05       		.byte	0x5
+ 514 005a 41000000 		.4byte	.LASF6
+ 515 005e 02       		.uleb128 0x2
+ 516 005f 04       		.byte	0x4
+ 517 0060 07       		.byte	0x7
+ 518 0061 83010000 		.4byte	.LASF7
+ 519 0065 02       		.uleb128 0x2
+ 520 0066 08       		.byte	0x8
+ 521 0067 05       		.byte	0x5
+ 522 0068 2D020000 		.4byte	.LASF8
+ 523 006c 02       		.uleb128 0x2
+ 524 006d 08       		.byte	0x8
+ 525 006e 07       		.byte	0x7
+ 526 006f CC010000 		.4byte	.LASF9
+ 527 0073 04       		.uleb128 0x4
+ 528 0074 04       		.byte	0x4
+ 529 0075 05       		.byte	0x5
+ 530 0076 696E7400 		.ascii	"int\000"
+ 531 007a 02       		.uleb128 0x2
+ 532 007b 04       		.byte	0x4
+ 533 007c 07       		.byte	0x7
+ 534 007d BF010000 		.4byte	.LASF10
+ 535 0081 03       		.uleb128 0x3
+ 536 0082 EA010000 		.4byte	.LASF11
+ 537 0086 03       		.byte	0x3
+ 538 0087 20       		.byte	0x20
+ 539 0088 33000000 		.4byte	0x33
+ 540 008c 03       		.uleb128 0x3
+ 541 008d 08020000 		.4byte	.LASF12
+ 542 0091 03       		.byte	0x3
+ 543 0092 2C       		.byte	0x2c
+ 544 0093 4C000000 		.4byte	0x4c
+ 545 0097 05       		.uleb128 0x5
+ 546 0098 BF020000 		.4byte	.LASF13
+ 547 009c 04       		.byte	0x4
+ 548 009d EA01     		.2byte	0x1ea
+ 549 009f A3000000 		.4byte	0xa3
+ 550 00a3 02       		.uleb128 0x2
+ 551 00a4 04       		.byte	0x4
+ 552 00a5 04       		.byte	0x4
+ 553 00a6 23000000 		.4byte	.LASF14
+ 554 00aa 02       		.uleb128 0x2
+ 555 00ab 08       		.byte	0x8
+ 556 00ac 04       		.byte	0x4
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 17
+
+
+ 557 00ad 4A000000 		.4byte	.LASF15
+ 558 00b1 02       		.uleb128 0x2
+ 559 00b2 01       		.byte	0x1
+ 560 00b3 08       		.byte	0x8
+ 561 00b4 3B020000 		.4byte	.LASF16
+ 562 00b8 02       		.uleb128 0x2
+ 563 00b9 08       		.byte	0x8
+ 564 00ba 04       		.byte	0x4
+ 565 00bb C7020000 		.4byte	.LASF17
+ 566 00bf 02       		.uleb128 0x2
+ 567 00c0 04       		.byte	0x4
+ 568 00c1 07       		.byte	0x7
+ 569 00c2 10020000 		.4byte	.LASF18
+ 570 00c6 06       		.uleb128 0x6
+ 571 00c7 62020000 		.4byte	.LASF19
+ 572 00cb 01       		.byte	0x1
+ 573 00cc 9D       		.byte	0x9d
+ 574 00cd 73000000 		.4byte	0x73
+ 575 00d1 00000000 		.4byte	.LFB66
+ 576 00d5 2E000000 		.4byte	.LFE66-.LFB66
+ 577 00d9 01       		.uleb128 0x1
+ 578 00da 9C       		.byte	0x9c
+ 579 00db 58010000 		.4byte	0x158
+ 580 00df 07       		.uleb128 0x7
+ 581 00e0 FC020000 		.4byte	.LASF21
+ 582 00e4 01       		.byte	0x1
+ 583 00e5 9F       		.byte	0x9f
+ 584 00e6 73000000 		.4byte	0x73
+ 585 00ea 00000000 		.4byte	.LLST0
+ 586 00ee 08       		.uleb128 0x8
+ 587 00ef 08000000 		.4byte	.LVL0
+ 588 00f3 2B050000 		.4byte	0x52b
+ 589 00f7 01010000 		.4byte	0x101
+ 590 00fb 09       		.uleb128 0x9
+ 591 00fc 01       		.uleb128 0x1
+ 592 00fd 50       		.byte	0x50
+ 593 00fe 01       		.uleb128 0x1
+ 594 00ff 30       		.byte	0x30
+ 595 0100 00       		.byte	0
+ 596 0101 08       		.uleb128 0x8
+ 597 0102 10000000 		.4byte	.LVL1
+ 598 0106 36050000 		.4byte	0x536
+ 599 010a 16010000 		.4byte	0x116
+ 600 010e 09       		.uleb128 0x9
+ 601 010f 01       		.uleb128 0x1
+ 602 0110 50       		.byte	0x50
+ 603 0111 03       		.uleb128 0x3
+ 604 0112 0A       		.byte	0xa
+ 605 0113 E001     		.2byte	0x1e0
+ 606 0115 00       		.byte	0
+ 607 0116 08       		.uleb128 0x8
+ 608 0117 16000000 		.4byte	.LVL2
+ 609 011b 2B050000 		.4byte	0x52b
+ 610 011f 29010000 		.4byte	0x129
+ 611 0123 09       		.uleb128 0x9
+ 612 0124 01       		.uleb128 0x1
+ 613 0125 50       		.byte	0x50
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 18
+
+
+ 614 0126 01       		.uleb128 0x1
+ 615 0127 31       		.byte	0x31
+ 616 0128 00       		.byte	0
+ 617 0129 08       		.uleb128 0x8
+ 618 012a 1C000000 		.4byte	.LVL3
+ 619 012e 36050000 		.4byte	0x536
+ 620 0132 3D010000 		.4byte	0x13d
+ 621 0136 09       		.uleb128 0x9
+ 622 0137 01       		.uleb128 0x1
+ 623 0138 50       		.byte	0x50
+ 624 0139 02       		.uleb128 0x2
+ 625 013a 08       		.byte	0x8
+ 626 013b 46       		.byte	0x46
+ 627 013c 00       		.byte	0
+ 628 013d 0A       		.uleb128 0xa
+ 629 013e 20000000 		.4byte	.LVL4
+ 630 0142 41050000 		.4byte	0x541
+ 631 0146 0B       		.uleb128 0xb
+ 632 0147 2A000000 		.4byte	.LVL7
+ 633 014b 36050000 		.4byte	0x536
+ 634 014f 09       		.uleb128 0x9
+ 635 0150 01       		.uleb128 0x1
+ 636 0151 50       		.byte	0x50
+ 637 0152 03       		.uleb128 0x3
+ 638 0153 0A       		.byte	0xa
+ 639 0154 9A01     		.2byte	0x19a
+ 640 0156 00       		.byte	0
+ 641 0157 00       		.byte	0
+ 642 0158 0C       		.uleb128 0xc
+ 643 0159 24010000 		.4byte	.LASF23
+ 644 015d 01       		.byte	0x1
+ 645 015e B8       		.byte	0xb8
+ 646 015f 00000000 		.4byte	.LFB67
+ 647 0163 34000000 		.4byte	.LFE67-.LFB67
+ 648 0167 01       		.uleb128 0x1
+ 649 0168 9C       		.byte	0x9c
+ 650 0169 00020000 		.4byte	0x200
+ 651 016d 0D       		.uleb128 0xd
+ 652 016e 62697400 		.ascii	"bit\000"
+ 653 0172 01       		.byte	0x1
+ 654 0173 B8       		.byte	0xb8
+ 655 0174 73000000 		.4byte	0x73
+ 656 0178 1E000000 		.4byte	.LLST1
+ 657 017c 08       		.uleb128 0x8
+ 658 017d 0A000000 		.4byte	.LVL10
+ 659 0181 2B050000 		.4byte	0x52b
+ 660 0185 8F010000 		.4byte	0x18f
+ 661 0189 09       		.uleb128 0x9
+ 662 018a 01       		.uleb128 0x1
+ 663 018b 50       		.byte	0x50
+ 664 018c 01       		.uleb128 0x1
+ 665 018d 30       		.byte	0x30
+ 666 018e 00       		.byte	0
+ 667 018f 08       		.uleb128 0x8
+ 668 0190 12000000 		.4byte	.LVL11
+ 669 0194 36050000 		.4byte	0x536
+ 670 0198 A3010000 		.4byte	0x1a3
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 19
+
+
+ 671 019c 09       		.uleb128 0x9
+ 672 019d 01       		.uleb128 0x1
+ 673 019e 50       		.byte	0x50
+ 674 019f 02       		.uleb128 0x2
+ 675 01a0 08       		.byte	0x8
+ 676 01a1 3C       		.byte	0x3c
+ 677 01a2 00       		.byte	0
+ 678 01a3 08       		.uleb128 0x8
+ 679 01a4 18000000 		.4byte	.LVL12
+ 680 01a8 2B050000 		.4byte	0x52b
+ 681 01ac B6010000 		.4byte	0x1b6
+ 682 01b0 09       		.uleb128 0x9
+ 683 01b1 01       		.uleb128 0x1
+ 684 01b2 50       		.byte	0x50
+ 685 01b3 01       		.uleb128 0x1
+ 686 01b4 31       		.byte	0x31
+ 687 01b5 00       		.byte	0
+ 688 01b6 08       		.uleb128 0x8
+ 689 01b7 20000000 		.4byte	.LVL13
+ 690 01bb 36050000 		.4byte	0x536
+ 691 01bf C9010000 		.4byte	0x1c9
+ 692 01c3 09       		.uleb128 0x9
+ 693 01c4 01       		.uleb128 0x1
+ 694 01c5 50       		.byte	0x50
+ 695 01c6 01       		.uleb128 0x1
+ 696 01c7 3A       		.byte	0x3a
+ 697 01c8 00       		.byte	0
+ 698 01c9 08       		.uleb128 0x8
+ 699 01ca 26000000 		.4byte	.LVL14
+ 700 01ce 2B050000 		.4byte	0x52b
+ 701 01d2 DC010000 		.4byte	0x1dc
+ 702 01d6 09       		.uleb128 0x9
+ 703 01d7 01       		.uleb128 0x1
+ 704 01d8 50       		.byte	0x50
+ 705 01d9 01       		.uleb128 0x1
+ 706 01da 31       		.byte	0x31
+ 707 01db 00       		.byte	0
+ 708 01dc 08       		.uleb128 0x8
+ 709 01dd 2C000000 		.4byte	.LVL15
+ 710 01e1 36050000 		.4byte	0x536
+ 711 01e5 F0010000 		.4byte	0x1f0
+ 712 01e9 09       		.uleb128 0x9
+ 713 01ea 01       		.uleb128 0x1
+ 714 01eb 50       		.byte	0x50
+ 715 01ec 02       		.uleb128 0x2
+ 716 01ed 08       		.byte	0x8
+ 717 01ee 32       		.byte	0x32
+ 718 01ef 00       		.byte	0
+ 719 01f0 0B       		.uleb128 0xb
+ 720 01f1 32000000 		.4byte	.LVL16
+ 721 01f5 36050000 		.4byte	0x536
+ 722 01f9 09       		.uleb128 0x9
+ 723 01fa 01       		.uleb128 0x1
+ 724 01fb 50       		.byte	0x50
+ 725 01fc 01       		.uleb128 0x1
+ 726 01fd 3A       		.byte	0x3a
+ 727 01fe 00       		.byte	0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 20
+
+
+ 728 01ff 00       		.byte	0
+ 729 0200 06       		.uleb128 0x6
+ 730 0201 5C010000 		.4byte	.LASF20
+ 731 0205 01       		.byte	0x1
+ 732 0206 F7       		.byte	0xf7
+ 733 0207 73000000 		.4byte	0x73
+ 734 020b 00000000 		.4byte	.LFB68
+ 735 020f 1E000000 		.4byte	.LFE68-.LFB68
+ 736 0213 01       		.uleb128 0x1
+ 737 0214 9C       		.byte	0x9c
+ 738 0215 68020000 		.4byte	0x268
+ 739 0219 07       		.uleb128 0x7
+ 740 021a E3010000 		.4byte	.LASF22
+ 741 021e 01       		.byte	0x1
+ 742 021f F9       		.byte	0xf9
+ 743 0220 73000000 		.4byte	0x73
+ 744 0224 3C000000 		.4byte	.LLST2
+ 745 0228 08       		.uleb128 0x8
+ 746 0229 08000000 		.4byte	.LVL17
+ 747 022d 2B050000 		.4byte	0x52b
+ 748 0231 3B020000 		.4byte	0x23b
+ 749 0235 09       		.uleb128 0x9
+ 750 0236 01       		.uleb128 0x1
+ 751 0237 50       		.byte	0x50
+ 752 0238 01       		.uleb128 0x1
+ 753 0239 30       		.byte	0x30
+ 754 023a 00       		.byte	0
+ 755 023b 08       		.uleb128 0x8
+ 756 023c 0E000000 		.4byte	.LVL18
+ 757 0240 2B050000 		.4byte	0x52b
+ 758 0244 4E020000 		.4byte	0x24e
+ 759 0248 09       		.uleb128 0x9
+ 760 0249 01       		.uleb128 0x1
+ 761 024a 50       		.byte	0x50
+ 762 024b 01       		.uleb128 0x1
+ 763 024c 31       		.byte	0x31
+ 764 024d 00       		.byte	0
+ 765 024e 0A       		.uleb128 0xa
+ 766 024f 12000000 		.4byte	.LVL19
+ 767 0253 41050000 		.4byte	0x541
+ 768 0257 0B       		.uleb128 0xb
+ 769 0258 1A000000 		.4byte	.LVL22
+ 770 025c 36050000 		.4byte	0x536
+ 771 0260 09       		.uleb128 0x9
+ 772 0261 01       		.uleb128 0x1
+ 773 0262 50       		.byte	0x50
+ 774 0263 02       		.uleb128 0x2
+ 775 0264 08       		.byte	0x8
+ 776 0265 37       		.byte	0x37
+ 777 0266 00       		.byte	0
+ 778 0267 00       		.byte	0
+ 779 0268 0E       		.uleb128 0xe
+ 780 0269 4A020000 		.4byte	.LASF24
+ 781 026d 01       		.byte	0x1
+ 782 026e 1801     		.2byte	0x118
+ 783 0270 00000000 		.4byte	.LFB69
+ 784 0274 1A000000 		.4byte	.LFE69-.LFB69
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 21
+
+
+ 785 0278 01       		.uleb128 0x1
+ 786 0279 9C       		.byte	0x9c
+ 787 027a B1020000 		.4byte	0x2b1
+ 788 027e 0F       		.uleb128 0xf
+ 789 027f 8C000000 		.4byte	.LASF25
+ 790 0283 01       		.byte	0x1
+ 791 0284 1801     		.2byte	0x118
+ 792 0286 73000000 		.4byte	0x73
+ 793 028a 5A000000 		.4byte	.LLST3
+ 794 028e 10       		.uleb128 0x10
+ 795 028f 91000000 		.4byte	.LASF26
+ 796 0293 01       		.byte	0x1
+ 797 0294 1A01     		.2byte	0x11a
+ 798 0296 73000000 		.4byte	0x73
+ 799 029a 78000000 		.4byte	.LLST4
+ 800 029e 0B       		.uleb128 0xb
+ 801 029f 10000000 		.4byte	.LVL26
+ 802 02a3 58010000 		.4byte	0x158
+ 803 02a7 09       		.uleb128 0x9
+ 804 02a8 01       		.uleb128 0x1
+ 805 02a9 50       		.byte	0x50
+ 806 02aa 04       		.uleb128 0x4
+ 807 02ab 75       		.byte	0x75
+ 808 02ac 00       		.sleb128 0
+ 809 02ad 31       		.byte	0x31
+ 810 02ae 1A       		.byte	0x1a
+ 811 02af 00       		.byte	0
+ 812 02b0 00       		.byte	0
+ 813 02b1 0C       		.uleb128 0xc
+ 814 02b2 29000000 		.4byte	.LASF27
+ 815 02b6 01       		.byte	0x1
+ 816 02b7 33       		.byte	0x33
+ 817 02b8 00000000 		.4byte	.LFB64
+ 818 02bc 26000000 		.4byte	.LFE64-.LFB64
+ 819 02c0 01       		.uleb128 0x1
+ 820 02c1 9C       		.byte	0x9c
+ 821 02c2 30030000 		.4byte	0x330
+ 822 02c6 0A       		.uleb128 0xa
+ 823 02c7 06000000 		.4byte	.LVL29
+ 824 02cb C6000000 		.4byte	0xc6
+ 825 02cf 08       		.uleb128 0x8
+ 826 02d0 0C000000 		.4byte	.LVL30
+ 827 02d4 68020000 		.4byte	0x268
+ 828 02d8 E3020000 		.4byte	0x2e3
+ 829 02dc 09       		.uleb128 0x9
+ 830 02dd 01       		.uleb128 0x1
+ 831 02de 50       		.byte	0x50
+ 832 02df 02       		.uleb128 0x2
+ 833 02e0 08       		.byte	0x8
+ 834 02e1 CC       		.byte	0xcc
+ 835 02e2 00       		.byte	0
+ 836 02e3 08       		.uleb128 0x8
+ 837 02e4 12000000 		.4byte	.LVL31
+ 838 02e8 68020000 		.4byte	0x268
+ 839 02ec F7020000 		.4byte	0x2f7
+ 840 02f0 09       		.uleb128 0x9
+ 841 02f1 01       		.uleb128 0x1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 22
+
+
+ 842 02f2 50       		.byte	0x50
+ 843 02f3 02       		.uleb128 0x2
+ 844 02f4 08       		.byte	0x8
+ 845 02f5 4E       		.byte	0x4e
+ 846 02f6 00       		.byte	0
+ 847 02f7 08       		.uleb128 0x8
+ 848 02f8 18000000 		.4byte	.LVL32
+ 849 02fc 68020000 		.4byte	0x268
+ 850 0300 0B030000 		.4byte	0x30b
+ 851 0304 09       		.uleb128 0x9
+ 852 0305 01       		.uleb128 0x1
+ 853 0306 50       		.byte	0x50
+ 854 0307 02       		.uleb128 0x2
+ 855 0308 08       		.byte	0x8
+ 856 0309 55       		.byte	0x55
+ 857 030a 00       		.byte	0
+ 858 030b 08       		.uleb128 0x8
+ 859 030c 1E000000 		.4byte	.LVL33
+ 860 0310 68020000 		.4byte	0x268
+ 861 0314 1F030000 		.4byte	0x31f
+ 862 0318 09       		.uleb128 0x9
+ 863 0319 01       		.uleb128 0x1
+ 864 031a 50       		.byte	0x50
+ 865 031b 02       		.uleb128 0x2
+ 866 031c 08       		.byte	0x8
+ 867 031d A2       		.byte	0xa2
+ 868 031e 00       		.byte	0
+ 869 031f 0B       		.uleb128 0xb
+ 870 0320 24000000 		.4byte	.LVL34
+ 871 0324 68020000 		.4byte	0x268
+ 872 0328 09       		.uleb128 0x9
+ 873 0329 01       		.uleb128 0x1
+ 874 032a 50       		.byte	0x50
+ 875 032b 02       		.uleb128 0x2
+ 876 032c 08       		.byte	0x8
+ 877 032d 7F       		.byte	0x7f
+ 878 032e 00       		.byte	0
+ 879 032f 00       		.byte	0
+ 880 0330 11       		.uleb128 0x11
+ 881 0331 51000000 		.4byte	.LASF28
+ 882 0335 01       		.byte	0x1
+ 883 0336 3801     		.2byte	0x138
+ 884 0338 73000000 		.4byte	0x73
+ 885 033c 00000000 		.4byte	.LFB70
+ 886 0340 1E000000 		.4byte	.LFE70-.LFB70
+ 887 0344 01       		.uleb128 0x1
+ 888 0345 9C       		.byte	0x9c
+ 889 0346 74030000 		.4byte	0x374
+ 890 034a 10       		.uleb128 0x10
+ 891 034b 91000000 		.4byte	.LASF26
+ 892 034f 01       		.byte	0x1
+ 893 0350 3A01     		.2byte	0x13a
+ 894 0352 73000000 		.4byte	0x73
+ 895 0356 97000000 		.4byte	.LLST5
+ 896 035a 10       		.uleb128 0x10
+ 897 035b E3010000 		.4byte	.LASF22
+ 898 035f 01       		.byte	0x1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 23
+
+
+ 899 0360 3A01     		.2byte	0x13a
+ 900 0362 73000000 		.4byte	0x73
+ 901 0366 B6000000 		.4byte	.LLST6
+ 902 036a 0A       		.uleb128 0xa
+ 903 036b 0E000000 		.4byte	.LVL38
+ 904 036f 00020000 		.4byte	0x200
+ 905 0373 00       		.byte	0
+ 906 0374 12       		.uleb128 0x12
+ 907 0375 D3020000 		.4byte	.LASF29
+ 908 0379 01       		.byte	0x1
+ 909 037a 56       		.byte	0x56
+ 910 037b A3000000 		.4byte	0xa3
+ 911 037f 00000000 		.4byte	.LFB65
+ 912 0383 A8000000 		.4byte	.LFE65-.LFB65
+ 913 0387 01       		.uleb128 0x1
+ 914 0388 9C       		.byte	0x9c
+ 915 0389 0D040000 		.4byte	0x40d
+ 916 038d 0A       		.uleb128 0xa
+ 917 038e 06000000 		.4byte	.LVL41
+ 918 0392 C6000000 		.4byte	0xc6
+ 919 0396 08       		.uleb128 0x8
+ 920 0397 0C000000 		.4byte	.LVL42
+ 921 039b 68020000 		.4byte	0x268
+ 922 039f AA030000 		.4byte	0x3aa
+ 923 03a3 09       		.uleb128 0x9
+ 924 03a4 01       		.uleb128 0x1
+ 925 03a5 50       		.byte	0x50
+ 926 03a6 02       		.uleb128 0x2
+ 927 03a7 08       		.byte	0x8
+ 928 03a8 CC       		.byte	0xcc
+ 929 03a9 00       		.byte	0
+ 930 03aa 08       		.uleb128 0x8
+ 931 03ab 12000000 		.4byte	.LVL43
+ 932 03af 68020000 		.4byte	0x268
+ 933 03b3 BE030000 		.4byte	0x3be
+ 934 03b7 09       		.uleb128 0x9
+ 935 03b8 01       		.uleb128 0x1
+ 936 03b9 50       		.byte	0x50
+ 937 03ba 02       		.uleb128 0x2
+ 938 03bb 08       		.byte	0x8
+ 939 03bc 44       		.byte	0x44
+ 940 03bd 00       		.byte	0
+ 941 03be 08       		.uleb128 0x8
+ 942 03bf 18000000 		.4byte	.LVL44
+ 943 03c3 36050000 		.4byte	0x536
+ 944 03c7 D2030000 		.4byte	0x3d2
+ 945 03cb 09       		.uleb128 0x9
+ 946 03cc 01       		.uleb128 0x1
+ 947 03cd 50       		.byte	0x50
+ 948 03ce 02       		.uleb128 0x2
+ 949 03cf 08       		.byte	0x8
+ 950 03d0 6E       		.byte	0x6e
+ 951 03d1 00       		.byte	0
+ 952 03d2 0A       		.uleb128 0xa
+ 953 03d3 1C000000 		.4byte	.LVL45
+ 954 03d7 C6000000 		.4byte	0xc6
+ 955 03db 08       		.uleb128 0x8
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 24
+
+
+ 956 03dc 22000000 		.4byte	.LVL46
+ 957 03e0 68020000 		.4byte	0x268
+ 958 03e4 EF030000 		.4byte	0x3ef
+ 959 03e8 09       		.uleb128 0x9
+ 960 03e9 01       		.uleb128 0x1
+ 961 03ea 50       		.byte	0x50
+ 962 03eb 02       		.uleb128 0x2
+ 963 03ec 08       		.byte	0x8
+ 964 03ed CC       		.byte	0xcc
+ 965 03ee 00       		.byte	0
+ 966 03ef 08       		.uleb128 0x8
+ 967 03f0 28000000 		.4byte	.LVL47
+ 968 03f4 68020000 		.4byte	0x268
+ 969 03f8 03040000 		.4byte	0x403
+ 970 03fc 09       		.uleb128 0x9
+ 971 03fd 01       		.uleb128 0x1
+ 972 03fe 50       		.byte	0x50
+ 973 03ff 02       		.uleb128 0x2
+ 974 0400 08       		.byte	0x8
+ 975 0401 BE       		.byte	0xbe
+ 976 0402 00       		.byte	0
+ 977 0403 0A       		.uleb128 0xa
+ 978 0404 34000000 		.4byte	.LVL48
+ 979 0408 30030000 		.4byte	0x330
+ 980 040c 00       		.byte	0
+ 981 040d 13       		.uleb128 0x13
+ 982 040e 68010000 		.4byte	.LASF30
+ 983 0412 05       		.byte	0x5
+ 984 0413 1207     		.2byte	0x712
+ 985 0415 19040000 		.4byte	0x419
+ 986 0419 14       		.uleb128 0x14
+ 987 041a 8C000000 		.4byte	0x8c
+ 988 041e 15       		.uleb128 0x15
+ 989 041f FB010000 		.4byte	.LASF31
+ 990 0423 01       		.byte	0x1
+ 991 0424 24       		.byte	0x24
+ 992 0425 97000000 		.4byte	0x97
+ 993 0429 05       		.uleb128 0x5
+ 994 042a 03       		.byte	0x3
+ 995 042b 00000000 		.4byte	OneWire1_sum
+ 996 042f 15       		.uleb128 0x15
+ 997 0430 EF020000 		.4byte	.LASF32
+ 998 0434 01       		.byte	0x1
+ 999 0435 25       		.byte	0x25
+ 1000 0436 97000000 		.4byte	0x97
+ 1001 043a 05       		.uleb128 0x5
+ 1002 043b 03       		.byte	0x3
+ 1003 043c 00000000 		.4byte	OneWire2_sum
+ 1004 0440 15       		.uleb128 0x15
+ 1005 0441 9F010000 		.4byte	.LASF33
+ 1006 0445 01       		.byte	0x1
+ 1007 0446 26       		.byte	0x26
+ 1008 0447 73000000 		.4byte	0x73
+ 1009 044b 05       		.uleb128 0x5
+ 1010 044c 03       		.byte	0x3
+ 1011 044d 00000000 		.4byte	OneWire1_cnt
+ 1012 0451 15       		.uleb128 0x15
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 25
+
+
+ 1013 0452 00000000 		.4byte	.LASF34
+ 1014 0456 01       		.byte	0x1
+ 1015 0457 27       		.byte	0x27
+ 1016 0458 73000000 		.4byte	0x73
+ 1017 045c 05       		.uleb128 0x5
+ 1018 045d 03       		.byte	0x3
+ 1019 045e 00000000 		.4byte	OneWire2_cnt
+ 1020 0462 15       		.uleb128 0x15
+ 1021 0463 95010000 		.4byte	.LASF35
+ 1022 0467 01       		.byte	0x1
+ 1023 0468 28       		.byte	0x28
+ 1024 0469 A3000000 		.4byte	0xa3
+ 1025 046d 05       		.uleb128 0x5
+ 1026 046e 03       		.byte	0x3
+ 1027 046f 00000000 		.4byte	temp1_res
+ 1028 0473 15       		.uleb128 0x15
+ 1029 0474 6B020000 		.4byte	.LASF36
+ 1030 0478 01       		.byte	0x1
+ 1031 0479 29       		.byte	0x29
+ 1032 047a A3000000 		.4byte	0xa3
+ 1033 047e 05       		.uleb128 0x5
+ 1034 047f 03       		.byte	0x3
+ 1035 0480 00000000 		.4byte	temp2_res
+ 1036 0484 16       		.uleb128 0x16
+ 1037 0485 6900     		.ascii	"i\000"
+ 1038 0487 01       		.byte	0x1
+ 1039 0488 2A       		.byte	0x2a
+ 1040 0489 73000000 		.4byte	0x73
+ 1041 048d 05       		.uleb128 0x5
+ 1042 048e 03       		.byte	0x3
+ 1043 048f 00000000 		.4byte	i
+ 1044 0493 15       		.uleb128 0x15
+ 1045 0494 B6010000 		.4byte	.LASF37
+ 1046 0498 01       		.byte	0x1
+ 1047 0499 2B       		.byte	0x2b
+ 1048 049a 81000000 		.4byte	0x81
+ 1049 049e 05       		.uleb128 0x5
+ 1050 049f 03       		.byte	0x3
+ 1051 04a0 00000000 		.4byte	temp1x16
+ 1052 04a4 15       		.uleb128 0x15
+ 1053 04a5 F2010000 		.4byte	.LASF38
+ 1054 04a9 01       		.byte	0x1
+ 1055 04aa 2C       		.byte	0x2c
+ 1056 04ab 81000000 		.4byte	0x81
+ 1057 04af 05       		.uleb128 0x5
+ 1058 04b0 03       		.byte	0x3
+ 1059 04b1 00000000 		.4byte	temp2x16
+ 1060 04b5 17       		.uleb128 0x17
+ 1061 04b6 B1000000 		.4byte	0xb1
+ 1062 04ba C5040000 		.4byte	0x4c5
+ 1063 04be 18       		.uleb128 0x18
+ 1064 04bf BF000000 		.4byte	0xbf
+ 1065 04c3 09       		.byte	0x9
+ 1066 04c4 00       		.byte	0
+ 1067 04c5 15       		.uleb128 0x15
+ 1068 04c6 31010000 		.4byte	.LASF39
+ 1069 04ca 01       		.byte	0x1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 26
+
+
+ 1070 04cb 2D       		.byte	0x2d
+ 1071 04cc B5040000 		.4byte	0x4b5
+ 1072 04d0 05       		.uleb128 0x5
+ 1073 04d1 03       		.byte	0x3
+ 1074 04d2 00000000 		.4byte	scratchpad1
+ 1075 04d6 15       		.uleb128 0x15
+ 1076 04d7 3D010000 		.4byte	.LASF40
+ 1077 04db 01       		.byte	0x1
+ 1078 04dc 2E       		.byte	0x2e
+ 1079 04dd B5040000 		.4byte	0x4b5
+ 1080 04e1 05       		.uleb128 0x5
+ 1081 04e2 03       		.byte	0x3
+ 1082 04e3 00000000 		.4byte	scratchpad2
+ 1083 04e7 15       		.uleb128 0x15
+ 1084 04e8 19020000 		.4byte	.LASF41
+ 1085 04ec 01       		.byte	0x1
+ 1086 04ed 2F       		.byte	0x2f
+ 1087 04ee 73000000 		.4byte	0x73
+ 1088 04f2 05       		.uleb128 0x5
+ 1089 04f3 03       		.byte	0x3
+ 1090 04f4 00000000 		.4byte	temp_lsb1
+ 1091 04f8 15       		.uleb128 0x15
+ 1092 04f9 E5020000 		.4byte	.LASF42
+ 1093 04fd 01       		.byte	0x1
+ 1094 04fe 2F       		.byte	0x2f
+ 1095 04ff 73000000 		.4byte	0x73
+ 1096 0503 05       		.uleb128 0x5
+ 1097 0504 03       		.byte	0x3
+ 1098 0505 00000000 		.4byte	temp_msb1
+ 1099 0509 15       		.uleb128 0x15
+ 1100 050a 23020000 		.4byte	.LASF43
+ 1101 050e 01       		.byte	0x1
+ 1102 050f 30       		.byte	0x30
+ 1103 0510 73000000 		.4byte	0x73
+ 1104 0514 05       		.uleb128 0x5
+ 1105 0515 03       		.byte	0x3
+ 1106 0516 00000000 		.4byte	temp_lsb2
+ 1107 051a 15       		.uleb128 0x15
+ 1108 051b 40020000 		.4byte	.LASF44
+ 1109 051f 01       		.byte	0x1
+ 1110 0520 30       		.byte	0x30
+ 1111 0521 73000000 		.4byte	0x73
+ 1112 0525 05       		.uleb128 0x5
+ 1113 0526 03       		.byte	0x3
+ 1114 0527 00000000 		.4byte	temp_msb2
+ 1115 052b 19       		.uleb128 0x19
+ 1116 052c 6E000000 		.4byte	.LASF45
+ 1117 0530 6E000000 		.4byte	.LASF45
+ 1118 0534 06       		.byte	0x6
+ 1119 0535 26       		.byte	0x26
+ 1120 0536 19       		.uleb128 0x19
+ 1121 0537 AC010000 		.4byte	.LASF46
+ 1122 053b AC010000 		.4byte	.LASF46
+ 1123 053f 07       		.byte	0x7
+ 1124 0540 77       		.byte	0x77
+ 1125 0541 19       		.uleb128 0x19
+ 1126 0542 5E000000 		.4byte	.LASF47
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 27
+
+
+ 1127 0546 5E000000 		.4byte	.LASF47
+ 1128 054a 06       		.byte	0x6
+ 1129 054b 29       		.byte	0x29
+ 1130 054c 00       		.byte	0
+ 1131              		.section	.debug_abbrev,"",%progbits
+ 1132              	.Ldebug_abbrev0:
+ 1133 0000 01       		.uleb128 0x1
+ 1134 0001 11       		.uleb128 0x11
+ 1135 0002 01       		.byte	0x1
+ 1136 0003 25       		.uleb128 0x25
+ 1137 0004 0E       		.uleb128 0xe
+ 1138 0005 13       		.uleb128 0x13
+ 1139 0006 0B       		.uleb128 0xb
+ 1140 0007 03       		.uleb128 0x3
+ 1141 0008 0E       		.uleb128 0xe
+ 1142 0009 1B       		.uleb128 0x1b
+ 1143 000a 0E       		.uleb128 0xe
+ 1144 000b 55       		.uleb128 0x55
+ 1145 000c 17       		.uleb128 0x17
+ 1146 000d 11       		.uleb128 0x11
+ 1147 000e 01       		.uleb128 0x1
+ 1148 000f 10       		.uleb128 0x10
+ 1149 0010 17       		.uleb128 0x17
+ 1150 0011 00       		.byte	0
+ 1151 0012 00       		.byte	0
+ 1152 0013 02       		.uleb128 0x2
+ 1153 0014 24       		.uleb128 0x24
+ 1154 0015 00       		.byte	0
+ 1155 0016 0B       		.uleb128 0xb
+ 1156 0017 0B       		.uleb128 0xb
+ 1157 0018 3E       		.uleb128 0x3e
+ 1158 0019 0B       		.uleb128 0xb
+ 1159 001a 03       		.uleb128 0x3
+ 1160 001b 0E       		.uleb128 0xe
+ 1161 001c 00       		.byte	0
+ 1162 001d 00       		.byte	0
+ 1163 001e 03       		.uleb128 0x3
+ 1164 001f 16       		.uleb128 0x16
+ 1165 0020 00       		.byte	0
+ 1166 0021 03       		.uleb128 0x3
+ 1167 0022 0E       		.uleb128 0xe
+ 1168 0023 3A       		.uleb128 0x3a
+ 1169 0024 0B       		.uleb128 0xb
+ 1170 0025 3B       		.uleb128 0x3b
+ 1171 0026 0B       		.uleb128 0xb
+ 1172 0027 49       		.uleb128 0x49
+ 1173 0028 13       		.uleb128 0x13
+ 1174 0029 00       		.byte	0
+ 1175 002a 00       		.byte	0
+ 1176 002b 04       		.uleb128 0x4
+ 1177 002c 24       		.uleb128 0x24
+ 1178 002d 00       		.byte	0
+ 1179 002e 0B       		.uleb128 0xb
+ 1180 002f 0B       		.uleb128 0xb
+ 1181 0030 3E       		.uleb128 0x3e
+ 1182 0031 0B       		.uleb128 0xb
+ 1183 0032 03       		.uleb128 0x3
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 28
+
+
+ 1184 0033 08       		.uleb128 0x8
+ 1185 0034 00       		.byte	0
+ 1186 0035 00       		.byte	0
+ 1187 0036 05       		.uleb128 0x5
+ 1188 0037 16       		.uleb128 0x16
+ 1189 0038 00       		.byte	0
+ 1190 0039 03       		.uleb128 0x3
+ 1191 003a 0E       		.uleb128 0xe
+ 1192 003b 3A       		.uleb128 0x3a
+ 1193 003c 0B       		.uleb128 0xb
+ 1194 003d 3B       		.uleb128 0x3b
+ 1195 003e 05       		.uleb128 0x5
+ 1196 003f 49       		.uleb128 0x49
+ 1197 0040 13       		.uleb128 0x13
+ 1198 0041 00       		.byte	0
+ 1199 0042 00       		.byte	0
+ 1200 0043 06       		.uleb128 0x6
+ 1201 0044 2E       		.uleb128 0x2e
+ 1202 0045 01       		.byte	0x1
+ 1203 0046 3F       		.uleb128 0x3f
+ 1204 0047 19       		.uleb128 0x19
+ 1205 0048 03       		.uleb128 0x3
+ 1206 0049 0E       		.uleb128 0xe
+ 1207 004a 3A       		.uleb128 0x3a
+ 1208 004b 0B       		.uleb128 0xb
+ 1209 004c 3B       		.uleb128 0x3b
+ 1210 004d 0B       		.uleb128 0xb
+ 1211 004e 27       		.uleb128 0x27
+ 1212 004f 19       		.uleb128 0x19
+ 1213 0050 49       		.uleb128 0x49
+ 1214 0051 13       		.uleb128 0x13
+ 1215 0052 11       		.uleb128 0x11
+ 1216 0053 01       		.uleb128 0x1
+ 1217 0054 12       		.uleb128 0x12
+ 1218 0055 06       		.uleb128 0x6
+ 1219 0056 40       		.uleb128 0x40
+ 1220 0057 18       		.uleb128 0x18
+ 1221 0058 9742     		.uleb128 0x2117
+ 1222 005a 19       		.uleb128 0x19
+ 1223 005b 01       		.uleb128 0x1
+ 1224 005c 13       		.uleb128 0x13
+ 1225 005d 00       		.byte	0
+ 1226 005e 00       		.byte	0
+ 1227 005f 07       		.uleb128 0x7
+ 1228 0060 34       		.uleb128 0x34
+ 1229 0061 00       		.byte	0
+ 1230 0062 03       		.uleb128 0x3
+ 1231 0063 0E       		.uleb128 0xe
+ 1232 0064 3A       		.uleb128 0x3a
+ 1233 0065 0B       		.uleb128 0xb
+ 1234 0066 3B       		.uleb128 0x3b
+ 1235 0067 0B       		.uleb128 0xb
+ 1236 0068 49       		.uleb128 0x49
+ 1237 0069 13       		.uleb128 0x13
+ 1238 006a 02       		.uleb128 0x2
+ 1239 006b 17       		.uleb128 0x17
+ 1240 006c 00       		.byte	0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 29
+
+
+ 1241 006d 00       		.byte	0
+ 1242 006e 08       		.uleb128 0x8
+ 1243 006f 898201   		.uleb128 0x4109
+ 1244 0072 01       		.byte	0x1
+ 1245 0073 11       		.uleb128 0x11
+ 1246 0074 01       		.uleb128 0x1
+ 1247 0075 31       		.uleb128 0x31
+ 1248 0076 13       		.uleb128 0x13
+ 1249 0077 01       		.uleb128 0x1
+ 1250 0078 13       		.uleb128 0x13
+ 1251 0079 00       		.byte	0
+ 1252 007a 00       		.byte	0
+ 1253 007b 09       		.uleb128 0x9
+ 1254 007c 8A8201   		.uleb128 0x410a
+ 1255 007f 00       		.byte	0
+ 1256 0080 02       		.uleb128 0x2
+ 1257 0081 18       		.uleb128 0x18
+ 1258 0082 9142     		.uleb128 0x2111
+ 1259 0084 18       		.uleb128 0x18
+ 1260 0085 00       		.byte	0
+ 1261 0086 00       		.byte	0
+ 1262 0087 0A       		.uleb128 0xa
+ 1263 0088 898201   		.uleb128 0x4109
+ 1264 008b 00       		.byte	0
+ 1265 008c 11       		.uleb128 0x11
+ 1266 008d 01       		.uleb128 0x1
+ 1267 008e 31       		.uleb128 0x31
+ 1268 008f 13       		.uleb128 0x13
+ 1269 0090 00       		.byte	0
+ 1270 0091 00       		.byte	0
+ 1271 0092 0B       		.uleb128 0xb
+ 1272 0093 898201   		.uleb128 0x4109
+ 1273 0096 01       		.byte	0x1
+ 1274 0097 11       		.uleb128 0x11
+ 1275 0098 01       		.uleb128 0x1
+ 1276 0099 31       		.uleb128 0x31
+ 1277 009a 13       		.uleb128 0x13
+ 1278 009b 00       		.byte	0
+ 1279 009c 00       		.byte	0
+ 1280 009d 0C       		.uleb128 0xc
+ 1281 009e 2E       		.uleb128 0x2e
+ 1282 009f 01       		.byte	0x1
+ 1283 00a0 3F       		.uleb128 0x3f
+ 1284 00a1 19       		.uleb128 0x19
+ 1285 00a2 03       		.uleb128 0x3
+ 1286 00a3 0E       		.uleb128 0xe
+ 1287 00a4 3A       		.uleb128 0x3a
+ 1288 00a5 0B       		.uleb128 0xb
+ 1289 00a6 3B       		.uleb128 0x3b
+ 1290 00a7 0B       		.uleb128 0xb
+ 1291 00a8 27       		.uleb128 0x27
+ 1292 00a9 19       		.uleb128 0x19
+ 1293 00aa 11       		.uleb128 0x11
+ 1294 00ab 01       		.uleb128 0x1
+ 1295 00ac 12       		.uleb128 0x12
+ 1296 00ad 06       		.uleb128 0x6
+ 1297 00ae 40       		.uleb128 0x40
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 30
+
+
+ 1298 00af 18       		.uleb128 0x18
+ 1299 00b0 9742     		.uleb128 0x2117
+ 1300 00b2 19       		.uleb128 0x19
+ 1301 00b3 01       		.uleb128 0x1
+ 1302 00b4 13       		.uleb128 0x13
+ 1303 00b5 00       		.byte	0
+ 1304 00b6 00       		.byte	0
+ 1305 00b7 0D       		.uleb128 0xd
+ 1306 00b8 05       		.uleb128 0x5
+ 1307 00b9 00       		.byte	0
+ 1308 00ba 03       		.uleb128 0x3
+ 1309 00bb 08       		.uleb128 0x8
+ 1310 00bc 3A       		.uleb128 0x3a
+ 1311 00bd 0B       		.uleb128 0xb
+ 1312 00be 3B       		.uleb128 0x3b
+ 1313 00bf 0B       		.uleb128 0xb
+ 1314 00c0 49       		.uleb128 0x49
+ 1315 00c1 13       		.uleb128 0x13
+ 1316 00c2 02       		.uleb128 0x2
+ 1317 00c3 17       		.uleb128 0x17
+ 1318 00c4 00       		.byte	0
+ 1319 00c5 00       		.byte	0
+ 1320 00c6 0E       		.uleb128 0xe
+ 1321 00c7 2E       		.uleb128 0x2e
+ 1322 00c8 01       		.byte	0x1
+ 1323 00c9 3F       		.uleb128 0x3f
+ 1324 00ca 19       		.uleb128 0x19
+ 1325 00cb 03       		.uleb128 0x3
+ 1326 00cc 0E       		.uleb128 0xe
+ 1327 00cd 3A       		.uleb128 0x3a
+ 1328 00ce 0B       		.uleb128 0xb
+ 1329 00cf 3B       		.uleb128 0x3b
+ 1330 00d0 05       		.uleb128 0x5
+ 1331 00d1 27       		.uleb128 0x27
+ 1332 00d2 19       		.uleb128 0x19
+ 1333 00d3 11       		.uleb128 0x11
+ 1334 00d4 01       		.uleb128 0x1
+ 1335 00d5 12       		.uleb128 0x12
+ 1336 00d6 06       		.uleb128 0x6
+ 1337 00d7 40       		.uleb128 0x40
+ 1338 00d8 18       		.uleb128 0x18
+ 1339 00d9 9742     		.uleb128 0x2117
+ 1340 00db 19       		.uleb128 0x19
+ 1341 00dc 01       		.uleb128 0x1
+ 1342 00dd 13       		.uleb128 0x13
+ 1343 00de 00       		.byte	0
+ 1344 00df 00       		.byte	0
+ 1345 00e0 0F       		.uleb128 0xf
+ 1346 00e1 05       		.uleb128 0x5
+ 1347 00e2 00       		.byte	0
+ 1348 00e3 03       		.uleb128 0x3
+ 1349 00e4 0E       		.uleb128 0xe
+ 1350 00e5 3A       		.uleb128 0x3a
+ 1351 00e6 0B       		.uleb128 0xb
+ 1352 00e7 3B       		.uleb128 0x3b
+ 1353 00e8 05       		.uleb128 0x5
+ 1354 00e9 49       		.uleb128 0x49
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 31
+
+
+ 1355 00ea 13       		.uleb128 0x13
+ 1356 00eb 02       		.uleb128 0x2
+ 1357 00ec 17       		.uleb128 0x17
+ 1358 00ed 00       		.byte	0
+ 1359 00ee 00       		.byte	0
+ 1360 00ef 10       		.uleb128 0x10
+ 1361 00f0 34       		.uleb128 0x34
+ 1362 00f1 00       		.byte	0
+ 1363 00f2 03       		.uleb128 0x3
+ 1364 00f3 0E       		.uleb128 0xe
+ 1365 00f4 3A       		.uleb128 0x3a
+ 1366 00f5 0B       		.uleb128 0xb
+ 1367 00f6 3B       		.uleb128 0x3b
+ 1368 00f7 05       		.uleb128 0x5
+ 1369 00f8 49       		.uleb128 0x49
+ 1370 00f9 13       		.uleb128 0x13
+ 1371 00fa 02       		.uleb128 0x2
+ 1372 00fb 17       		.uleb128 0x17
+ 1373 00fc 00       		.byte	0
+ 1374 00fd 00       		.byte	0
+ 1375 00fe 11       		.uleb128 0x11
+ 1376 00ff 2E       		.uleb128 0x2e
+ 1377 0100 01       		.byte	0x1
+ 1378 0101 3F       		.uleb128 0x3f
+ 1379 0102 19       		.uleb128 0x19
+ 1380 0103 03       		.uleb128 0x3
+ 1381 0104 0E       		.uleb128 0xe
+ 1382 0105 3A       		.uleb128 0x3a
+ 1383 0106 0B       		.uleb128 0xb
+ 1384 0107 3B       		.uleb128 0x3b
+ 1385 0108 05       		.uleb128 0x5
+ 1386 0109 27       		.uleb128 0x27
+ 1387 010a 19       		.uleb128 0x19
+ 1388 010b 49       		.uleb128 0x49
+ 1389 010c 13       		.uleb128 0x13
+ 1390 010d 11       		.uleb128 0x11
+ 1391 010e 01       		.uleb128 0x1
+ 1392 010f 12       		.uleb128 0x12
+ 1393 0110 06       		.uleb128 0x6
+ 1394 0111 40       		.uleb128 0x40
+ 1395 0112 18       		.uleb128 0x18
+ 1396 0113 9742     		.uleb128 0x2117
+ 1397 0115 19       		.uleb128 0x19
+ 1398 0116 01       		.uleb128 0x1
+ 1399 0117 13       		.uleb128 0x13
+ 1400 0118 00       		.byte	0
+ 1401 0119 00       		.byte	0
+ 1402 011a 12       		.uleb128 0x12
+ 1403 011b 2E       		.uleb128 0x2e
+ 1404 011c 01       		.byte	0x1
+ 1405 011d 3F       		.uleb128 0x3f
+ 1406 011e 19       		.uleb128 0x19
+ 1407 011f 03       		.uleb128 0x3
+ 1408 0120 0E       		.uleb128 0xe
+ 1409 0121 3A       		.uleb128 0x3a
+ 1410 0122 0B       		.uleb128 0xb
+ 1411 0123 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 32
+
+
+ 1412 0124 0B       		.uleb128 0xb
+ 1413 0125 27       		.uleb128 0x27
+ 1414 0126 19       		.uleb128 0x19
+ 1415 0127 49       		.uleb128 0x49
+ 1416 0128 13       		.uleb128 0x13
+ 1417 0129 11       		.uleb128 0x11
+ 1418 012a 01       		.uleb128 0x1
+ 1419 012b 12       		.uleb128 0x12
+ 1420 012c 06       		.uleb128 0x6
+ 1421 012d 40       		.uleb128 0x40
+ 1422 012e 18       		.uleb128 0x18
+ 1423 012f 9642     		.uleb128 0x2116
+ 1424 0131 19       		.uleb128 0x19
+ 1425 0132 01       		.uleb128 0x1
+ 1426 0133 13       		.uleb128 0x13
+ 1427 0134 00       		.byte	0
+ 1428 0135 00       		.byte	0
+ 1429 0136 13       		.uleb128 0x13
+ 1430 0137 34       		.uleb128 0x34
+ 1431 0138 00       		.byte	0
+ 1432 0139 03       		.uleb128 0x3
+ 1433 013a 0E       		.uleb128 0xe
+ 1434 013b 3A       		.uleb128 0x3a
+ 1435 013c 0B       		.uleb128 0xb
+ 1436 013d 3B       		.uleb128 0x3b
+ 1437 013e 05       		.uleb128 0x5
+ 1438 013f 49       		.uleb128 0x49
+ 1439 0140 13       		.uleb128 0x13
+ 1440 0141 3F       		.uleb128 0x3f
+ 1441 0142 19       		.uleb128 0x19
+ 1442 0143 3C       		.uleb128 0x3c
+ 1443 0144 19       		.uleb128 0x19
+ 1444 0145 00       		.byte	0
+ 1445 0146 00       		.byte	0
+ 1446 0147 14       		.uleb128 0x14
+ 1447 0148 35       		.uleb128 0x35
+ 1448 0149 00       		.byte	0
+ 1449 014a 49       		.uleb128 0x49
+ 1450 014b 13       		.uleb128 0x13
+ 1451 014c 00       		.byte	0
+ 1452 014d 00       		.byte	0
+ 1453 014e 15       		.uleb128 0x15
+ 1454 014f 34       		.uleb128 0x34
+ 1455 0150 00       		.byte	0
+ 1456 0151 03       		.uleb128 0x3
+ 1457 0152 0E       		.uleb128 0xe
+ 1458 0153 3A       		.uleb128 0x3a
+ 1459 0154 0B       		.uleb128 0xb
+ 1460 0155 3B       		.uleb128 0x3b
+ 1461 0156 0B       		.uleb128 0xb
+ 1462 0157 49       		.uleb128 0x49
+ 1463 0158 13       		.uleb128 0x13
+ 1464 0159 3F       		.uleb128 0x3f
+ 1465 015a 19       		.uleb128 0x19
+ 1466 015b 02       		.uleb128 0x2
+ 1467 015c 18       		.uleb128 0x18
+ 1468 015d 00       		.byte	0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 33
+
+
+ 1469 015e 00       		.byte	0
+ 1470 015f 16       		.uleb128 0x16
+ 1471 0160 34       		.uleb128 0x34
+ 1472 0161 00       		.byte	0
+ 1473 0162 03       		.uleb128 0x3
+ 1474 0163 08       		.uleb128 0x8
+ 1475 0164 3A       		.uleb128 0x3a
+ 1476 0165 0B       		.uleb128 0xb
+ 1477 0166 3B       		.uleb128 0x3b
+ 1478 0167 0B       		.uleb128 0xb
+ 1479 0168 49       		.uleb128 0x49
+ 1480 0169 13       		.uleb128 0x13
+ 1481 016a 3F       		.uleb128 0x3f
+ 1482 016b 19       		.uleb128 0x19
+ 1483 016c 02       		.uleb128 0x2
+ 1484 016d 18       		.uleb128 0x18
+ 1485 016e 00       		.byte	0
+ 1486 016f 00       		.byte	0
+ 1487 0170 17       		.uleb128 0x17
+ 1488 0171 01       		.uleb128 0x1
+ 1489 0172 01       		.byte	0x1
+ 1490 0173 49       		.uleb128 0x49
+ 1491 0174 13       		.uleb128 0x13
+ 1492 0175 01       		.uleb128 0x1
+ 1493 0176 13       		.uleb128 0x13
+ 1494 0177 00       		.byte	0
+ 1495 0178 00       		.byte	0
+ 1496 0179 18       		.uleb128 0x18
+ 1497 017a 21       		.uleb128 0x21
+ 1498 017b 00       		.byte	0
+ 1499 017c 49       		.uleb128 0x49
+ 1500 017d 13       		.uleb128 0x13
+ 1501 017e 2F       		.uleb128 0x2f
+ 1502 017f 0B       		.uleb128 0xb
+ 1503 0180 00       		.byte	0
+ 1504 0181 00       		.byte	0
+ 1505 0182 19       		.uleb128 0x19
+ 1506 0183 2E       		.uleb128 0x2e
+ 1507 0184 00       		.byte	0
+ 1508 0185 3F       		.uleb128 0x3f
+ 1509 0186 19       		.uleb128 0x19
+ 1510 0187 3C       		.uleb128 0x3c
+ 1511 0188 19       		.uleb128 0x19
+ 1512 0189 6E       		.uleb128 0x6e
+ 1513 018a 0E       		.uleb128 0xe
+ 1514 018b 03       		.uleb128 0x3
+ 1515 018c 0E       		.uleb128 0xe
+ 1516 018d 3A       		.uleb128 0x3a
+ 1517 018e 0B       		.uleb128 0xb
+ 1518 018f 3B       		.uleb128 0x3b
+ 1519 0190 0B       		.uleb128 0xb
+ 1520 0191 00       		.byte	0
+ 1521 0192 00       		.byte	0
+ 1522 0193 00       		.byte	0
+ 1523              		.section	.debug_loc,"",%progbits
+ 1524              	.Ldebug_loc0:
+ 1525              	.LLST0:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 34
+
+
+ 1526 0000 22000000 		.4byte	.LVL5
+ 1527 0004 26000000 		.4byte	.LVL6
+ 1528 0008 0100     		.2byte	0x1
+ 1529 000a 50       		.byte	0x50
+ 1530 000b 26000000 		.4byte	.LVL6
+ 1531 000f 2E000000 		.4byte	.LFE66
+ 1532 0013 0100     		.2byte	0x1
+ 1533 0015 54       		.byte	0x54
+ 1534 0016 00000000 		.4byte	0
+ 1535 001a 00000000 		.4byte	0
+ 1536              	.LLST1:
+ 1537 001e 00000000 		.4byte	.LVL8
+ 1538 0022 06000000 		.4byte	.LVL9
+ 1539 0026 0100     		.2byte	0x1
+ 1540 0028 50       		.byte	0x50
+ 1541 0029 06000000 		.4byte	.LVL9
+ 1542 002d 34000000 		.4byte	.LFE67
+ 1543 0031 0100     		.2byte	0x1
+ 1544 0033 54       		.byte	0x54
+ 1545 0034 00000000 		.4byte	0
+ 1546 0038 00000000 		.4byte	0
+ 1547              	.LLST2:
+ 1548 003c 14000000 		.4byte	.LVL20
+ 1549 0040 16000000 		.4byte	.LVL21
+ 1550 0044 0100     		.2byte	0x1
+ 1551 0046 50       		.byte	0x50
+ 1552 0047 16000000 		.4byte	.LVL21
+ 1553 004b 1E000000 		.4byte	.LFE68
+ 1554 004f 0100     		.2byte	0x1
+ 1555 0051 54       		.byte	0x54
+ 1556 0052 00000000 		.4byte	0
+ 1557 0056 00000000 		.4byte	0
+ 1558              	.LLST3:
+ 1559 005a 00000000 		.4byte	.LVL23
+ 1560 005e 08000000 		.4byte	.LVL25
+ 1561 0062 0100     		.2byte	0x1
+ 1562 0064 50       		.byte	0x50
+ 1563 0065 08000000 		.4byte	.LVL25
+ 1564 0069 1A000000 		.4byte	.LFE69
+ 1565 006d 0100     		.2byte	0x1
+ 1566 006f 55       		.byte	0x55
+ 1567 0070 00000000 		.4byte	0
+ 1568 0074 00000000 		.4byte	0
+ 1569              	.LLST4:
+ 1570 0078 04000000 		.4byte	.LVL24
+ 1571 007c 08000000 		.4byte	.LVL25
+ 1572 0080 0200     		.2byte	0x2
+ 1573 0082 30       		.byte	0x30
+ 1574 0083 9F       		.byte	0x9f
+ 1575 0084 08000000 		.4byte	.LVL25
+ 1576 0088 1A000000 		.4byte	.LFE69
+ 1577 008c 0100     		.2byte	0x1
+ 1578 008e 54       		.byte	0x54
+ 1579 008f 00000000 		.4byte	0
+ 1580 0093 00000000 		.4byte	0
+ 1581              	.LLST5:
+ 1582 0097 02000000 		.4byte	.LVL35
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 35
+
+
+ 1583 009b 08000000 		.4byte	.LVL36
+ 1584 009f 0200     		.2byte	0x2
+ 1585 00a1 30       		.byte	0x30
+ 1586 00a2 9F       		.byte	0x9f
+ 1587 00a3 08000000 		.4byte	.LVL36
+ 1588 00a7 1E000000 		.4byte	.LFE70
+ 1589 00ab 0100     		.2byte	0x1
+ 1590 00ad 55       		.byte	0x55
+ 1591 00ae 00000000 		.4byte	0
+ 1592 00b2 00000000 		.4byte	0
+ 1593              	.LLST6:
+ 1594 00b6 02000000 		.4byte	.LVL35
+ 1595 00ba 08000000 		.4byte	.LVL36
+ 1596 00be 0200     		.2byte	0x2
+ 1597 00c0 30       		.byte	0x30
+ 1598 00c1 9F       		.byte	0x9f
+ 1599 00c2 08000000 		.4byte	.LVL36
+ 1600 00c6 1E000000 		.4byte	.LFE70
+ 1601 00ca 0100     		.2byte	0x1
+ 1602 00cc 54       		.byte	0x54
+ 1603 00cd 00000000 		.4byte	0
+ 1604 00d1 00000000 		.4byte	0
+ 1605              		.section	.debug_aranges,"",%progbits
+ 1606 0000 4C000000 		.4byte	0x4c
+ 1607 0004 0200     		.2byte	0x2
+ 1608 0006 00000000 		.4byte	.Ldebug_info0
+ 1609 000a 04       		.byte	0x4
+ 1610 000b 00       		.byte	0
+ 1611 000c 0000     		.2byte	0
+ 1612 000e 0000     		.2byte	0
+ 1613 0010 00000000 		.4byte	.LFB66
+ 1614 0014 2E000000 		.4byte	.LFE66-.LFB66
+ 1615 0018 00000000 		.4byte	.LFB67
+ 1616 001c 34000000 		.4byte	.LFE67-.LFB67
+ 1617 0020 00000000 		.4byte	.LFB68
+ 1618 0024 1E000000 		.4byte	.LFE68-.LFB68
+ 1619 0028 00000000 		.4byte	.LFB69
+ 1620 002c 1A000000 		.4byte	.LFE69-.LFB69
+ 1621 0030 00000000 		.4byte	.LFB64
+ 1622 0034 26000000 		.4byte	.LFE64-.LFB64
+ 1623 0038 00000000 		.4byte	.LFB70
+ 1624 003c 1E000000 		.4byte	.LFE70-.LFB70
+ 1625 0040 00000000 		.4byte	.LFB65
+ 1626 0044 A8000000 		.4byte	.LFE65-.LFB65
+ 1627 0048 00000000 		.4byte	0
+ 1628 004c 00000000 		.4byte	0
+ 1629              		.section	.debug_ranges,"",%progbits
+ 1630              	.Ldebug_ranges0:
+ 1631 0000 00000000 		.4byte	.LFB66
+ 1632 0004 2E000000 		.4byte	.LFE66
+ 1633 0008 00000000 		.4byte	.LFB67
+ 1634 000c 34000000 		.4byte	.LFE67
+ 1635 0010 00000000 		.4byte	.LFB68
+ 1636 0014 1E000000 		.4byte	.LFE68
+ 1637 0018 00000000 		.4byte	.LFB69
+ 1638 001c 1A000000 		.4byte	.LFE69
+ 1639 0020 00000000 		.4byte	.LFB64
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 36
+
+
+ 1640 0024 26000000 		.4byte	.LFE64
+ 1641 0028 00000000 		.4byte	.LFB70
+ 1642 002c 1E000000 		.4byte	.LFE70
+ 1643 0030 00000000 		.4byte	.LFB65
+ 1644 0034 A8000000 		.4byte	.LFE65
+ 1645 0038 00000000 		.4byte	0
+ 1646 003c 00000000 		.4byte	0
+ 1647              		.section	.debug_line,"",%progbits
+ 1648              	.Ldebug_line0:
+ 1649 0000 4E020000 		.section	.debug_str,"MS",%progbits,1
+ 1649      02006D01 
+ 1649      00000201 
+ 1649      FB0E0D00 
+ 1649      01010101 
+ 1650              	.LASF34:
+ 1651 0000 4F6E6557 		.ascii	"OneWire2_cnt\000"
+ 1651      69726532 
+ 1651      5F636E74 
+ 1651      00
+ 1652              	.LASF0:
+ 1653 000d 7369676E 		.ascii	"signed char\000"
+ 1653      65642063 
+ 1653      68617200 
+ 1654              	.LASF4:
+ 1655 0019 5F5F696E 		.ascii	"__int16_t\000"
+ 1655      7431365F 
+ 1655      7400
+ 1656              	.LASF14:
+ 1657 0023 666C6F61 		.ascii	"float\000"
+ 1657      7400
+ 1658              	.LASF27:
+ 1659 0029 4F6E6557 		.ascii	"OneWire_start\000"
+ 1659      6972655F 
+ 1659      73746172 
+ 1659      7400
+ 1660              	.LASF5:
+ 1661 0037 5F5F696E 		.ascii	"__int32_t\000"
+ 1661      7433325F 
+ 1661      7400
+ 1662              	.LASF6:
+ 1663 0041 6C6F6E67 		.ascii	"long int\000"
+ 1663      20696E74 
+ 1663      00
+ 1664              	.LASF15:
+ 1665 004a 646F7562 		.ascii	"double\000"
+ 1665      6C6500
+ 1666              	.LASF28:
+ 1667 0051 4F575F52 		.ascii	"OW_Read_Byte\000"
+ 1667      6561645F 
+ 1667      42797465 
+ 1667      00
+ 1668              	.LASF47:
+ 1669 005e 4F6E6557 		.ascii	"OneWirePin_Read\000"
+ 1669      69726550 
+ 1669      696E5F52 
+ 1669      65616400 
+ 1670              	.LASF45:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 37
+
+
+ 1671 006e 4F6E6557 		.ascii	"OneWirePin_Write\000"
+ 1671      69726550 
+ 1671      696E5F57 
+ 1671      72697465 
+ 1671      00
+ 1672              	.LASF49:
+ 1673 007f 4F6E6557 		.ascii	"OneWireLab.c\000"
+ 1673      6972654C 
+ 1673      61622E63 
+ 1673      00
+ 1674              	.LASF25:
+ 1675 008c 64617461 		.ascii	"data\000"
+ 1675      00
+ 1676              	.LASF26:
+ 1677 0091 6C6F6F70 		.ascii	"loop\000"
+ 1677      00
+ 1678              	.LASF48:
+ 1679 0096 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1679      43313120 
+ 1679      352E342E 
+ 1679      31203230 
+ 1679      31363036 
+ 1680 00c9 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1680      20726576 
+ 1680      6973696F 
+ 1680      6E203233 
+ 1680      37373135 
+ 1681 00fc 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1681      66756E63 
+ 1681      74696F6E 
+ 1681      2D736563 
+ 1681      74696F6E 
+ 1682              	.LASF23:
+ 1683 0124 4F575F57 		.ascii	"OW_Write_Bit\000"
+ 1683      72697465 
+ 1683      5F426974 
+ 1683      00
+ 1684              	.LASF39:
+ 1685 0131 73637261 		.ascii	"scratchpad1\000"
+ 1685      74636870 
+ 1685      61643100 
+ 1686              	.LASF40:
+ 1687 013d 73637261 		.ascii	"scratchpad2\000"
+ 1687      74636870 
+ 1687      61643200 
+ 1688              	.LASF3:
+ 1689 0149 73686F72 		.ascii	"short unsigned int\000"
+ 1689      7420756E 
+ 1689      7369676E 
+ 1689      65642069 
+ 1689      6E7400
+ 1690              	.LASF20:
+ 1691 015c 4F575F52 		.ascii	"OW_Read_Bit\000"
+ 1691      6561645F 
+ 1691      42697400 
+ 1692              	.LASF30:
+ 1693 0168 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 38
+
+
+ 1693      52784275 
+ 1693      66666572 
+ 1693      00
+ 1694              	.LASF1:
+ 1695 0175 756E7369 		.ascii	"unsigned char\000"
+ 1695      676E6564 
+ 1695      20636861 
+ 1695      7200
+ 1696              	.LASF7:
+ 1697 0183 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1697      20756E73 
+ 1697      69676E65 
+ 1697      6420696E 
+ 1697      7400
+ 1698              	.LASF35:
+ 1699 0195 74656D70 		.ascii	"temp1_res\000"
+ 1699      315F7265 
+ 1699      7300
+ 1700              	.LASF33:
+ 1701 019f 4F6E6557 		.ascii	"OneWire1_cnt\000"
+ 1701      69726531 
+ 1701      5F636E74 
+ 1701      00
+ 1702              	.LASF46:
+ 1703 01ac 43794465 		.ascii	"CyDelayUs\000"
+ 1703      6C617955 
+ 1703      7300
+ 1704              	.LASF37:
+ 1705 01b6 74656D70 		.ascii	"temp1x16\000"
+ 1705      31783136 
+ 1705      00
+ 1706              	.LASF10:
+ 1707 01bf 756E7369 		.ascii	"unsigned int\000"
+ 1707      676E6564 
+ 1707      20696E74 
+ 1707      00
+ 1708              	.LASF9:
+ 1709 01cc 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1709      206C6F6E 
+ 1709      6720756E 
+ 1709      7369676E 
+ 1709      65642069 
+ 1710              	.LASF22:
+ 1711 01e3 72657375 		.ascii	"result\000"
+ 1711      6C7400
+ 1712              	.LASF11:
+ 1713 01ea 696E7431 		.ascii	"int16_t\000"
+ 1713      365F7400 
+ 1714              	.LASF38:
+ 1715 01f2 74656D70 		.ascii	"temp2x16\000"
+ 1715      32783136 
+ 1715      00
+ 1716              	.LASF31:
+ 1717 01fb 4F6E6557 		.ascii	"OneWire1_sum\000"
+ 1717      69726531 
+ 1717      5F73756D 
+ 1717      00
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 39
+
+
+ 1718              	.LASF12:
+ 1719 0208 696E7433 		.ascii	"int32_t\000"
+ 1719      325F7400 
+ 1720              	.LASF18:
+ 1721 0210 73697A65 		.ascii	"sizetype\000"
+ 1721      74797065 
+ 1721      00
+ 1722              	.LASF41:
+ 1723 0219 74656D70 		.ascii	"temp_lsb1\000"
+ 1723      5F6C7362 
+ 1723      3100
+ 1724              	.LASF43:
+ 1725 0223 74656D70 		.ascii	"temp_lsb2\000"
+ 1725      5F6C7362 
+ 1725      3200
+ 1726              	.LASF8:
+ 1727 022d 6C6F6E67 		.ascii	"long long int\000"
+ 1727      206C6F6E 
+ 1727      6720696E 
+ 1727      7400
+ 1728              	.LASF16:
+ 1729 023b 63686172 		.ascii	"char\000"
+ 1729      00
+ 1730              	.LASF44:
+ 1731 0240 74656D70 		.ascii	"temp_msb2\000"
+ 1731      5F6D7362 
+ 1731      3200
+ 1732              	.LASF24:
+ 1733 024a 4F575F57 		.ascii	"OW_Write_Byte\000"
+ 1733      72697465 
+ 1733      5F427974 
+ 1733      6500
+ 1734              	.LASF2:
+ 1735 0258 73686F72 		.ascii	"short int\000"
+ 1735      7420696E 
+ 1735      7400
+ 1736              	.LASF19:
+ 1737 0262 4F575F52 		.ascii	"OW_Reset\000"
+ 1737      65736574 
+ 1737      00
+ 1738              	.LASF36:
+ 1739 026b 74656D70 		.ascii	"temp2_res\000"
+ 1739      325F7265 
+ 1739      7300
+ 1740              	.LASF50:
+ 1741 0275 433A5C55 		.ascii	"C:\\Users\\Arold\\Documents\\GitHub\\Green-House\\G"
+ 1741      73657273 
+ 1741      5C41726F 
+ 1741      6C645C44 
+ 1741      6F63756D 
+ 1742 02a2 7265656E 		.ascii	"reen_House\\Green_House.cydsn\000"
+ 1742      5F486F75 
+ 1742      73655C47 
+ 1742      7265656E 
+ 1742      5F486F75 
+ 1743              	.LASF13:
+ 1744 02bf 666C6F61 		.ascii	"float32\000"
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccVPjYCk.s 			page 40
+
+
+ 1744      74333200 
+ 1745              	.LASF17:
+ 1746 02c7 6C6F6E67 		.ascii	"long double\000"
+ 1746      20646F75 
+ 1746      626C6500 
+ 1747              	.LASF29:
+ 1748 02d3 4F6E6557 		.ascii	"OneWire_read_data\000"
+ 1748      6972655F 
+ 1748      72656164 
+ 1748      5F646174 
+ 1748      6100
+ 1749              	.LASF42:
+ 1750 02e5 74656D70 		.ascii	"temp_msb1\000"
+ 1750      5F6D7362 
+ 1750      3100
+ 1751              	.LASF32:
+ 1752 02ef 4F6E6557 		.ascii	"OneWire2_sum\000"
+ 1752      69726532 
+ 1752      5F73756D 
+ 1752      00
+ 1753              	.LASF21:
+ 1754 02fc 70726573 		.ascii	"presence\000"
+ 1754      656E6365 
+ 1754      00
+ 1755              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
