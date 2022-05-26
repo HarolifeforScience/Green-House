@@ -1,0 +1,14 @@
+(DELAYFILE
+ (SDFVERSION "IEEE 1497 4.0")
+ (DATE "2022-04-18T08:25:57Z")
+ (DESIGN "Green_House")
+ (VENDOR "Cypress Semiconductor")
+ (PROGRAM "PSoC Creator")
+ (VERSION " 4.2")
+ (DIVIDER .)
+ (TIMESCALE 1 ns)
+ (CELL
+  (CELLTYPE "Green_House")
+  (INSTANCE *)
+ )
+)
