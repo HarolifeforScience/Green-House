@@ -35,7 +35,7 @@ volatile uint8 rtc_data[7];
 volatile uint8 room_temp = 0;
 volatile uint8 window_position_index = 0;
 volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
-volatile uint16 OneWireVal = 0 ;
+volatile float OneWireVal = 0.0 ;
 
 int main(void)
 {
@@ -43,6 +43,7 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     UART_Start();
+  
     isr_UART_StartEx(my_isr_UART);
     
     Timer_Start();
@@ -54,11 +55,11 @@ int main(void)
     //
     I2C_RTC_Start();
     
-    OneWire_start();
+    OneWireStart();
     
     // test transmition to putty
     char projectName[50] = "***Green House Project*** \n\r";
-    UART_PutString(projectName);
+      UART_PutString(projectName);
    
     
     for(;;)
@@ -163,10 +164,10 @@ CY_ISR(my_isr_UART)
 {   
     // Testing start
    // real_Time_Clock();
-    OneWireVal = OneWire_read_data();
-    char testData[20];
+    OneWireVal = OneWireRead_data();
+    char testData[32];
     
-    sprintf(testData," Temp One wire = %u \r\n" ,OneWireVal);
+    sprintf(testData," Temp One wire = %u \r\n" ,(int)OneWireVal);
     
     UART_PutString(testData);
     
@@ -226,8 +227,8 @@ CY_ISR(my_isr_UART)
 
 CY_ISR(my_isr_TIMER)
 {
-    read_Room_Temp();               // Read the temperature every second
     
+    read_Room_Temp();               // Read the temperature every second
     Timer_ReadStatusRegister();     // Clear the interrupt flag
 }
 

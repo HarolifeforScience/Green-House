@@ -10,17 +10,13 @@
  * ========================================
 */
 #include <project.h>
-void OneWire_start(void);
-float OneWire_read_data(void);
-int OW_Reset(void);
-void OW_Write_Bit(int bit);
-int OW_Read_Bit(void);
-void OW_Write_Byte(int data);
-int OW_Read_Byte(void);
-int OW2_Reset(void);
-void OW2_Write_Bit(int bit);
-int OW2_Read_Bit(void);
-void OW2_Write_Byte(int data);
-int OW2_Read_Byte(void);
+void OneWireStart(void);
+float OneWireRead_data(void);
+int OwReset(void);
+void OwWriteBit(int b);
+int OwReadBit(void);
+void OwWriteByte(int data);
+int OwReadByte(void);
+
 
 /* [] END OF FILE */

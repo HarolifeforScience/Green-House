@@ -1,6 +1,6 @@
 // ======================================================================
 // Green_House.v generated from TopDesign.cysch
-// 05/26/2022 at 13:11
+// 06/04/2022 at 19:12
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -1207,7 +1207,7 @@ module top ;
 
 	cy_psoc3_pins_v1_10
 		#(.id("264be2d3-9481-494b-8d9c-c1905a45e9cc"),
-		  .drive_mode(3'b100),
+		  .drive_mode(3'b010),
 		  .ibuf_enabled(1'b1),
 		  .init_dr_st(1'b1),
 		  .input_clk_en(0),

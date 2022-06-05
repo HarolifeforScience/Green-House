@@ -1,5 +1,5 @@
 -- Project:   Green_House
--- Generated: 05/26/2022 13:11:14
+-- Generated: 06/04/2022 19:12:44
 -- PSoC Creator  4.4
 
 ENTITY Green_House IS
@@ -1023,7 +1023,7 @@ BEGIN
 
     OneWirePin:logicalport
         GENERIC MAP(
-            drive_mode => "100",
+            drive_mode => "010",
             ibuf_enabled => "1",
             id => "264be2d3-9481-494b-8d9c-c1905a45e9cc",
             init_dr_st => "1",

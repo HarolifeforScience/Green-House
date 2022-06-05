@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 1
 
 
    1              		.syntax unified
@@ -19,7 +19,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 1
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.global	__aeabi_f2uiz
+  19              		.global	__aeabi_f2iz
   20              		.section	.text.my_isr_UART,"ax",%progbits
   21              		.align	2
   22              		.global	my_isr_UART
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 1
   27:main.c        **** 
   28:main.c        **** // Interrupts handler prototypes
   29:main.c        **** CY_ISR_PROTO(my_isr_UART);
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 2
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 2
 
 
   30:main.c        **** CY_ISR_PROTO(my_isr_TIMER);
@@ -69,7 +69,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 1
   35:main.c        **** volatile uint8 room_temp = 0;
   36:main.c        **** volatile uint8 window_position_index = 0;
   37:main.c        **** volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
-  38:main.c        **** volatile uint16 OneWireVal = 0 ;
+  38:main.c        **** volatile float OneWireVal = 0.0 ;
   39:main.c        **** 
   40:main.c        **** int main(void)
   41:main.c        **** {
@@ -77,2705 +77,2714 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 1
   43:main.c        **** 
   44:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
   45:main.c        ****     UART_Start();
-  46:main.c        ****     isr_UART_StartEx(my_isr_UART);
-  47:main.c        ****     
-  48:main.c        ****     Timer_Start();
-  49:main.c        ****     isr_Timer_StartEx(my_isr_TIMER);
-  50:main.c        ****     
-  51:main.c        ****     PWM_Start();
-  52:main.c        ****     isr_PWM_StartEx(my_isr_PWM);
-  53:main.c        ****     
-  54:main.c        ****     //
-  55:main.c        ****     I2C_RTC_Start();
-  56:main.c        ****     
-  57:main.c        ****     OneWire_start();
-  58:main.c        ****     
-  59:main.c        ****     // test transmition to putty
-  60:main.c        ****     char projectName[50] = "***Green House Project*** \n\r";
-  61:main.c        ****     UART_PutString(projectName);
-  62:main.c        ****    
-  63:main.c        ****     
-  64:main.c        ****     for(;;)
-  65:main.c        ****     {
-  66:main.c        ****         /* Place your application code here. */
-  67:main.c        ****        
-  68:main.c        ****     }
-  69:main.c        **** }
-  70:main.c        **** 
-  71:main.c        **** void heating_control(void)
-  72:main.c        **** {
-  73:main.c        ****     if (room_temp < 5)
-  74:main.c        ****     {
-  75:main.c        ****         LED_Heating_Write(True);    // Turns on extra heating if temperature falls below +5C
-  76:main.c        ****     }
-  77:main.c        ****     else if (room_temp > 10)
-  78:main.c        ****     {
-  79:main.c        ****         LED_Heating_Write(False);   //  Turns off extra heating if temperature rises above +10C
-  80:main.c        ****     }
-  81:main.c        **** }
-  82:main.c        **** 
-  83:main.c        **** void window_position_control(void)
-  84:main.c        **** {
-  85:main.c        ****     if (room_temp>=25)
-  86:main.c        ****     {
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 3
+  46:main.c        ****   
+  47:main.c        ****     isr_UART_StartEx(my_isr_UART);
+  48:main.c        ****     
+  49:main.c        ****     Timer_Start();
+  50:main.c        ****     isr_Timer_StartEx(my_isr_TIMER);
+  51:main.c        ****     
+  52:main.c        ****     PWM_Start();
+  53:main.c        ****     isr_PWM_StartEx(my_isr_PWM);
+  54:main.c        ****     
+  55:main.c        ****     //
+  56:main.c        ****     I2C_RTC_Start();
+  57:main.c        ****     
+  58:main.c        ****     OneWireStart();
+  59:main.c        ****     
+  60:main.c        ****     // test transmition to putty
+  61:main.c        ****     char projectName[50] = "***Green House Project*** \n\r";
+  62:main.c        ****       UART_PutString(projectName);
+  63:main.c        ****    
+  64:main.c        ****     
+  65:main.c        ****     for(;;)
+  66:main.c        ****     {
+  67:main.c        ****         /* Place your application code here. */
+  68:main.c        ****        
+  69:main.c        ****     }
+  70:main.c        **** }
+  71:main.c        **** 
+  72:main.c        **** void heating_control(void)
+  73:main.c        **** {
+  74:main.c        ****     if (room_temp < 5)
+  75:main.c        ****     {
+  76:main.c        ****         LED_Heating_Write(True);    // Turns on extra heating if temperature falls below +5C
+  77:main.c        ****     }
+  78:main.c        ****     else if (room_temp > 10)
+  79:main.c        ****     {
+  80:main.c        ****         LED_Heating_Write(False);   //  Turns off extra heating if temperature rises above +10C
+  81:main.c        ****     }
+  82:main.c        **** }
+  83:main.c        **** 
+  84:main.c        **** void window_position_control(void)
+  85:main.c        **** {
+  86:main.c        ****     if (room_temp>=25)
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 3
 
 
-  87:main.c        ****         window_position_index = 5;    // Fully opened
-  88:main.c        ****     }
-  89:main.c        ****     else if (room_temp>=24)
-  90:main.c        ****     {
-  91:main.c        ****         window_position_index = 4;
-  92:main.c        ****     }
-  93:main.c        ****     else if (room_temp>=23)
-  94:main.c        ****     {
-  95:main.c        ****         window_position_index = 3;
-  96:main.c        ****     }
-  97:main.c        ****     else if (room_temp>=22)
-  98:main.c        ****     {
-  99:main.c        ****         window_position_index = 2;
- 100:main.c        ****     }
- 101:main.c        ****     else if (room_temp>=21)
- 102:main.c        ****     {
- 103:main.c        ****         window_position_index = 1;
- 104:main.c        ****     }
- 105:main.c        ****     else
- 106:main.c        ****     {
- 107:main.c        ****         window_position_index = 0;    // Fully closed
- 108:main.c        ****     }
- 109:main.c        **** }
- 110:main.c        **** void read_Room_Temp(void)
- 111:main.c        **** {
- 112:main.c        ****     
+  87:main.c        ****     {
+  88:main.c        ****         window_position_index = 5;    // Fully opened
+  89:main.c        ****     }
+  90:main.c        ****     else if (room_temp>=24)
+  91:main.c        ****     {
+  92:main.c        ****         window_position_index = 4;
+  93:main.c        ****     }
+  94:main.c        ****     else if (room_temp>=23)
+  95:main.c        ****     {
+  96:main.c        ****         window_position_index = 3;
+  97:main.c        ****     }
+  98:main.c        ****     else if (room_temp>=22)
+  99:main.c        ****     {
+ 100:main.c        ****         window_position_index = 2;
+ 101:main.c        ****     }
+ 102:main.c        ****     else if (room_temp>=21)
+ 103:main.c        ****     {
+ 104:main.c        ****         window_position_index = 1;
+ 105:main.c        ****     }
+ 106:main.c        ****     else
+ 107:main.c        ****     {
+ 108:main.c        ****         window_position_index = 0;    // Fully closed
+ 109:main.c        ****     }
+ 110:main.c        **** }
+ 111:main.c        **** void read_Room_Temp(void)
+ 112:main.c        **** {
  113:main.c        ****     
- 114:main.c        ****     // ***To-Do**
- 115:main.c        ****     //  Read, Calculate and convert the tempearture
- 116:main.c        ****     //
- 117:main.c        ****     
- 118:main.c        ****     window_position_control();
- 119:main.c        ****     
- 120:main.c        ****     heating_control();
- 121:main.c        ****     
- 122:main.c        **** }
- 123:main.c        **** 
+ 114:main.c        ****     
+ 115:main.c        ****     // ***To-Do**
+ 116:main.c        ****     //  Read, Calculate and convert the tempearture
+ 117:main.c        ****     //
+ 118:main.c        ****     
+ 119:main.c        ****     window_position_control();
+ 120:main.c        ****     
+ 121:main.c        ****     heating_control();
+ 122:main.c        ****     
+ 123:main.c        **** }
  124:main.c        **** 
- 125:main.c        **** void real_Time_Clock(void)
- 126:main.c        **** {
- 127:main.c        ****     uint8 i, result = 0;
- 128:main.c        ****     char debug[50];
- 129:main.c        ****     
- 130:main.c        ****     // read the real time clock module data from the i2c master
- 131:main.c        ****     do
- 132:main.c        ****     {
- 133:main.c        ****         result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
- 134:main.c        ****         sprintf(debug,"Endless loop: %d\r\n" , result);
- 135:main.c        ****         UART_PutString(debug);
- 136:main.c        ****     }while(result!=I2C_RTC_MSTR_NO_ERROR);
- 137:main.c        ****     
- 138:main.c        ****     result = I2C_RTC_MasterWriteByte(0x00);
- 139:main.c        ****     
- 140:main.c        ****     result = I2C_RTC_MasterSendRestart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
- 141:main.c        ****     
- 142:main.c        ****     for(i=0; i<6; i++)
- 143:main.c        ****     {
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 4
+ 125:main.c        **** 
+ 126:main.c        **** void real_Time_Clock(void)
+ 127:main.c        **** {
+ 128:main.c        ****     uint8 i, result = 0;
+ 129:main.c        ****     char debug[50];
+ 130:main.c        ****     
+ 131:main.c        ****     // read the real time clock module data from the i2c master
+ 132:main.c        ****     do
+ 133:main.c        ****     {
+ 134:main.c        ****         result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
+ 135:main.c        ****         sprintf(debug,"Endless loop: %d\r\n" , result);
+ 136:main.c        ****         UART_PutString(debug);
+ 137:main.c        ****     }while(result!=I2C_RTC_MSTR_NO_ERROR);
+ 138:main.c        ****     
+ 139:main.c        ****     result = I2C_RTC_MasterWriteByte(0x00);
+ 140:main.c        ****     
+ 141:main.c        ****     result = I2C_RTC_MasterSendRestart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
+ 142:main.c        ****     
+ 143:main.c        ****     for(i=0; i<6; i++)
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 4
 
 
- 144:main.c        ****         rtc_data[i] = I2C_RTC_MasterReadByte(I2C_RTC_ACK_DATA);
- 145:main.c        ****     }
- 146:main.c        ****     
- 147:main.c        ****     rtc_data[6] = I2C_RTC_MasterReadByte(I2C_RTC_NAK_DATA);
- 148:main.c        ****     
- 149:main.c        ****     I2C_RTC_MasterSendStop();
- 150:main.c        ****     
- 151:main.c        ****     // send the result to the commad window
- 152:main.c        ****     char testData[20];
- 153:main.c        ****     for(i=0; i<7; i++)
- 154:main.c        ****     {
- 155:main.c        ****         sprintf(testData,"Byte %d : %d\r\n" ,i , rtc_data[i]);
- 156:main.c        ****         UART_PutString(testData);
- 157:main.c        ****     }
- 158:main.c        ****     //rtc_data[i]>>4&0x07
- 159:main.c        **** }
- 160:main.c        **** 
+ 144:main.c        ****     {
+ 145:main.c        ****         rtc_data[i] = I2C_RTC_MasterReadByte(I2C_RTC_ACK_DATA);
+ 146:main.c        ****     }
+ 147:main.c        ****     
+ 148:main.c        ****     rtc_data[6] = I2C_RTC_MasterReadByte(I2C_RTC_NAK_DATA);
+ 149:main.c        ****     
+ 150:main.c        ****     I2C_RTC_MasterSendStop();
+ 151:main.c        ****     
+ 152:main.c        ****     // send the result to the commad window
+ 153:main.c        ****     char testData[20];
+ 154:main.c        ****     for(i=0; i<7; i++)
+ 155:main.c        ****     {
+ 156:main.c        ****         sprintf(testData,"Byte %d : %d\r\n" ,i , rtc_data[i]);
+ 157:main.c        ****         UART_PutString(testData);
+ 158:main.c        ****     }
+ 159:main.c        ****     //rtc_data[i]>>4&0x07
+ 160:main.c        **** }
  161:main.c        **** 
- 162:main.c        **** CY_ISR(my_isr_UART)
- 163:main.c        **** {   
-  29              		.loc 1 163 0
+ 162:main.c        **** 
+ 163:main.c        **** CY_ISR(my_isr_UART)
+ 164:main.c        **** {   
+  29              		.loc 1 164 0
   30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 24
+  31              		@ args = 0, pretend = 0, frame = 32
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33 0000 10B5     		push	{r4, lr}
   34              		.cfi_def_cfa_offset 8
   35              		.cfi_offset 4, -8
   36              		.cfi_offset 14, -4
-  37 0002 86B0     		sub	sp, sp, #24
-  38              		.cfi_def_cfa_offset 32
- 164:main.c        ****     // Testing start
- 165:main.c        ****    // real_Time_Clock();
- 166:main.c        ****     OneWireVal = OneWire_read_data();
-  39              		.loc 1 166 0
-  40 0004 FFF7FEFF 		bl	OneWire_read_data
+  37 0002 88B0     		sub	sp, sp, #32
+  38              		.cfi_def_cfa_offset 40
+ 165:main.c        ****     // Testing start
+ 166:main.c        ****    // real_Time_Clock();
+ 167:main.c        ****     OneWireVal = OneWireRead_data();
+  39              		.loc 1 167 0
+  40 0004 FFF7FEFF 		bl	OneWireRead_data
   41              	.LVL0:
-  42 0008 FFF7FEFF 		bl	__aeabi_f2uiz
-  43              	.LVL1:
-  44 000c 80B2     		uxth	r0, r0
-  45 000e 264B     		ldr	r3, .L16
-  46 0010 1880     		strh	r0, [r3]	@ movhi
- 167:main.c        ****     char testData[20];
- 168:main.c        ****     
- 169:main.c        ****     sprintf(testData," Temp One wire = %u \r\n" ,OneWireVal);
-  47              		.loc 1 169 0
-  48 0012 1A88     		ldrh	r2, [r3]
-  49 0014 92B2     		uxth	r2, r2
-  50 0016 2549     		ldr	r1, .L16+4
-  51 0018 01A8     		add	r0, sp, #4
-  52 001a FFF7FEFF 		bl	sprintf
-  53              	.LVL2:
- 170:main.c        ****     
- 171:main.c        ****     UART_PutString(testData);
-  54              		.loc 1 171 0
-  55 001e 01A8     		add	r0, sp, #4
-  56 0020 FFF7FEFF 		bl	UART_PutString
-  57              	.LVL3:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 5
+  42 0008 274B     		ldr	r3, .L16
+  43 000a 1860     		str	r0, [r3]	@ float
+ 168:main.c        ****     char testData[32];
+ 169:main.c        ****     
+ 170:main.c        ****     sprintf(testData," Temp One wire = %u \r\n" ,(int)OneWireVal);
+  44              		.loc 1 170 0
+  45 000c 1868     		ldr	r0, [r3]	@ float
+  46 000e FFF7FEFF 		bl	__aeabi_f2iz
+  47              	.LVL1:
+  48 0012 0246     		mov	r2, r0
+  49 0014 2549     		ldr	r1, .L16+4
+  50 0016 6846     		mov	r0, sp
+  51 0018 FFF7FEFF 		bl	sprintf
+  52              	.LVL2:
+ 171:main.c        ****     
+ 172:main.c        ****     UART_PutString(testData);
+  53              		.loc 1 172 0
+  54 001c 6846     		mov	r0, sp
+  55 001e FFF7FEFF 		bl	UART_PutString
+  56              	.LVL3:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 5
 
 
- 172:main.c        ****     
  173:main.c        ****     
- 174:main.c        ****     // Testing ends
- 175:main.c        ****     
- 176:main.c        ****     // Terminal Interface Commande
- 177:main.c        ****     static uint8 old_char = 0;
- 178:main.c        ****     uint8 current_char;
- 179:main.c        ****     current_char = UART_GetChar();
-  58              		.loc 1 179 0
-  59 0024 FFF7FEFF 		bl	UART_GetChar
-  60              	.LVL4:
-  61 0028 0446     		mov	r4, r0
-  62              	.LVL5:
- 180:main.c        ****     
- 181:main.c        ****     if(current_char == 't' || current_char == 'T')
-  63              		.loc 1 181 0
-  64 002a 7428     		cmp	r0, #116
-  65 002c 01D0     		beq	.L2
-  66              		.loc 1 181 0 is_stmt 0 discriminator 1
-  67 002e 5428     		cmp	r0, #84
-  68 0030 03D1     		bne	.L3
-  69              	.L2:
- 182:main.c        ****     {
- 183:main.c        ****         // Setting the current time for the device
- 184:main.c        ****         UART_PutString("Setting the current time for the device\r\n");  
-  70              		.loc 1 184 0 is_stmt 1
-  71 0032 1F48     		ldr	r0, .L16+8
-  72              	.LVL6:
-  73 0034 FFF7FEFF 		bl	UART_PutString
-  74              	.LVL7:
-  75 0038 2EE0     		b	.L4
-  76              	.LVL8:
-  77              	.L3:
- 185:main.c        ****     }
- 186:main.c        ****     else if(current_char == 'd' || current_char == 'D')
-  78              		.loc 1 186 0
-  79 003a 6428     		cmp	r0, #100
-  80 003c 01D0     		beq	.L5
-  81              		.loc 1 186 0 is_stmt 0 discriminator 1
-  82 003e 4428     		cmp	r0, #68
-  83 0040 03D1     		bne	.L6
-  84              	.L5:
- 187:main.c        ****     {
- 188:main.c        ****         // Setting the current day for the device
- 189:main.c        ****         UART_PutString("Setting the current day for the device\r\n");  
-  85              		.loc 1 189 0 is_stmt 1
-  86 0042 1C48     		ldr	r0, .L16+12
-  87              	.LVL9:
-  88 0044 FFF7FEFF 		bl	UART_PutString
-  89              	.LVL10:
-  90 0048 26E0     		b	.L4
-  91              	.LVL11:
-  92              	.L6:
- 190:main.c        ****     }
- 191:main.c        ****     else if(current_char == '?')
-  93              		.loc 1 191 0
-  94 004a 3F28     		cmp	r0, #63
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 6
+ 174:main.c        ****     
+ 175:main.c        ****     // Testing ends
+ 176:main.c        ****     
+ 177:main.c        ****     // Terminal Interface Commande
+ 178:main.c        ****     static uint8 old_char = 0;
+ 179:main.c        ****     uint8 current_char;
+ 180:main.c        ****     current_char = UART_GetChar();
+  57              		.loc 1 180 0
+  58 0022 FFF7FEFF 		bl	UART_GetChar
+  59              	.LVL4:
+  60 0026 0446     		mov	r4, r0
+  61              	.LVL5:
+ 181:main.c        ****     
+ 182:main.c        ****     if(current_char == 't' || current_char == 'T')
+  62              		.loc 1 182 0
+  63 0028 7428     		cmp	r0, #116
+  64 002a 01D0     		beq	.L2
+  65              		.loc 1 182 0 is_stmt 0 discriminator 1
+  66 002c 5428     		cmp	r0, #84
+  67 002e 03D1     		bne	.L3
+  68              	.L2:
+ 183:main.c        ****     {
+ 184:main.c        ****         // Setting the current time for the device
+ 185:main.c        ****         UART_PutString("Setting the current time for the device\r\n");  
+  69              		.loc 1 185 0 is_stmt 1
+  70 0030 1F48     		ldr	r0, .L16+8
+  71              	.LVL6:
+  72 0032 FFF7FEFF 		bl	UART_PutString
+  73              	.LVL7:
+  74 0036 2EE0     		b	.L4
+  75              	.LVL8:
+  76              	.L3:
+ 186:main.c        ****     }
+ 187:main.c        ****     else if(current_char == 'd' || current_char == 'D')
+  77              		.loc 1 187 0
+  78 0038 6428     		cmp	r0, #100
+  79 003a 01D0     		beq	.L5
+  80              		.loc 1 187 0 is_stmt 0 discriminator 1
+  81 003c 4428     		cmp	r0, #68
+  82 003e 03D1     		bne	.L6
+  83              	.L5:
+ 188:main.c        ****     {
+ 189:main.c        ****         // Setting the current day for the device
+ 190:main.c        ****         UART_PutString("Setting the current day for the device\r\n");  
+  84              		.loc 1 190 0 is_stmt 1
+  85 0040 1C48     		ldr	r0, .L16+12
+  86              	.LVL9:
+  87 0042 FFF7FEFF 		bl	UART_PutString
+  88              	.LVL10:
+  89 0046 26E0     		b	.L4
+  90              	.LVL11:
+  91              	.L6:
+ 191:main.c        ****     }
+ 192:main.c        ****     else if(current_char == '?')
+  92              		.loc 1 192 0
+  93 0048 3F28     		cmp	r0, #63
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 6
 
 
-  95 004c 15D1     		bne	.L7
- 192:main.c        ****     {
- 193:main.c        ****         if(old_char == 't' || old_char == 'T')
-  96              		.loc 1 193 0
-  97 004e 164B     		ldr	r3, .L16
-  98 0050 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
-  99 0052 742B     		cmp	r3, #116
- 100 0054 01D0     		beq	.L8
- 101              		.loc 1 193 0 is_stmt 0 discriminator 1
- 102 0056 542B     		cmp	r3, #84
- 103 0058 03D1     		bne	.L9
- 104              	.L8:
- 194:main.c        ****         {
- 195:main.c        ****             // Sending out the current device time
- 196:main.c        ****             UART_PutString("Sending out the current device time\r\n");
- 105              		.loc 1 196 0 is_stmt 1
- 106 005a 1748     		ldr	r0, .L16+16
- 107              	.LVL12:
- 108 005c FFF7FEFF 		bl	UART_PutString
- 109              	.LVL13:
- 110 0060 1AE0     		b	.L4
- 111              	.LVL14:
- 112              	.L9:
- 197:main.c        ****         }
- 198:main.c        ****         else if(old_char == 'd' || old_char == 'D')
- 113              		.loc 1 198 0
- 114 0062 642B     		cmp	r3, #100
- 115 0064 01D0     		beq	.L10
- 116              		.loc 1 198 0 is_stmt 0 discriminator 1
- 117 0066 442B     		cmp	r3, #68
- 118 0068 03D1     		bne	.L11
- 119              	.L10:
- 199:main.c        ****         {
- 200:main.c        ****             // Sending out the current device day
- 201:main.c        ****             UART_PutString("Sending out the current device day\r\n");
- 120              		.loc 1 201 0 is_stmt 1
- 121 006a 1448     		ldr	r0, .L16+20
- 122              	.LVL15:
- 123 006c FFF7FEFF 		bl	UART_PutString
- 124              	.LVL16:
- 125 0070 12E0     		b	.L4
- 126              	.LVL17:
- 127              	.L11:
- 202:main.c        ****         }
- 203:main.c        ****         else
- 204:main.c        ****         {
- 205:main.c        ****             // Sending out indentification information 
- 206:main.c        ****             UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\
- 128              		.loc 1 206 0
- 129 0072 1348     		ldr	r0, .L16+24
- 130              	.LVL18:
- 131 0074 FFF7FEFF 		bl	UART_PutString
- 132              	.LVL19:
- 133 0078 0EE0     		b	.L4
- 134              	.LVL20:
- 135              	.L7:
- 207:main.c        ****         }
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 7
+  94 004a 15D1     		bne	.L7
+ 193:main.c        ****     {
+ 194:main.c        ****         if(old_char == 't' || old_char == 'T')
+  95              		.loc 1 194 0
+  96 004c 164B     		ldr	r3, .L16
+  97 004e 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+  98 0050 742B     		cmp	r3, #116
+  99 0052 01D0     		beq	.L8
+ 100              		.loc 1 194 0 is_stmt 0 discriminator 1
+ 101 0054 542B     		cmp	r3, #84
+ 102 0056 03D1     		bne	.L9
+ 103              	.L8:
+ 195:main.c        ****         {
+ 196:main.c        ****             // Sending out the current device time
+ 197:main.c        ****             UART_PutString("Sending out the current device time\r\n");
+ 104              		.loc 1 197 0 is_stmt 1
+ 105 0058 1748     		ldr	r0, .L16+16
+ 106              	.LVL12:
+ 107 005a FFF7FEFF 		bl	UART_PutString
+ 108              	.LVL13:
+ 109 005e 1AE0     		b	.L4
+ 110              	.LVL14:
+ 111              	.L9:
+ 198:main.c        ****         }
+ 199:main.c        ****         else if(old_char == 'd' || old_char == 'D')
+ 112              		.loc 1 199 0
+ 113 0060 642B     		cmp	r3, #100
+ 114 0062 01D0     		beq	.L10
+ 115              		.loc 1 199 0 is_stmt 0 discriminator 1
+ 116 0064 442B     		cmp	r3, #68
+ 117 0066 03D1     		bne	.L11
+ 118              	.L10:
+ 200:main.c        ****         {
+ 201:main.c        ****             // Sending out the current device day
+ 202:main.c        ****             UART_PutString("Sending out the current device day\r\n");
+ 119              		.loc 1 202 0 is_stmt 1
+ 120 0068 1448     		ldr	r0, .L16+20
+ 121              	.LVL15:
+ 122 006a FFF7FEFF 		bl	UART_PutString
+ 123              	.LVL16:
+ 124 006e 12E0     		b	.L4
+ 125              	.LVL17:
+ 126              	.L11:
+ 203:main.c        ****         }
+ 204:main.c        ****         else
+ 205:main.c        ****         {
+ 206:main.c        ****             // Sending out indentification information 
+ 207:main.c        ****             UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\
+ 127              		.loc 1 207 0
+ 128 0070 1348     		ldr	r0, .L16+24
+ 129              	.LVL18:
+ 130 0072 FFF7FEFF 		bl	UART_PutString
+ 131              	.LVL19:
+ 132 0076 0EE0     		b	.L4
+ 133              	.LVL20:
+ 134              	.L7:
+ 208:main.c        ****         }
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 7
 
 
- 208:main.c        ****     }
- 209:main.c        ****      else if(current_char == 'a' || current_char == 'A')
- 136              		.loc 1 209 0
- 137 007a 6128     		cmp	r0, #97
- 138 007c 01D0     		beq	.L12
- 139              		.loc 1 209 0 is_stmt 0 discriminator 1
- 140 007e 4128     		cmp	r0, #65
- 141 0080 03D1     		bne	.L13
- 142              	.L12:
- 210:main.c        ****     {
- 211:main.c        ****         // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, s
- 212:main.c        ****         UART_PutString("Sending all saved data...\r\n");
- 143              		.loc 1 212 0 is_stmt 1
- 144 0082 1048     		ldr	r0, .L16+28
- 145              	.LVL21:
- 146 0084 FFF7FEFF 		bl	UART_PutString
- 147              	.LVL22:
- 148 0088 06E0     		b	.L4
- 149              	.LVL23:
- 150              	.L13:
- 213:main.c        ****     }
- 214:main.c        ****      else if(current_char == 'c' || current_char == 'C')
- 151              		.loc 1 214 0
- 152 008a 6328     		cmp	r0, #99
- 153 008c 01D0     		beq	.L14
- 154              		.loc 1 214 0 is_stmt 0 discriminator 1
- 155 008e 4328     		cmp	r0, #67
- 156 0090 02D1     		bne	.L4
- 157              	.L14:
- 215:main.c        ****     {
- 216:main.c        ****         // clearing the device data logging memory
- 217:main.c        ****         UART_PutString("Clearing the logging memory...\r\n");
- 158              		.loc 1 217 0 is_stmt 1
- 159 0092 0D48     		ldr	r0, .L16+32
- 160              	.LVL24:
- 161 0094 FFF7FEFF 		bl	UART_PutString
- 162              	.LVL25:
- 163              	.L4:
- 218:main.c        ****     }
- 219:main.c        ****     
- 220:main.c        ****     old_char = current_char;
- 164              		.loc 1 220 0
- 165 0098 034B     		ldr	r3, .L16
- 166 009a 9C70     		strb	r4, [r3, #2]
- 221:main.c        ****     // Clearing the Interrupt bit and the Receive register
- 222:main.c        ****     UART_ClearRxBuffer();
- 167              		.loc 1 222 0
- 168 009c FFF7FEFF 		bl	UART_ClearRxBuffer
- 169              	.LVL26:
- 223:main.c        ****     isr_UART_ClearPending();
- 170              		.loc 1 223 0
- 171 00a0 FFF7FEFF 		bl	isr_UART_ClearPending
- 172              	.LVL27:
- 224:main.c        ****     
- 225:main.c        **** }
- 173              		.loc 1 225 0
- 174 00a4 06B0     		add	sp, sp, #24
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 8
+ 209:main.c        ****     }
+ 210:main.c        ****      else if(current_char == 'a' || current_char == 'A')
+ 135              		.loc 1 210 0
+ 136 0078 6128     		cmp	r0, #97
+ 137 007a 01D0     		beq	.L12
+ 138              		.loc 1 210 0 is_stmt 0 discriminator 1
+ 139 007c 4128     		cmp	r0, #65
+ 140 007e 03D1     		bne	.L13
+ 141              	.L12:
+ 211:main.c        ****     {
+ 212:main.c        ****         // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, s
+ 213:main.c        ****         UART_PutString("Sending all saved data...\r\n");
+ 142              		.loc 1 213 0 is_stmt 1
+ 143 0080 1048     		ldr	r0, .L16+28
+ 144              	.LVL21:
+ 145 0082 FFF7FEFF 		bl	UART_PutString
+ 146              	.LVL22:
+ 147 0086 06E0     		b	.L4
+ 148              	.LVL23:
+ 149              	.L13:
+ 214:main.c        ****     }
+ 215:main.c        ****      else if(current_char == 'c' || current_char == 'C')
+ 150              		.loc 1 215 0
+ 151 0088 6328     		cmp	r0, #99
+ 152 008a 01D0     		beq	.L14
+ 153              		.loc 1 215 0 is_stmt 0 discriminator 1
+ 154 008c 4328     		cmp	r0, #67
+ 155 008e 02D1     		bne	.L4
+ 156              	.L14:
+ 216:main.c        ****     {
+ 217:main.c        ****         // clearing the device data logging memory
+ 218:main.c        ****         UART_PutString("Clearing the logging memory...\r\n");
+ 157              		.loc 1 218 0 is_stmt 1
+ 158 0090 0D48     		ldr	r0, .L16+32
+ 159              	.LVL24:
+ 160 0092 FFF7FEFF 		bl	UART_PutString
+ 161              	.LVL25:
+ 162              	.L4:
+ 219:main.c        ****     }
+ 220:main.c        ****     
+ 221:main.c        ****     old_char = current_char;
+ 163              		.loc 1 221 0
+ 164 0096 044B     		ldr	r3, .L16
+ 165 0098 1C71     		strb	r4, [r3, #4]
+ 222:main.c        ****     // Clearing the Interrupt bit and the Receive register
+ 223:main.c        ****     UART_ClearRxBuffer();
+ 166              		.loc 1 223 0
+ 167 009a FFF7FEFF 		bl	UART_ClearRxBuffer
+ 168              	.LVL26:
+ 224:main.c        ****     isr_UART_ClearPending();
+ 169              		.loc 1 224 0
+ 170 009e FFF7FEFF 		bl	isr_UART_ClearPending
+ 171              	.LVL27:
+ 225:main.c        ****     
+ 226:main.c        **** }
+ 172              		.loc 1 226 0
+ 173 00a2 08B0     		add	sp, sp, #32
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 8
 
 
- 175              		.cfi_def_cfa_offset 8
- 176              		@ sp needed
- 177 00a6 10BD     		pop	{r4, pc}
- 178              	.L17:
- 179              		.align	2
- 180              	.L16:
- 181 00a8 00000000 		.word	.LANCHOR0
- 182 00ac 00000000 		.word	.LC0
- 183 00b0 18000000 		.word	.LC1
- 184 00b4 44000000 		.word	.LC2
- 185 00b8 70000000 		.word	.LC3
- 186 00bc 98000000 		.word	.LC4
- 187 00c0 C0000000 		.word	.LC5
- 188 00c4 0C010000 		.word	.LC6
- 189 00c8 28010000 		.word	.LC7
- 190              		.cfi_endproc
- 191              	.LFE69:
- 192              		.size	my_isr_UART, .-my_isr_UART
- 193              		.section	.text.my_isr_PWM,"ax",%progbits
- 194              		.align	2
- 195              		.global	my_isr_PWM
- 196              		.thumb
- 197              		.thumb_func
- 198              		.type	my_isr_PWM, %function
- 199              	my_isr_PWM:
- 200              	.LFB71:
- 226:main.c        **** 
- 227:main.c        **** CY_ISR(my_isr_TIMER)
- 228:main.c        **** {
- 229:main.c        ****     read_Room_Temp();               // Read the temperature every second
+ 174              		.cfi_def_cfa_offset 8
+ 175              		@ sp needed
+ 176 00a4 10BD     		pop	{r4, pc}
+ 177              	.L17:
+ 178 00a6 00BF     		.align	2
+ 179              	.L16:
+ 180 00a8 00000000 		.word	.LANCHOR0
+ 181 00ac 00000000 		.word	.LC0
+ 182 00b0 18000000 		.word	.LC1
+ 183 00b4 44000000 		.word	.LC2
+ 184 00b8 70000000 		.word	.LC3
+ 185 00bc 98000000 		.word	.LC4
+ 186 00c0 C0000000 		.word	.LC5
+ 187 00c4 0C010000 		.word	.LC6
+ 188 00c8 28010000 		.word	.LC7
+ 189              		.cfi_endproc
+ 190              	.LFE69:
+ 191              		.size	my_isr_UART, .-my_isr_UART
+ 192              		.section	.text.my_isr_PWM,"ax",%progbits
+ 193              		.align	2
+ 194              		.global	my_isr_PWM
+ 195              		.thumb
+ 196              		.thumb_func
+ 197              		.type	my_isr_PWM, %function
+ 198              	my_isr_PWM:
+ 199              	.LFB71:
+ 227:main.c        **** 
+ 228:main.c        **** CY_ISR(my_isr_TIMER)
+ 229:main.c        **** {
  230:main.c        ****     
- 231:main.c        ****     Timer_ReadStatusRegister();     // Clear the interrupt flag
- 232:main.c        **** }
- 233:main.c        **** 
- 234:main.c        **** CY_ISR(my_isr_PWM)
- 235:main.c        **** {
- 201              		.loc 1 235 0
- 202              		.cfi_startproc
- 203              		@ args = 0, pretend = 0, frame = 0
- 204              		@ frame_needed = 0, uses_anonymous_args = 0
- 205 0000 08B5     		push	{r3, lr}
- 206              		.cfi_def_cfa_offset 8
- 207              		.cfi_offset 3, -8
- 208              		.cfi_offset 14, -4
- 236:main.c        ****     static uint16 actualPosition = Servo_First_Position;    // actual position of the Servo Motor
- 237:main.c        ****     
- 238:main.c        ****     if (actualPosition > window_position[window_position_index]) actualPosition -= 1; // smooth the
- 209              		.loc 1 238 0
- 210 0002 104B     		ldr	r3, .L22
- 211 0004 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
- 212 0006 DBB2     		uxtb	r3, r3
- 213 0008 0F4A     		ldr	r2, .L22+4
- 214 000a 32F81330 		ldrh	r3, [r2, r3, lsl #1]
- 215 000e 9BB2     		uxth	r3, r3
- 216 0010 9289     		ldrh	r2, [r2, #12]
- 217 0012 9342     		cmp	r3, r2
- 218 0014 02D2     		bcs	.L19
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 9
+ 231:main.c        ****     read_Room_Temp();               // Read the temperature every second
+ 232:main.c        ****     Timer_ReadStatusRegister();     // Clear the interrupt flag
+ 233:main.c        **** }
+ 234:main.c        **** 
+ 235:main.c        **** CY_ISR(my_isr_PWM)
+ 236:main.c        **** {
+ 200              		.loc 1 236 0
+ 201              		.cfi_startproc
+ 202              		@ args = 0, pretend = 0, frame = 0
+ 203              		@ frame_needed = 0, uses_anonymous_args = 0
+ 204 0000 08B5     		push	{r3, lr}
+ 205              		.cfi_def_cfa_offset 8
+ 206              		.cfi_offset 3, -8
+ 207              		.cfi_offset 14, -4
+ 237:main.c        ****     static uint16 actualPosition = Servo_First_Position;    // actual position of the Servo Motor
+ 238:main.c        ****     
+ 239:main.c        ****     if (actualPosition > window_position[window_position_index]) actualPosition -= 1; // smooth the
+ 208              		.loc 1 239 0
+ 209 0002 104B     		ldr	r3, .L22
+ 210 0004 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 211 0006 DBB2     		uxtb	r3, r3
+ 212 0008 0F4A     		ldr	r2, .L22+4
+ 213 000a 32F81330 		ldrh	r3, [r2, r3, lsl #1]
+ 214 000e 9BB2     		uxth	r3, r3
+ 215 0010 9289     		ldrh	r2, [r2, #12]
+ 216 0012 9342     		cmp	r3, r2
+ 217 0014 02D2     		bcs	.L19
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 9
 
 
- 219              		.loc 1 238 0 is_stmt 0 discriminator 1
- 220 0016 013A     		subs	r2, r2, #1
- 221 0018 0B4B     		ldr	r3, .L22+4
- 222 001a 9A81     		strh	r2, [r3, #12]	@ movhi
- 223              	.L19:
- 239:main.c        ****     if (actualPosition < window_position[window_position_index]) actualPosition += 1;
- 224              		.loc 1 239 0 is_stmt 1
- 225 001c 094B     		ldr	r3, .L22
- 226 001e DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
- 227 0020 DBB2     		uxtb	r3, r3
- 228 0022 094A     		ldr	r2, .L22+4
- 229 0024 32F81330 		ldrh	r3, [r2, r3, lsl #1]
- 230 0028 9BB2     		uxth	r3, r3
- 231 002a 9289     		ldrh	r2, [r2, #12]
- 232 002c 9342     		cmp	r3, r2
- 233 002e 02D9     		bls	.L20
- 234              		.loc 1 239 0 is_stmt 0 discriminator 1
- 235 0030 0132     		adds	r2, r2, #1
- 236 0032 054B     		ldr	r3, .L22+4
- 237 0034 9A81     		strh	r2, [r3, #12]	@ movhi
- 238              	.L20:
- 240:main.c        ****     
- 241:main.c        ****     PWM_WriteCompare(actualPosition);   // Move the Servo to the desired position
- 239              		.loc 1 241 0 is_stmt 1
- 240 0036 044B     		ldr	r3, .L22+4
- 241 0038 9889     		ldrh	r0, [r3, #12]
- 242 003a FFF7FEFF 		bl	PWM_WriteCompare
- 243              	.LVL28:
- 242:main.c        ****     
- 243:main.c        ****     PWM_ReadStatusRegister();           // Clear the interrupt flag
- 244              		.loc 1 243 0
- 245 003e FFF7FEFF 		bl	PWM_ReadStatusRegister
- 246              	.LVL29:
- 247 0042 08BD     		pop	{r3, pc}
- 248              	.L23:
- 249              		.align	2
- 250              	.L22:
- 251 0044 00000000 		.word	.LANCHOR0
- 252 0048 00000000 		.word	.LANCHOR1
- 253              		.cfi_endproc
- 254              	.LFE71:
- 255              		.size	my_isr_PWM, .-my_isr_PWM
- 256              		.section	.text.main,"ax",%progbits
- 257              		.align	2
- 258              		.global	main
- 259              		.thumb
- 260              		.thumb_func
- 261              		.type	main, %function
- 262              	main:
- 263              	.LFB64:
+ 218              		.loc 1 239 0 is_stmt 0 discriminator 1
+ 219 0016 013A     		subs	r2, r2, #1
+ 220 0018 0B4B     		ldr	r3, .L22+4
+ 221 001a 9A81     		strh	r2, [r3, #12]	@ movhi
+ 222              	.L19:
+ 240:main.c        ****     if (actualPosition < window_position[window_position_index]) actualPosition += 1;
+ 223              		.loc 1 240 0 is_stmt 1
+ 224 001c 094B     		ldr	r3, .L22
+ 225 001e 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 226 0020 DBB2     		uxtb	r3, r3
+ 227 0022 094A     		ldr	r2, .L22+4
+ 228 0024 32F81330 		ldrh	r3, [r2, r3, lsl #1]
+ 229 0028 9BB2     		uxth	r3, r3
+ 230 002a 9289     		ldrh	r2, [r2, #12]
+ 231 002c 9342     		cmp	r3, r2
+ 232 002e 02D9     		bls	.L20
+ 233              		.loc 1 240 0 is_stmt 0 discriminator 1
+ 234 0030 0132     		adds	r2, r2, #1
+ 235 0032 054B     		ldr	r3, .L22+4
+ 236 0034 9A81     		strh	r2, [r3, #12]	@ movhi
+ 237              	.L20:
+ 241:main.c        ****     
+ 242:main.c        ****     PWM_WriteCompare(actualPosition);   // Move the Servo to the desired position
+ 238              		.loc 1 242 0 is_stmt 1
+ 239 0036 044B     		ldr	r3, .L22+4
+ 240 0038 9889     		ldrh	r0, [r3, #12]
+ 241 003a FFF7FEFF 		bl	PWM_WriteCompare
+ 242              	.LVL28:
+ 243:main.c        ****     
+ 244:main.c        ****     PWM_ReadStatusRegister();           // Clear the interrupt flag
+ 243              		.loc 1 244 0
+ 244 003e FFF7FEFF 		bl	PWM_ReadStatusRegister
+ 245              	.LVL29:
+ 246 0042 08BD     		pop	{r3, pc}
+ 247              	.L23:
+ 248              		.align	2
+ 249              	.L22:
+ 250 0044 00000000 		.word	.LANCHOR0
+ 251 0048 00000000 		.word	.LANCHOR1
+ 252              		.cfi_endproc
+ 253              	.LFE71:
+ 254              		.size	my_isr_PWM, .-my_isr_PWM
+ 255              		.section	.text.main,"ax",%progbits
+ 256              		.align	2
+ 257              		.global	main
+ 258              		.thumb
+ 259              		.thumb_func
+ 260              		.type	main, %function
+ 261              	main:
+ 262              	.LFB64:
   41:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
- 264              		.loc 1 41 0
- 265              		.cfi_startproc
- 266              		@ args = 0, pretend = 0, frame = 56
- 267              		@ frame_needed = 0, uses_anonymous_args = 0
- 268 0000 30B5     		push	{r4, r5, lr}
- 269              		.cfi_def_cfa_offset 12
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 10
+ 263              		.loc 1 41 0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 56
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267 0000 30B5     		push	{r4, r5, lr}
+ 268              		.cfi_def_cfa_offset 12
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 10
 
 
- 270              		.cfi_offset 4, -12
- 271              		.cfi_offset 5, -8
- 272              		.cfi_offset 14, -4
- 273 0002 8FB0     		sub	sp, sp, #60
- 274              		.cfi_def_cfa_offset 72
+ 269              		.cfi_offset 4, -12
+ 270              		.cfi_offset 5, -8
+ 271              		.cfi_offset 14, -4
+ 272 0002 8FB0     		sub	sp, sp, #60
+ 273              		.cfi_def_cfa_offset 72
   42:main.c        **** 
- 275              		.loc 1 42 0
- 276              		.syntax unified
- 277              	@ 42 "main.c" 1
- 278 0004 62B6     		CPSIE   i
- 279              	@ 0 "" 2
-  45:main.c        ****     isr_UART_StartEx(my_isr_UART);
- 280              		.loc 1 45 0
- 281              		.thumb
- 282              		.syntax unified
- 283 0006 FFF7FEFF 		bl	UART_Start
- 284              	.LVL30:
-  46:main.c        ****     
- 285              		.loc 1 46 0
- 286 000a 1548     		ldr	r0, .L27
- 287 000c FFF7FEFF 		bl	isr_UART_StartEx
- 288              	.LVL31:
-  48:main.c        ****     isr_Timer_StartEx(my_isr_TIMER);
- 289              		.loc 1 48 0
- 290 0010 FFF7FEFF 		bl	Timer_Start
- 291              	.LVL32:
-  49:main.c        ****     
- 292              		.loc 1 49 0
- 293 0014 1348     		ldr	r0, .L27+4
- 294 0016 FFF7FEFF 		bl	isr_Timer_StartEx
- 295              	.LVL33:
-  51:main.c        ****     isr_PWM_StartEx(my_isr_PWM);
- 296              		.loc 1 51 0
- 297 001a FFF7FEFF 		bl	PWM_Start
- 298              	.LVL34:
-  52:main.c        ****     
- 299              		.loc 1 52 0
- 300 001e 1248     		ldr	r0, .L27+8
- 301 0020 FFF7FEFF 		bl	isr_PWM_StartEx
- 302              	.LVL35:
-  55:main.c        ****     
- 303              		.loc 1 55 0
- 304 0024 FFF7FEFF 		bl	I2C_RTC_Start
- 305              	.LVL36:
-  57:main.c        ****     
- 306              		.loc 1 57 0
- 307 0028 FFF7FEFF 		bl	OneWire_start
- 308              	.LVL37:
-  60:main.c        ****     UART_PutString(projectName);
- 309              		.loc 1 60 0
- 310 002c 01AC     		add	r4, sp, #4
- 311 002e 0F4D     		ldr	r5, .L27+12
- 312 0030 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
- 313 0032 0FC4     		stmia	r4!, {r0, r1, r2, r3}
- 314 0034 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
- 315 0038 07C4     		stmia	r4!, {r0, r1, r2}
- 316 003a 2370     		strb	r3, [r4]
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 11
+ 274              		.loc 1 42 0
+ 275              		.syntax unified
+ 276              	@ 42 "main.c" 1
+ 277 0004 62B6     		CPSIE   i
+ 278              	@ 0 "" 2
+  45:main.c        ****   
+ 279              		.loc 1 45 0
+ 280              		.thumb
+ 281              		.syntax unified
+ 282 0006 FFF7FEFF 		bl	UART_Start
+ 283              	.LVL30:
+  47:main.c        ****     
+ 284              		.loc 1 47 0
+ 285 000a 1548     		ldr	r0, .L27
+ 286 000c FFF7FEFF 		bl	isr_UART_StartEx
+ 287              	.LVL31:
+  49:main.c        ****     isr_Timer_StartEx(my_isr_TIMER);
+ 288              		.loc 1 49 0
+ 289 0010 FFF7FEFF 		bl	Timer_Start
+ 290              	.LVL32:
+  50:main.c        ****     
+ 291              		.loc 1 50 0
+ 292 0014 1348     		ldr	r0, .L27+4
+ 293 0016 FFF7FEFF 		bl	isr_Timer_StartEx
+ 294              	.LVL33:
+  52:main.c        ****     isr_PWM_StartEx(my_isr_PWM);
+ 295              		.loc 1 52 0
+ 296 001a FFF7FEFF 		bl	PWM_Start
+ 297              	.LVL34:
+  53:main.c        ****     
+ 298              		.loc 1 53 0
+ 299 001e 1248     		ldr	r0, .L27+8
+ 300 0020 FFF7FEFF 		bl	isr_PWM_StartEx
+ 301              	.LVL35:
+  56:main.c        ****     
+ 302              		.loc 1 56 0
+ 303 0024 FFF7FEFF 		bl	I2C_RTC_Start
+ 304              	.LVL36:
+  58:main.c        ****     
+ 305              		.loc 1 58 0
+ 306 0028 FFF7FEFF 		bl	OneWireStart
+ 307              	.LVL37:
+  61:main.c        ****       UART_PutString(projectName);
+ 308              		.loc 1 61 0
+ 309 002c 01AC     		add	r4, sp, #4
+ 310 002e 0F4D     		ldr	r5, .L27+12
+ 311 0030 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 312 0032 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 313 0034 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
+ 314 0038 07C4     		stmia	r4!, {r0, r1, r2}
+ 315 003a 2370     		strb	r3, [r4]
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 11
 
 
- 317 003c 0023     		movs	r3, #0
- 318 003e CDF82130 		str	r3, [sp, #33]	@ unaligned
- 319 0042 CDF82530 		str	r3, [sp, #37]	@ unaligned
- 320 0046 CDF82930 		str	r3, [sp, #41]	@ unaligned
- 321 004a CDF82D30 		str	r3, [sp, #45]	@ unaligned
- 322 004e CDF83130 		str	r3, [sp, #49]	@ unaligned
- 323 0052 8DF83530 		strb	r3, [sp, #53]
-  61:main.c        ****    
- 324              		.loc 1 61 0
- 325 0056 01A8     		add	r0, sp, #4
- 326 0058 FFF7FEFF 		bl	UART_PutString
- 327              	.LVL38:
- 328              	.L25:
- 329 005c FEE7     		b	.L25
- 330              	.L28:
- 331 005e 00BF     		.align	2
- 332              	.L27:
- 333 0060 00000000 		.word	my_isr_UART
- 334 0064 00000000 		.word	my_isr_TIMER
- 335 0068 00000000 		.word	my_isr_PWM
- 336 006c 00000000 		.word	.LANCHOR2
- 337              		.cfi_endproc
- 338              	.LFE64:
- 339              		.size	main, .-main
- 340              		.section	.text.heating_control,"ax",%progbits
- 341              		.align	2
- 342              		.global	heating_control
- 343              		.thumb
- 344              		.thumb_func
- 345              		.type	heating_control, %function
- 346              	heating_control:
- 347              	.LFB65:
-  72:main.c        ****     if (room_temp < 5)
- 348              		.loc 1 72 0
- 349              		.cfi_startproc
- 350              		@ args = 0, pretend = 0, frame = 0
- 351              		@ frame_needed = 0, uses_anonymous_args = 0
- 352 0000 08B5     		push	{r3, lr}
- 353              		.cfi_def_cfa_offset 8
- 354              		.cfi_offset 3, -8
- 355              		.cfi_offset 14, -4
-  73:main.c        ****     {
- 356              		.loc 1 73 0
- 357 0002 094B     		ldr	r3, .L33
- 358 0004 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 359 0006 DBB2     		uxtb	r3, r3
- 360 0008 042B     		cmp	r3, #4
- 361 000a 03D8     		bhi	.L30
-  75:main.c        ****     }
- 362              		.loc 1 75 0
- 363 000c 0120     		movs	r0, #1
- 364 000e FFF7FEFF 		bl	LED_Heating_Write
- 365              	.LVL39:
- 366 0012 08BD     		pop	{r3, pc}
- 367              	.L30:
-  77:main.c        ****     {
- 368              		.loc 1 77 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 12
+ 316 003c 0023     		movs	r3, #0
+ 317 003e CDF82130 		str	r3, [sp, #33]	@ unaligned
+ 318 0042 CDF82530 		str	r3, [sp, #37]	@ unaligned
+ 319 0046 CDF82930 		str	r3, [sp, #41]	@ unaligned
+ 320 004a CDF82D30 		str	r3, [sp, #45]	@ unaligned
+ 321 004e CDF83130 		str	r3, [sp, #49]	@ unaligned
+ 322 0052 8DF83530 		strb	r3, [sp, #53]
+  62:main.c        ****    
+ 323              		.loc 1 62 0
+ 324 0056 01A8     		add	r0, sp, #4
+ 325 0058 FFF7FEFF 		bl	UART_PutString
+ 326              	.LVL38:
+ 327              	.L25:
+ 328 005c FEE7     		b	.L25
+ 329              	.L28:
+ 330 005e 00BF     		.align	2
+ 331              	.L27:
+ 332 0060 00000000 		.word	my_isr_UART
+ 333 0064 00000000 		.word	my_isr_TIMER
+ 334 0068 00000000 		.word	my_isr_PWM
+ 335 006c 00000000 		.word	.LANCHOR2
+ 336              		.cfi_endproc
+ 337              	.LFE64:
+ 338              		.size	main, .-main
+ 339              		.section	.text.heating_control,"ax",%progbits
+ 340              		.align	2
+ 341              		.global	heating_control
+ 342              		.thumb
+ 343              		.thumb_func
+ 344              		.type	heating_control, %function
+ 345              	heating_control:
+ 346              	.LFB65:
+  73:main.c        ****     if (room_temp < 5)
+ 347              		.loc 1 73 0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 0
+ 350              		@ frame_needed = 0, uses_anonymous_args = 0
+ 351 0000 08B5     		push	{r3, lr}
+ 352              		.cfi_def_cfa_offset 8
+ 353              		.cfi_offset 3, -8
+ 354              		.cfi_offset 14, -4
+  74:main.c        ****     {
+ 355              		.loc 1 74 0
+ 356 0002 094B     		ldr	r3, .L33
+ 357 0004 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 358 0006 DBB2     		uxtb	r3, r3
+ 359 0008 042B     		cmp	r3, #4
+ 360 000a 03D8     		bhi	.L30
+  76:main.c        ****     }
+ 361              		.loc 1 76 0
+ 362 000c 0120     		movs	r0, #1
+ 363 000e FFF7FEFF 		bl	LED_Heating_Write
+ 364              	.LVL39:
+ 365 0012 08BD     		pop	{r3, pc}
+ 366              	.L30:
+  78:main.c        ****     {
+ 367              		.loc 1 78 0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 12
 
 
- 369 0014 044B     		ldr	r3, .L33
- 370 0016 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 371 0018 DBB2     		uxtb	r3, r3
- 372 001a 0A2B     		cmp	r3, #10
- 373 001c 02D9     		bls	.L29
-  79:main.c        ****     }
- 374              		.loc 1 79 0
- 375 001e 0020     		movs	r0, #0
- 376 0020 FFF7FEFF 		bl	LED_Heating_Write
- 377              	.LVL40:
- 378              	.L29:
- 379 0024 08BD     		pop	{r3, pc}
- 380              	.L34:
- 381 0026 00BF     		.align	2
- 382              	.L33:
- 383 0028 00000000 		.word	.LANCHOR0
- 384              		.cfi_endproc
- 385              	.LFE65:
- 386              		.size	heating_control, .-heating_control
- 387              		.section	.text.window_position_control,"ax",%progbits
- 388              		.align	2
- 389              		.global	window_position_control
- 390              		.thumb
- 391              		.thumb_func
- 392              		.type	window_position_control, %function
- 393              	window_position_control:
- 394              	.LFB66:
-  84:main.c        ****     if (room_temp>=25)
- 395              		.loc 1 84 0
- 396              		.cfi_startproc
- 397              		@ args = 0, pretend = 0, frame = 0
- 398              		@ frame_needed = 0, uses_anonymous_args = 0
- 399              		@ link register save eliminated.
-  85:main.c        ****     {
- 400              		.loc 1 85 0
- 401 0000 184B     		ldr	r3, .L42
- 402 0002 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 403 0004 DBB2     		uxtb	r3, r3
- 404 0006 182B     		cmp	r3, #24
- 405 0008 03D9     		bls	.L36
-  87:main.c        ****     }
- 406              		.loc 1 87 0
- 407 000a 0522     		movs	r2, #5
- 408 000c 154B     		ldr	r3, .L42
- 409 000e DA70     		strb	r2, [r3, #3]
- 410 0010 7047     		bx	lr
- 411              	.L36:
-  89:main.c        ****     {
- 412              		.loc 1 89 0
- 413 0012 144B     		ldr	r3, .L42
- 414 0014 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 415 0016 DBB2     		uxtb	r3, r3
- 416 0018 172B     		cmp	r3, #23
- 417 001a 03D9     		bls	.L38
-  91:main.c        ****     }
- 418              		.loc 1 91 0
- 419 001c 0422     		movs	r2, #4
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 13
+ 368 0014 044B     		ldr	r3, .L33
+ 369 0016 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 370 0018 DBB2     		uxtb	r3, r3
+ 371 001a 0A2B     		cmp	r3, #10
+ 372 001c 02D9     		bls	.L29
+  80:main.c        ****     }
+ 373              		.loc 1 80 0
+ 374 001e 0020     		movs	r0, #0
+ 375 0020 FFF7FEFF 		bl	LED_Heating_Write
+ 376              	.LVL40:
+ 377              	.L29:
+ 378 0024 08BD     		pop	{r3, pc}
+ 379              	.L34:
+ 380 0026 00BF     		.align	2
+ 381              	.L33:
+ 382 0028 00000000 		.word	.LANCHOR0
+ 383              		.cfi_endproc
+ 384              	.LFE65:
+ 385              		.size	heating_control, .-heating_control
+ 386              		.section	.text.window_position_control,"ax",%progbits
+ 387              		.align	2
+ 388              		.global	window_position_control
+ 389              		.thumb
+ 390              		.thumb_func
+ 391              		.type	window_position_control, %function
+ 392              	window_position_control:
+ 393              	.LFB66:
+  85:main.c        ****     if (room_temp>=25)
+ 394              		.loc 1 85 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 0
+ 397              		@ frame_needed = 0, uses_anonymous_args = 0
+ 398              		@ link register save eliminated.
+  86:main.c        ****     {
+ 399              		.loc 1 86 0
+ 400 0000 184B     		ldr	r3, .L42
+ 401 0002 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 402 0004 DBB2     		uxtb	r3, r3
+ 403 0006 182B     		cmp	r3, #24
+ 404 0008 03D9     		bls	.L36
+  88:main.c        ****     }
+ 405              		.loc 1 88 0
+ 406 000a 0522     		movs	r2, #5
+ 407 000c 154B     		ldr	r3, .L42
+ 408 000e 5A71     		strb	r2, [r3, #5]
+ 409 0010 7047     		bx	lr
+ 410              	.L36:
+  90:main.c        ****     {
+ 411              		.loc 1 90 0
+ 412 0012 144B     		ldr	r3, .L42
+ 413 0014 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 414 0016 DBB2     		uxtb	r3, r3
+ 415 0018 172B     		cmp	r3, #23
+ 416 001a 03D9     		bls	.L38
+  92:main.c        ****     }
+ 417              		.loc 1 92 0
+ 418 001c 0422     		movs	r2, #4
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 13
 
 
- 420 001e 114B     		ldr	r3, .L42
- 421 0020 DA70     		strb	r2, [r3, #3]
- 422 0022 7047     		bx	lr
- 423              	.L38:
-  93:main.c        ****     {
- 424              		.loc 1 93 0
- 425 0024 0F4B     		ldr	r3, .L42
- 426 0026 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 427 0028 DBB2     		uxtb	r3, r3
- 428 002a 162B     		cmp	r3, #22
- 429 002c 03D9     		bls	.L39
-  95:main.c        ****     }
- 430              		.loc 1 95 0
- 431 002e 0322     		movs	r2, #3
- 432 0030 0C4B     		ldr	r3, .L42
- 433 0032 DA70     		strb	r2, [r3, #3]
- 434 0034 7047     		bx	lr
- 435              	.L39:
-  97:main.c        ****     {
- 436              		.loc 1 97 0
- 437 0036 0B4B     		ldr	r3, .L42
- 438 0038 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 439 003a DBB2     		uxtb	r3, r3
- 440 003c 152B     		cmp	r3, #21
- 441 003e 03D9     		bls	.L40
-  99:main.c        ****     }
- 442              		.loc 1 99 0
- 443 0040 0222     		movs	r2, #2
- 444 0042 084B     		ldr	r3, .L42
- 445 0044 DA70     		strb	r2, [r3, #3]
- 446 0046 7047     		bx	lr
- 447              	.L40:
- 101:main.c        ****     {
- 448              		.loc 1 101 0
- 449 0048 064B     		ldr	r3, .L42
- 450 004a 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
- 451 004c DBB2     		uxtb	r3, r3
- 452 004e 142B     		cmp	r3, #20
- 453 0050 03D9     		bls	.L41
- 103:main.c        ****     }
- 454              		.loc 1 103 0
- 455 0052 0122     		movs	r2, #1
- 456 0054 034B     		ldr	r3, .L42
- 457 0056 DA70     		strb	r2, [r3, #3]
- 458 0058 7047     		bx	lr
- 459              	.L41:
- 107:main.c        ****     }
- 460              		.loc 1 107 0
- 461 005a 0022     		movs	r2, #0
- 462 005c 014B     		ldr	r3, .L42
- 463 005e DA70     		strb	r2, [r3, #3]
- 464 0060 7047     		bx	lr
- 465              	.L43:
- 466 0062 00BF     		.align	2
- 467              	.L42:
- 468 0064 00000000 		.word	.LANCHOR0
- 469              		.cfi_endproc
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 14
+ 419 001e 114B     		ldr	r3, .L42
+ 420 0020 5A71     		strb	r2, [r3, #5]
+ 421 0022 7047     		bx	lr
+ 422              	.L38:
+  94:main.c        ****     {
+ 423              		.loc 1 94 0
+ 424 0024 0F4B     		ldr	r3, .L42
+ 425 0026 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 426 0028 DBB2     		uxtb	r3, r3
+ 427 002a 162B     		cmp	r3, #22
+ 428 002c 03D9     		bls	.L39
+  96:main.c        ****     }
+ 429              		.loc 1 96 0
+ 430 002e 0322     		movs	r2, #3
+ 431 0030 0C4B     		ldr	r3, .L42
+ 432 0032 5A71     		strb	r2, [r3, #5]
+ 433 0034 7047     		bx	lr
+ 434              	.L39:
+  98:main.c        ****     {
+ 435              		.loc 1 98 0
+ 436 0036 0B4B     		ldr	r3, .L42
+ 437 0038 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 438 003a DBB2     		uxtb	r3, r3
+ 439 003c 152B     		cmp	r3, #21
+ 440 003e 03D9     		bls	.L40
+ 100:main.c        ****     }
+ 441              		.loc 1 100 0
+ 442 0040 0222     		movs	r2, #2
+ 443 0042 084B     		ldr	r3, .L42
+ 444 0044 5A71     		strb	r2, [r3, #5]
+ 445 0046 7047     		bx	lr
+ 446              	.L40:
+ 102:main.c        ****     {
+ 447              		.loc 1 102 0
+ 448 0048 064B     		ldr	r3, .L42
+ 449 004a 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 450 004c DBB2     		uxtb	r3, r3
+ 451 004e 142B     		cmp	r3, #20
+ 452 0050 03D9     		bls	.L41
+ 104:main.c        ****     }
+ 453              		.loc 1 104 0
+ 454 0052 0122     		movs	r2, #1
+ 455 0054 034B     		ldr	r3, .L42
+ 456 0056 5A71     		strb	r2, [r3, #5]
+ 457 0058 7047     		bx	lr
+ 458              	.L41:
+ 108:main.c        ****     }
+ 459              		.loc 1 108 0
+ 460 005a 0022     		movs	r2, #0
+ 461 005c 014B     		ldr	r3, .L42
+ 462 005e 5A71     		strb	r2, [r3, #5]
+ 463 0060 7047     		bx	lr
+ 464              	.L43:
+ 465 0062 00BF     		.align	2
+ 466              	.L42:
+ 467 0064 00000000 		.word	.LANCHOR0
+ 468              		.cfi_endproc
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 14
 
 
- 470              	.LFE66:
- 471              		.size	window_position_control, .-window_position_control
- 472              		.section	.text.read_Room_Temp,"ax",%progbits
- 473              		.align	2
- 474              		.global	read_Room_Temp
- 475              		.thumb
- 476              		.thumb_func
- 477              		.type	read_Room_Temp, %function
- 478              	read_Room_Temp:
- 479              	.LFB67:
- 111:main.c        ****     
- 480              		.loc 1 111 0
- 481              		.cfi_startproc
- 482              		@ args = 0, pretend = 0, frame = 0
- 483              		@ frame_needed = 0, uses_anonymous_args = 0
- 484 0000 08B5     		push	{r3, lr}
- 485              		.cfi_def_cfa_offset 8
- 486              		.cfi_offset 3, -8
- 487              		.cfi_offset 14, -4
- 118:main.c        ****     
- 488              		.loc 1 118 0
- 489 0002 FFF7FEFF 		bl	window_position_control
- 490              	.LVL41:
- 120:main.c        ****     
- 491              		.loc 1 120 0
- 492 0006 FFF7FEFF 		bl	heating_control
- 493              	.LVL42:
- 494 000a 08BD     		pop	{r3, pc}
- 495              		.cfi_endproc
- 496              	.LFE67:
- 497              		.size	read_Room_Temp, .-read_Room_Temp
- 498              		.section	.text.my_isr_TIMER,"ax",%progbits
- 499              		.align	2
- 500              		.global	my_isr_TIMER
- 501              		.thumb
- 502              		.thumb_func
- 503              		.type	my_isr_TIMER, %function
- 504              	my_isr_TIMER:
- 505              	.LFB70:
- 228:main.c        ****     read_Room_Temp();               // Read the temperature every second
- 506              		.loc 1 228 0
- 507              		.cfi_startproc
- 508              		@ args = 0, pretend = 0, frame = 0
- 509              		@ frame_needed = 0, uses_anonymous_args = 0
- 510 0000 08B5     		push	{r3, lr}
- 511              		.cfi_def_cfa_offset 8
- 512              		.cfi_offset 3, -8
- 513              		.cfi_offset 14, -4
+ 469              	.LFE66:
+ 470              		.size	window_position_control, .-window_position_control
+ 471              		.section	.text.read_Room_Temp,"ax",%progbits
+ 472              		.align	2
+ 473              		.global	read_Room_Temp
+ 474              		.thumb
+ 475              		.thumb_func
+ 476              		.type	read_Room_Temp, %function
+ 477              	read_Room_Temp:
+ 478              	.LFB67:
+ 112:main.c        ****     
+ 479              		.loc 1 112 0
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ 482              		@ frame_needed = 0, uses_anonymous_args = 0
+ 483 0000 08B5     		push	{r3, lr}
+ 484              		.cfi_def_cfa_offset 8
+ 485              		.cfi_offset 3, -8
+ 486              		.cfi_offset 14, -4
+ 119:main.c        ****     
+ 487              		.loc 1 119 0
+ 488 0002 FFF7FEFF 		bl	window_position_control
+ 489              	.LVL41:
+ 121:main.c        ****     
+ 490              		.loc 1 121 0
+ 491 0006 FFF7FEFF 		bl	heating_control
+ 492              	.LVL42:
+ 493 000a 08BD     		pop	{r3, pc}
+ 494              		.cfi_endproc
+ 495              	.LFE67:
+ 496              		.size	read_Room_Temp, .-read_Room_Temp
+ 497              		.section	.text.my_isr_TIMER,"ax",%progbits
+ 498              		.align	2
+ 499              		.global	my_isr_TIMER
+ 500              		.thumb
+ 501              		.thumb_func
+ 502              		.type	my_isr_TIMER, %function
+ 503              	my_isr_TIMER:
+ 504              	.LFB70:
  229:main.c        ****     
- 514              		.loc 1 229 0
- 515 0002 FFF7FEFF 		bl	read_Room_Temp
- 516              	.LVL43:
- 231:main.c        **** }
- 517              		.loc 1 231 0
- 518 0006 FFF7FEFF 		bl	Timer_ReadStatusRegister
- 519              	.LVL44:
- 520 000a 08BD     		pop	{r3, pc}
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 15
+ 505              		.loc 1 229 0
+ 506              		.cfi_startproc
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509 0000 08B5     		push	{r3, lr}
+ 510              		.cfi_def_cfa_offset 8
+ 511              		.cfi_offset 3, -8
+ 512              		.cfi_offset 14, -4
+ 231:main.c        ****     Timer_ReadStatusRegister();     // Clear the interrupt flag
+ 513              		.loc 1 231 0
+ 514 0002 FFF7FEFF 		bl	read_Room_Temp
+ 515              	.LVL43:
+ 232:main.c        **** }
+ 516              		.loc 1 232 0
+ 517 0006 FFF7FEFF 		bl	Timer_ReadStatusRegister
+ 518              	.LVL44:
+ 519 000a 08BD     		pop	{r3, pc}
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 15
 
 
- 521              		.cfi_endproc
- 522              	.LFE70:
- 523              		.size	my_isr_TIMER, .-my_isr_TIMER
- 524              		.section	.text.real_Time_Clock,"ax",%progbits
- 525              		.align	2
- 526              		.global	real_Time_Clock
- 527              		.thumb
- 528              		.thumb_func
- 529              		.type	real_Time_Clock, %function
- 530              	real_Time_Clock:
- 531              	.LFB68:
- 126:main.c        ****     uint8 i, result = 0;
- 532              		.loc 1 126 0
- 533              		.cfi_startproc
- 534              		@ args = 0, pretend = 0, frame = 72
- 535              		@ frame_needed = 0, uses_anonymous_args = 0
- 536 0000 10B5     		push	{r4, lr}
- 537              		.cfi_def_cfa_offset 8
- 538              		.cfi_offset 4, -8
- 539              		.cfi_offset 14, -4
- 540 0002 92B0     		sub	sp, sp, #72
- 541              		.cfi_def_cfa_offset 80
- 542              	.L49:
- 133:main.c        ****         sprintf(debug,"Endless loop: %d\r\n" , result);
- 543              		.loc 1 133 0 discriminator 1
- 544 0004 0021     		movs	r1, #0
- 545 0006 6820     		movs	r0, #104
- 546 0008 FFF7FEFF 		bl	I2C_RTC_MasterSendStart
- 547              	.LVL45:
- 548 000c 0446     		mov	r4, r0
- 549              	.LVL46:
- 134:main.c        ****         UART_PutString(debug);
- 550              		.loc 1 134 0 discriminator 1
- 551 000e 0246     		mov	r2, r0
- 552 0010 1949     		ldr	r1, .L55
- 553 0012 05A8     		add	r0, sp, #20
- 554              	.LVL47:
- 555 0014 FFF7FEFF 		bl	sprintf
- 556              	.LVL48:
- 135:main.c        ****     }while(result!=I2C_RTC_MSTR_NO_ERROR);
- 557              		.loc 1 135 0 discriminator 1
- 558 0018 05A8     		add	r0, sp, #20
- 559 001a FFF7FEFF 		bl	UART_PutString
- 560              	.LVL49:
- 136:main.c        ****     
- 561              		.loc 1 136 0 discriminator 1
- 562 001e 002C     		cmp	r4, #0
- 563 0020 F0D1     		bne	.L49
- 138:main.c        ****     
- 564              		.loc 1 138 0
- 565 0022 0020     		movs	r0, #0
- 566 0024 FFF7FEFF 		bl	I2C_RTC_MasterWriteByte
- 567              	.LVL50:
- 140:main.c        ****     
- 568              		.loc 1 140 0
- 569 0028 0021     		movs	r1, #0
- 570 002a 6820     		movs	r0, #104
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 16
+ 520              		.cfi_endproc
+ 521              	.LFE70:
+ 522              		.size	my_isr_TIMER, .-my_isr_TIMER
+ 523              		.section	.text.real_Time_Clock,"ax",%progbits
+ 524              		.align	2
+ 525              		.global	real_Time_Clock
+ 526              		.thumb
+ 527              		.thumb_func
+ 528              		.type	real_Time_Clock, %function
+ 529              	real_Time_Clock:
+ 530              	.LFB68:
+ 127:main.c        ****     uint8 i, result = 0;
+ 531              		.loc 1 127 0
+ 532              		.cfi_startproc
+ 533              		@ args = 0, pretend = 0, frame = 72
+ 534              		@ frame_needed = 0, uses_anonymous_args = 0
+ 535 0000 10B5     		push	{r4, lr}
+ 536              		.cfi_def_cfa_offset 8
+ 537              		.cfi_offset 4, -8
+ 538              		.cfi_offset 14, -4
+ 539 0002 92B0     		sub	sp, sp, #72
+ 540              		.cfi_def_cfa_offset 80
+ 541              	.L49:
+ 134:main.c        ****         sprintf(debug,"Endless loop: %d\r\n" , result);
+ 542              		.loc 1 134 0 discriminator 1
+ 543 0004 0021     		movs	r1, #0
+ 544 0006 6820     		movs	r0, #104
+ 545 0008 FFF7FEFF 		bl	I2C_RTC_MasterSendStart
+ 546              	.LVL45:
+ 547 000c 0446     		mov	r4, r0
+ 548              	.LVL46:
+ 135:main.c        ****         UART_PutString(debug);
+ 549              		.loc 1 135 0 discriminator 1
+ 550 000e 0246     		mov	r2, r0
+ 551 0010 1949     		ldr	r1, .L55
+ 552 0012 05A8     		add	r0, sp, #20
+ 553              	.LVL47:
+ 554 0014 FFF7FEFF 		bl	sprintf
+ 555              	.LVL48:
+ 136:main.c        ****     }while(result!=I2C_RTC_MSTR_NO_ERROR);
+ 556              		.loc 1 136 0 discriminator 1
+ 557 0018 05A8     		add	r0, sp, #20
+ 558 001a FFF7FEFF 		bl	UART_PutString
+ 559              	.LVL49:
+ 137:main.c        ****     
+ 560              		.loc 1 137 0 discriminator 1
+ 561 001e 002C     		cmp	r4, #0
+ 562 0020 F0D1     		bne	.L49
+ 139:main.c        ****     
+ 563              		.loc 1 139 0
+ 564 0022 0020     		movs	r0, #0
+ 565 0024 FFF7FEFF 		bl	I2C_RTC_MasterWriteByte
+ 566              	.LVL50:
+ 141:main.c        ****     
+ 567              		.loc 1 141 0
+ 568 0028 0021     		movs	r1, #0
+ 569 002a 6820     		movs	r0, #104
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 16
 
 
- 571 002c FFF7FEFF 		bl	I2C_RTC_MasterSendRestart
- 572              	.LVL51:
- 142:main.c        ****     {
- 573              		.loc 1 142 0
- 574 0030 06E0     		b	.L50
- 575              	.LVL52:
- 576              	.L51:
- 144:main.c        ****     }
- 577              		.loc 1 144 0 discriminator 3
- 578 0032 0120     		movs	r0, #1
- 579 0034 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
- 580              	.LVL53:
- 581 0038 104B     		ldr	r3, .L55+4
- 582 003a 1855     		strb	r0, [r3, r4]
- 142:main.c        ****     {
- 583              		.loc 1 142 0 discriminator 3
- 584 003c 0134     		adds	r4, r4, #1
- 585              	.LVL54:
- 586 003e E4B2     		uxtb	r4, r4
- 587              	.LVL55:
- 588              	.L50:
- 142:main.c        ****     {
- 589              		.loc 1 142 0 is_stmt 0 discriminator 1
- 590 0040 052C     		cmp	r4, #5
- 591 0042 F6D9     		bls	.L51
- 147:main.c        ****     
- 592              		.loc 1 147 0 is_stmt 1
- 593 0044 0020     		movs	r0, #0
- 594 0046 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
- 595              	.LVL56:
- 596 004a 0C4B     		ldr	r3, .L55+4
- 597 004c 9871     		strb	r0, [r3, #6]
- 149:main.c        ****     
- 598              		.loc 1 149 0
- 599 004e FFF7FEFF 		bl	I2C_RTC_MasterSendStop
- 600              	.LVL57:
- 153:main.c        ****     {
- 601              		.loc 1 153 0
- 602 0052 0024     		movs	r4, #0
- 603 0054 0BE0     		b	.L52
- 604              	.LVL58:
- 605              	.L53:
- 155:main.c        ****         UART_PutString(testData);
- 606              		.loc 1 155 0 discriminator 3
- 607 0056 094B     		ldr	r3, .L55+4
- 608 0058 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
- 609 005a 2246     		mov	r2, r4
- 610 005c 0849     		ldr	r1, .L55+8
- 611 005e 6846     		mov	r0, sp
- 612 0060 FFF7FEFF 		bl	sprintf
- 613              	.LVL59:
- 156:main.c        ****     }
- 614              		.loc 1 156 0 discriminator 3
- 615 0064 6846     		mov	r0, sp
- 616 0066 FFF7FEFF 		bl	UART_PutString
- 617              	.LVL60:
- 153:main.c        ****     {
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 17
+ 570 002c FFF7FEFF 		bl	I2C_RTC_MasterSendRestart
+ 571              	.LVL51:
+ 143:main.c        ****     {
+ 572              		.loc 1 143 0
+ 573 0030 06E0     		b	.L50
+ 574              	.LVL52:
+ 575              	.L51:
+ 145:main.c        ****     }
+ 576              		.loc 1 145 0 discriminator 3
+ 577 0032 0120     		movs	r0, #1
+ 578 0034 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
+ 579              	.LVL53:
+ 580 0038 104B     		ldr	r3, .L55+4
+ 581 003a 1855     		strb	r0, [r3, r4]
+ 143:main.c        ****     {
+ 582              		.loc 1 143 0 discriminator 3
+ 583 003c 0134     		adds	r4, r4, #1
+ 584              	.LVL54:
+ 585 003e E4B2     		uxtb	r4, r4
+ 586              	.LVL55:
+ 587              	.L50:
+ 143:main.c        ****     {
+ 588              		.loc 1 143 0 is_stmt 0 discriminator 1
+ 589 0040 052C     		cmp	r4, #5
+ 590 0042 F6D9     		bls	.L51
+ 148:main.c        ****     
+ 591              		.loc 1 148 0 is_stmt 1
+ 592 0044 0020     		movs	r0, #0
+ 593 0046 FFF7FEFF 		bl	I2C_RTC_MasterReadByte
+ 594              	.LVL56:
+ 595 004a 0C4B     		ldr	r3, .L55+4
+ 596 004c 9871     		strb	r0, [r3, #6]
+ 150:main.c        ****     
+ 597              		.loc 1 150 0
+ 598 004e FFF7FEFF 		bl	I2C_RTC_MasterSendStop
+ 599              	.LVL57:
+ 154:main.c        ****     {
+ 600              		.loc 1 154 0
+ 601 0052 0024     		movs	r4, #0
+ 602 0054 0BE0     		b	.L52
+ 603              	.LVL58:
+ 604              	.L53:
+ 156:main.c        ****         UART_PutString(testData);
+ 605              		.loc 1 156 0 discriminator 3
+ 606 0056 094B     		ldr	r3, .L55+4
+ 607 0058 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+ 608 005a 2246     		mov	r2, r4
+ 609 005c 0849     		ldr	r1, .L55+8
+ 610 005e 6846     		mov	r0, sp
+ 611 0060 FFF7FEFF 		bl	sprintf
+ 612              	.LVL59:
+ 157:main.c        ****     }
+ 613              		.loc 1 157 0 discriminator 3
+ 614 0064 6846     		mov	r0, sp
+ 615 0066 FFF7FEFF 		bl	UART_PutString
+ 616              	.LVL60:
+ 154:main.c        ****     {
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 17
 
 
- 618              		.loc 1 153 0 discriminator 3
- 619 006a 0134     		adds	r4, r4, #1
- 620              	.LVL61:
- 621 006c E4B2     		uxtb	r4, r4
- 622              	.LVL62:
- 623              	.L52:
- 153:main.c        ****     {
- 624              		.loc 1 153 0 is_stmt 0 discriminator 1
- 625 006e 062C     		cmp	r4, #6
- 626 0070 F1D9     		bls	.L53
- 159:main.c        **** 
- 627              		.loc 1 159 0 is_stmt 1
- 628 0072 12B0     		add	sp, sp, #72
- 629              		.cfi_def_cfa_offset 8
- 630              		@ sp needed
- 631 0074 10BD     		pop	{r4, pc}
- 632              	.LVL63:
- 633              	.L56:
- 634 0076 00BF     		.align	2
- 635              	.L55:
- 636 0078 4C010000 		.word	.LC9
- 637 007c 00000000 		.word	rtc_data
- 638 0080 60010000 		.word	.LC10
- 639              		.cfi_endproc
- 640              	.LFE68:
- 641              		.size	real_Time_Clock, .-real_Time_Clock
- 642              		.global	OneWireVal
- 643              		.global	window_position
- 644              		.global	window_position_index
- 645              		.global	room_temp
- 646              		.comm	rtc_data,7,4
- 647              		.section	.rodata
- 648              		.align	2
- 649              		.set	.LANCHOR2,. + 0
- 650              	.LC8:
- 651 0000 2A2A2A47 		.ascii	"***Green House Project*** \012\015\000"
- 651      7265656E 
- 651      20486F75 
- 651      73652050 
- 651      726F6A65 
- 652 001d 00000000 		.space	21
- 652      00000000 
- 652      00000000 
- 652      00000000 
- 652      00000000 
- 653              		.data
- 654              		.align	2
- 655              		.set	.LANCHOR1,. + 0
- 656              		.type	window_position, %object
- 657              		.size	window_position, 12
- 658              	window_position:
- 659 0000 8303     		.short	899
- 660 0002 2705     		.short	1319
- 661 0004 CB06     		.short	1739
- 662 0006 6F08     		.short	2159
- 663 0008 130A     		.short	2579
- 664 000a B70B     		.short	2999
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 18
+ 617              		.loc 1 154 0 discriminator 3
+ 618 006a 0134     		adds	r4, r4, #1
+ 619              	.LVL61:
+ 620 006c E4B2     		uxtb	r4, r4
+ 621              	.LVL62:
+ 622              	.L52:
+ 154:main.c        ****     {
+ 623              		.loc 1 154 0 is_stmt 0 discriminator 1
+ 624 006e 062C     		cmp	r4, #6
+ 625 0070 F1D9     		bls	.L53
+ 160:main.c        **** 
+ 626              		.loc 1 160 0 is_stmt 1
+ 627 0072 12B0     		add	sp, sp, #72
+ 628              		.cfi_def_cfa_offset 8
+ 629              		@ sp needed
+ 630 0074 10BD     		pop	{r4, pc}
+ 631              	.LVL63:
+ 632              	.L56:
+ 633 0076 00BF     		.align	2
+ 634              	.L55:
+ 635 0078 4C010000 		.word	.LC9
+ 636 007c 00000000 		.word	rtc_data
+ 637 0080 60010000 		.word	.LC10
+ 638              		.cfi_endproc
+ 639              	.LFE68:
+ 640              		.size	real_Time_Clock, .-real_Time_Clock
+ 641              		.global	OneWireVal
+ 642              		.global	window_position
+ 643              		.global	window_position_index
+ 644              		.global	room_temp
+ 645              		.comm	rtc_data,7,4
+ 646              		.section	.rodata
+ 647              		.align	2
+ 648              		.set	.LANCHOR2,. + 0
+ 649              	.LC8:
+ 650 0000 2A2A2A47 		.ascii	"***Green House Project*** \012\015\000"
+ 650      7265656E 
+ 650      20486F75 
+ 650      73652050 
+ 650      726F6A65 
+ 651 001d 00000000 		.space	21
+ 651      00000000 
+ 651      00000000 
+ 651      00000000 
+ 651      00000000 
+ 652              		.data
+ 653              		.align	2
+ 654              		.set	.LANCHOR1,. + 0
+ 655              		.type	window_position, %object
+ 656              		.size	window_position, 12
+ 657              	window_position:
+ 658 0000 8303     		.short	899
+ 659 0002 2705     		.short	1319
+ 660 0004 CB06     		.short	1739
+ 661 0006 6F08     		.short	2159
+ 662 0008 130A     		.short	2579
+ 663 000a B70B     		.short	2999
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 18
 
 
- 665              		.type	actualPosition.6801, %object
- 666              		.size	actualPosition.6801, 2
- 667              	actualPosition.6801:
- 668 000c 8303     		.short	899
- 669              		.section	.rodata.str1.4,"aMS",%progbits,1
- 670              		.align	2
- 671              	.LC0:
- 672 0000 2054656D 		.ascii	" Temp One wire = %u \015\012\000"
- 672      70204F6E 
- 672      65207769 
- 672      7265203D 
- 672      20257520 
- 673 0017 00       		.space	1
- 674              	.LC1:
- 675 0018 53657474 		.ascii	"Setting the current time for the device\015\012\000"
- 675      696E6720 
- 675      74686520 
- 675      63757272 
- 675      656E7420 
- 676 0042 0000     		.space	2
- 677              	.LC2:
- 678 0044 53657474 		.ascii	"Setting the current day for the device\015\012\000"
- 678      696E6720 
- 678      74686520 
- 678      63757272 
- 678      656E7420 
- 679 006d 000000   		.space	3
- 680              	.LC3:
- 681 0070 53656E64 		.ascii	"Sending out the current device time\015\012\000"
- 681      696E6720 
- 681      6F757420 
- 681      74686520 
- 681      63757272 
- 682 0096 0000     		.space	2
- 683              	.LC4:
- 684 0098 53656E64 		.ascii	"Sending out the current device day\015\012\000"
- 684      696E6720 
- 684      6F757420 
- 684      74686520 
- 684      63757272 
- 685 00bd 000000   		.space	3
- 686              	.LC5:
- 687 00c0 47726565 		.ascii	"GreenHouse controller 0.1, developed by Yameni Glee"
- 687      6E486F75 
- 687      73652063 
- 687      6F6E7472 
- 687      6F6C6C65 
- 688 00f3 6E20616E 		.ascii	"n and Ndassi Harold\015\012\000"
- 688      64204E64 
- 688      61737369 
- 688      20486172 
- 688      6F6C640D 
- 689 0109 000000   		.space	3
- 690              	.LC6:
- 691 010c 53656E64 		.ascii	"Sending all saved data...\015\012\000"
- 691      696E6720 
- 691      616C6C20 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 19
+ 664              		.type	actualPosition.6791, %object
+ 665              		.size	actualPosition.6791, 2
+ 666              	actualPosition.6791:
+ 667 000c 8303     		.short	899
+ 668              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 669              		.align	2
+ 670              	.LC0:
+ 671 0000 2054656D 		.ascii	" Temp One wire = %u \015\012\000"
+ 671      70204F6E 
+ 671      65207769 
+ 671      7265203D 
+ 671      20257520 
+ 672 0017 00       		.space	1
+ 673              	.LC1:
+ 674 0018 53657474 		.ascii	"Setting the current time for the device\015\012\000"
+ 674      696E6720 
+ 674      74686520 
+ 674      63757272 
+ 674      656E7420 
+ 675 0042 0000     		.space	2
+ 676              	.LC2:
+ 677 0044 53657474 		.ascii	"Setting the current day for the device\015\012\000"
+ 677      696E6720 
+ 677      74686520 
+ 677      63757272 
+ 677      656E7420 
+ 678 006d 000000   		.space	3
+ 679              	.LC3:
+ 680 0070 53656E64 		.ascii	"Sending out the current device time\015\012\000"
+ 680      696E6720 
+ 680      6F757420 
+ 680      74686520 
+ 680      63757272 
+ 681 0096 0000     		.space	2
+ 682              	.LC4:
+ 683 0098 53656E64 		.ascii	"Sending out the current device day\015\012\000"
+ 683      696E6720 
+ 683      6F757420 
+ 683      74686520 
+ 683      63757272 
+ 684 00bd 000000   		.space	3
+ 685              	.LC5:
+ 686 00c0 47726565 		.ascii	"GreenHouse controller 0.1, developed by Yameni Glee"
+ 686      6E486F75 
+ 686      73652063 
+ 686      6F6E7472 
+ 686      6F6C6C65 
+ 687 00f3 6E20616E 		.ascii	"n and Ndassi Harold\015\012\000"
+ 687      64204E64 
+ 687      61737369 
+ 687      20486172 
+ 687      6F6C640D 
+ 688 0109 000000   		.space	3
+ 689              	.LC6:
+ 690 010c 53656E64 		.ascii	"Sending all saved data...\015\012\000"
+ 690      696E6720 
+ 690      616C6C20 
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 19
 
 
- 691      73617665 
- 691      64206461 
- 692              	.LC7:
- 693 0128 436C6561 		.ascii	"Clearing the logging memory...\015\012\000"
- 693      72696E67 
- 693      20746865 
- 693      206C6F67 
- 693      67696E67 
- 694 0149 000000   		.space	3
- 695              	.LC9:
- 696 014c 456E646C 		.ascii	"Endless loop: %d\015\012\000"
- 696      65737320 
- 696      6C6F6F70 
- 696      3A202564 
- 696      0D0A00
- 697 015f 00       		.space	1
- 698              	.LC10:
- 699 0160 42797465 		.ascii	"Byte %d : %d\015\012\000"
- 699      20256420 
- 699      3A202564 
- 699      0D0A00
- 700              		.bss
- 701              		.align	1
- 702              		.set	.LANCHOR0,. + 0
- 703              		.type	OneWireVal, %object
- 704              		.size	OneWireVal, 2
- 705              	OneWireVal:
- 706 0000 0000     		.space	2
- 707              		.type	old_char.6793, %object
- 708              		.size	old_char.6793, 1
- 709              	old_char.6793:
- 710 0002 00       		.space	1
- 711              		.type	window_position_index, %object
- 712              		.size	window_position_index, 1
- 713              	window_position_index:
- 714 0003 00       		.space	1
- 715              		.type	room_temp, %object
- 716              		.size	room_temp, 1
- 717              	room_temp:
- 718 0004 00       		.space	1
- 719              		.text
- 720              	.Letext0:
- 721              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
- 722              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
- 723              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 724              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
- 725              		.file 6 "./OneWireLab.h"
- 726              		.file 7 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
- 727              		.file 8 "Generated_Source\\PSoC5/UART.h"
- 728              		.file 9 "Generated_Source\\PSoC5/isr_UART.h"
- 729              		.file 10 "Generated_Source\\PSoC5/PWM.h"
- 730              		.file 11 "Generated_Source\\PSoC5/Timer.h"
- 731              		.file 12 "Generated_Source\\PSoC5/isr_Timer.h"
- 732              		.file 13 "Generated_Source\\PSoC5/isr_PWM.h"
- 733              		.file 14 "Generated_Source\\PSoC5/I2C_RTC.h"
- 734              		.file 15 "Generated_Source\\PSoC5/LED_Heating.h"
- 735              		.section	.debug_info,"",%progbits
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 20
+ 690      73617665 
+ 690      64206461 
+ 691              	.LC7:
+ 692 0128 436C6561 		.ascii	"Clearing the logging memory...\015\012\000"
+ 692      72696E67 
+ 692      20746865 
+ 692      206C6F67 
+ 692      67696E67 
+ 693 0149 000000   		.space	3
+ 694              	.LC9:
+ 695 014c 456E646C 		.ascii	"Endless loop: %d\015\012\000"
+ 695      65737320 
+ 695      6C6F6F70 
+ 695      3A202564 
+ 695      0D0A00
+ 696 015f 00       		.space	1
+ 697              	.LC10:
+ 698 0160 42797465 		.ascii	"Byte %d : %d\015\012\000"
+ 698      20256420 
+ 698      3A202564 
+ 698      0D0A00
+ 699              		.bss
+ 700              		.align	2
+ 701              		.set	.LANCHOR0,. + 0
+ 702              		.type	OneWireVal, %object
+ 703              		.size	OneWireVal, 4
+ 704              	OneWireVal:
+ 705 0000 00000000 		.space	4
+ 706              		.type	old_char.6783, %object
+ 707              		.size	old_char.6783, 1
+ 708              	old_char.6783:
+ 709 0004 00       		.space	1
+ 710              		.type	window_position_index, %object
+ 711              		.size	window_position_index, 1
+ 712              	window_position_index:
+ 713 0005 00       		.space	1
+ 714              		.type	room_temp, %object
+ 715              		.size	room_temp, 1
+ 716              	room_temp:
+ 717 0006 00       		.space	1
+ 718              		.text
+ 719              	.Letext0:
+ 720              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 721              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 722              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 723              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 724              		.file 6 "./OneWireLab.h"
+ 725              		.file 7 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 726              		.file 8 "Generated_Source\\PSoC5/UART.h"
+ 727              		.file 9 "Generated_Source\\PSoC5/isr_UART.h"
+ 728              		.file 10 "Generated_Source\\PSoC5/PWM.h"
+ 729              		.file 11 "Generated_Source\\PSoC5/Timer.h"
+ 730              		.file 12 "Generated_Source\\PSoC5/isr_Timer.h"
+ 731              		.file 13 "Generated_Source\\PSoC5/isr_PWM.h"
+ 732              		.file 14 "Generated_Source\\PSoC5/I2C_RTC.h"
+ 733              		.file 15 "Generated_Source\\PSoC5/LED_Heating.h"
+ 734              		.section	.debug_info,"",%progbits
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 20
 
 
- 736              	.Ldebug_info0:
- 737 0000 54060000 		.4byte	0x654
- 738 0004 0400     		.2byte	0x4
- 739 0006 00000000 		.4byte	.Ldebug_abbrev0
- 740 000a 04       		.byte	0x4
- 741 000b 01       		.uleb128 0x1
- 742 000c BD030000 		.4byte	.LASF60
- 743 0010 0C       		.byte	0xc
- 744 0011 E2020000 		.4byte	.LASF61
- 745 0015 7D010000 		.4byte	.LASF62
- 746 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 747 001d 00000000 		.4byte	0
- 748 0021 00000000 		.4byte	.Ldebug_line0
- 749 0025 02       		.uleb128 0x2
- 750 0026 01       		.byte	0x1
- 751 0027 06       		.byte	0x6
- 752 0028 5B030000 		.4byte	.LASF0
- 753 002c 02       		.uleb128 0x2
- 754 002d 01       		.byte	0x1
- 755 002e 08       		.byte	0x8
- 756 002f C7010000 		.4byte	.LASF1
- 757 0033 02       		.uleb128 0x2
- 758 0034 02       		.byte	0x2
- 759 0035 05       		.byte	0x5
- 760 0036 5F000000 		.4byte	.LASF2
- 761 003a 02       		.uleb128 0x2
- 762 003b 02       		.byte	0x2
- 763 003c 07       		.byte	0x7
- 764 003d 53020000 		.4byte	.LASF3
- 765 0041 03       		.uleb128 0x3
- 766 0042 51030000 		.4byte	.LASF9
- 767 0046 02       		.byte	0x2
- 768 0047 3F       		.byte	0x3f
- 769 0048 4C000000 		.4byte	0x4c
- 770 004c 02       		.uleb128 0x2
- 771 004d 04       		.byte	0x4
- 772 004e 05       		.byte	0x5
- 773 004f 82020000 		.4byte	.LASF4
- 774 0053 02       		.uleb128 0x2
- 775 0054 04       		.byte	0x4
- 776 0055 07       		.byte	0x7
- 777 0056 E9020000 		.4byte	.LASF5
- 778 005a 02       		.uleb128 0x2
- 779 005b 08       		.byte	0x8
- 780 005c 05       		.byte	0x5
- 781 005d 87000000 		.4byte	.LASF6
- 782 0061 02       		.uleb128 0x2
- 783 0062 08       		.byte	0x8
- 784 0063 07       		.byte	0x7
- 785 0064 F7010000 		.4byte	.LASF7
- 786 0068 04       		.uleb128 0x4
- 787 0069 04       		.byte	0x4
- 788 006a 05       		.byte	0x5
- 789 006b 696E7400 		.ascii	"int\000"
- 790 006f 02       		.uleb128 0x2
- 791 0070 04       		.byte	0x4
- 792 0071 07       		.byte	0x7
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 21
+ 735              	.Ldebug_info0:
+ 736 0000 69060000 		.4byte	0x669
+ 737 0004 0400     		.2byte	0x4
+ 738 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 739 000a 04       		.byte	0x4
+ 740 000b 01       		.uleb128 0x1
+ 741 000c BB030000 		.4byte	.LASF60
+ 742 0010 0C       		.byte	0xc
+ 743 0011 E0020000 		.4byte	.LASF61
+ 744 0015 77010000 		.4byte	.LASF62
+ 745 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 746 001d 00000000 		.4byte	0
+ 747 0021 00000000 		.4byte	.Ldebug_line0
+ 748 0025 02       		.uleb128 0x2
+ 749 0026 01       		.byte	0x1
+ 750 0027 06       		.byte	0x6
+ 751 0028 59030000 		.4byte	.LASF0
+ 752 002c 02       		.uleb128 0x2
+ 753 002d 01       		.byte	0x1
+ 754 002e 08       		.byte	0x8
+ 755 002f C1010000 		.4byte	.LASF1
+ 756 0033 02       		.uleb128 0x2
+ 757 0034 02       		.byte	0x2
+ 758 0035 05       		.byte	0x5
+ 759 0036 41000000 		.4byte	.LASF2
+ 760 003a 02       		.uleb128 0x2
+ 761 003b 02       		.byte	0x2
+ 762 003c 07       		.byte	0x7
+ 763 003d 4D020000 		.4byte	.LASF3
+ 764 0041 03       		.uleb128 0x3
+ 765 0042 4F030000 		.4byte	.LASF9
+ 766 0046 02       		.byte	0x2
+ 767 0047 3F       		.byte	0x3f
+ 768 0048 4C000000 		.4byte	0x4c
+ 769 004c 02       		.uleb128 0x2
+ 770 004d 04       		.byte	0x4
+ 771 004e 05       		.byte	0x5
+ 772 004f 8C000000 		.4byte	.LASF4
+ 773 0053 02       		.uleb128 0x2
+ 774 0054 04       		.byte	0x4
+ 775 0055 07       		.byte	0x7
+ 776 0056 E7020000 		.4byte	.LASF5
+ 777 005a 02       		.uleb128 0x2
+ 778 005b 08       		.byte	0x8
+ 779 005c 05       		.byte	0x5
+ 780 005d F7000000 		.4byte	.LASF6
+ 781 0061 02       		.uleb128 0x2
+ 782 0062 08       		.byte	0x8
+ 783 0063 07       		.byte	0x7
+ 784 0064 F1010000 		.4byte	.LASF7
+ 785 0068 04       		.uleb128 0x4
+ 786 0069 04       		.byte	0x4
+ 787 006a 05       		.byte	0x5
+ 788 006b 696E7400 		.ascii	"int\000"
+ 789 006f 02       		.uleb128 0x2
+ 790 0070 04       		.byte	0x4
+ 791 0071 07       		.byte	0x7
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 21
 
 
- 793 0072 0E020000 		.4byte	.LASF8
- 794 0076 03       		.uleb128 0x3
- 795 0077 EF010000 		.4byte	.LASF10
- 796 007b 03       		.byte	0x3
- 797 007c 2C       		.byte	0x2c
- 798 007d 41000000 		.4byte	0x41
- 799 0081 05       		.uleb128 0x5
- 800 0082 DA000000 		.4byte	.LASF11
- 801 0086 04       		.byte	0x4
- 802 0087 E401     		.2byte	0x1e4
- 803 0089 2C000000 		.4byte	0x2c
- 804 008d 05       		.uleb128 0x5
- 805 008e C8000000 		.4byte	.LASF12
- 806 0092 04       		.byte	0x4
- 807 0093 E501     		.2byte	0x1e5
- 808 0095 3A000000 		.4byte	0x3a
- 809 0099 02       		.uleb128 0x2
- 810 009a 04       		.byte	0x4
- 811 009b 04       		.byte	0x4
- 812 009c 08010000 		.4byte	.LASF13
- 813 00a0 02       		.uleb128 0x2
- 814 00a1 08       		.byte	0x8
- 815 00a2 04       		.byte	0x4
- 816 00a3 08030000 		.4byte	.LASF14
- 817 00a7 02       		.uleb128 0x2
- 818 00a8 01       		.byte	0x1
- 819 00a9 08       		.byte	0x8
- 820 00aa 1C010000 		.4byte	.LASF15
- 821 00ae 06       		.uleb128 0x6
- 822 00af 81000000 		.4byte	0x81
- 823 00b3 06       		.uleb128 0x6
- 824 00b4 8D000000 		.4byte	0x8d
- 825 00b8 02       		.uleb128 0x2
- 826 00b9 08       		.byte	0x8
- 827 00ba 04       		.byte	0x4
- 828 00bb 00000000 		.4byte	.LASF16
- 829 00bf 02       		.uleb128 0x2
- 830 00c0 04       		.byte	0x4
- 831 00c1 07       		.byte	0x7
- 832 00c2 69000000 		.4byte	.LASF17
- 833 00c6 07       		.uleb128 0x7
- 834 00c7 71030000 		.4byte	.LASF21
- 835 00cb 01       		.byte	0x1
- 836 00cc A2       		.byte	0xa2
- 837 00cd 00000000 		.4byte	.LFB69
- 838 00d1 CC000000 		.4byte	.LFE69-.LFB69
- 839 00d5 01       		.uleb128 0x1
- 840 00d6 9C       		.byte	0x9c
- 841 00d7 00020000 		.4byte	0x200
- 842 00db 08       		.uleb128 0x8
- 843 00dc D5010000 		.4byte	.LASF18
- 844 00e0 01       		.byte	0x1
- 845 00e1 A7       		.byte	0xa7
- 846 00e2 00020000 		.4byte	0x200
- 847 00e6 02       		.uleb128 0x2
- 848 00e7 91       		.byte	0x91
- 849 00e8 64       		.sleb128 -28
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 22
+ 792 0072 08020000 		.4byte	.LASF8
+ 793 0076 03       		.uleb128 0x3
+ 794 0077 E9010000 		.4byte	.LASF10
+ 795 007b 03       		.byte	0x3
+ 796 007c 2C       		.byte	0x2c
+ 797 007d 41000000 		.4byte	0x41
+ 798 0081 05       		.uleb128 0x5
+ 799 0082 C3000000 		.4byte	.LASF11
+ 800 0086 04       		.byte	0x4
+ 801 0087 E401     		.2byte	0x1e4
+ 802 0089 2C000000 		.4byte	0x2c
+ 803 008d 05       		.uleb128 0x5
+ 804 008e B1000000 		.4byte	.LASF12
+ 805 0092 04       		.byte	0x4
+ 806 0093 E501     		.2byte	0x1e5
+ 807 0095 3A000000 		.4byte	0x3a
+ 808 0099 02       		.uleb128 0x2
+ 809 009a 04       		.byte	0x4
+ 810 009b 04       		.byte	0x4
+ 811 009c F1000000 		.4byte	.LASF13
+ 812 00a0 02       		.uleb128 0x2
+ 813 00a1 08       		.byte	0x8
+ 814 00a2 04       		.byte	0x4
+ 815 00a3 06030000 		.4byte	.LASF14
+ 816 00a7 02       		.uleb128 0x2
+ 817 00a8 01       		.byte	0x1
+ 818 00a9 08       		.byte	0x8
+ 819 00aa 05010000 		.4byte	.LASF15
+ 820 00ae 06       		.uleb128 0x6
+ 821 00af 81000000 		.4byte	0x81
+ 822 00b3 06       		.uleb128 0x6
+ 823 00b4 8D000000 		.4byte	0x8d
+ 824 00b8 02       		.uleb128 0x2
+ 825 00b9 08       		.byte	0x8
+ 826 00ba 04       		.byte	0x4
+ 827 00bb 69000000 		.4byte	.LASF16
+ 828 00bf 02       		.uleb128 0x2
+ 829 00c0 04       		.byte	0x4
+ 830 00c1 07       		.byte	0x7
+ 831 00c2 4B000000 		.4byte	.LASF17
+ 832 00c6 07       		.uleb128 0x7
+ 833 00c7 6F030000 		.4byte	.LASF21
+ 834 00cb 01       		.byte	0x1
+ 835 00cc A3       		.byte	0xa3
+ 836 00cd 00000000 		.4byte	.LFB69
+ 837 00d1 CC000000 		.4byte	.LFE69-.LFB69
+ 838 00d5 01       		.uleb128 0x1
+ 839 00d6 9C       		.byte	0x9c
+ 840 00d7 00020000 		.4byte	0x200
+ 841 00db 08       		.uleb128 0x8
+ 842 00dc CF010000 		.4byte	.LASF18
+ 843 00e0 01       		.byte	0x1
+ 844 00e1 A8       		.byte	0xa8
+ 845 00e2 00020000 		.4byte	0x200
+ 846 00e6 02       		.uleb128 0x2
+ 847 00e7 91       		.byte	0x91
+ 848 00e8 58       		.sleb128 -40
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 22
 
 
- 850 00e9 08       		.uleb128 0x8
- 851 00ea E6010000 		.4byte	.LASF19
- 852 00ee 01       		.byte	0x1
- 853 00ef B1       		.byte	0xb1
- 854 00f0 81000000 		.4byte	0x81
- 855 00f4 05       		.uleb128 0x5
- 856 00f5 03       		.byte	0x3
- 857 00f6 02000000 		.4byte	old_char.6793
- 858 00fa 09       		.uleb128 0x9
- 859 00fb A3030000 		.4byte	.LASF20
- 860 00ff 01       		.byte	0x1
- 861 0100 B2       		.byte	0xb2
- 862 0101 81000000 		.4byte	0x81
- 863 0105 00000000 		.4byte	.LLST0
- 864 0109 0A       		.uleb128 0xa
- 865 010a 08000000 		.4byte	.LVL0
- 866 010e 5A050000 		.4byte	0x55a
- 867 0112 0B       		.uleb128 0xb
- 868 0113 1E000000 		.4byte	.LVL2
- 869 0117 65050000 		.4byte	0x565
- 870 011b 2F010000 		.4byte	0x12f
- 871 011f 0C       		.uleb128 0xc
- 872 0120 01       		.uleb128 0x1
- 873 0121 50       		.byte	0x50
- 874 0122 02       		.uleb128 0x2
- 875 0123 91       		.byte	0x91
- 876 0124 64       		.sleb128 -28
- 877 0125 0C       		.uleb128 0xc
- 878 0126 01       		.uleb128 0x1
- 879 0127 51       		.byte	0x51
- 880 0128 05       		.uleb128 0x5
- 881 0129 03       		.byte	0x3
- 882 012a 00000000 		.4byte	.LC0
- 883 012e 00       		.byte	0
- 884 012f 0B       		.uleb128 0xb
- 885 0130 24000000 		.4byte	.LVL3
- 886 0134 70050000 		.4byte	0x570
- 887 0138 43010000 		.4byte	0x143
- 888 013c 0C       		.uleb128 0xc
- 889 013d 01       		.uleb128 0x1
- 890 013e 50       		.byte	0x50
- 891 013f 02       		.uleb128 0x2
- 892 0140 91       		.byte	0x91
- 893 0141 64       		.sleb128 -28
- 894 0142 00       		.byte	0
- 895 0143 0A       		.uleb128 0xa
- 896 0144 28000000 		.4byte	.LVL4
- 897 0148 7B050000 		.4byte	0x57b
- 898 014c 0B       		.uleb128 0xb
- 899 014d 38000000 		.4byte	.LVL7
- 900 0151 70050000 		.4byte	0x570
- 901 0155 63010000 		.4byte	0x163
- 902 0159 0C       		.uleb128 0xc
- 903 015a 01       		.uleb128 0x1
- 904 015b 50       		.byte	0x50
- 905 015c 05       		.uleb128 0x5
- 906 015d 03       		.byte	0x3
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 23
+ 849 00e9 08       		.uleb128 0x8
+ 850 00ea E0010000 		.4byte	.LASF19
+ 851 00ee 01       		.byte	0x1
+ 852 00ef B2       		.byte	0xb2
+ 853 00f0 81000000 		.4byte	0x81
+ 854 00f4 05       		.uleb128 0x5
+ 855 00f5 03       		.byte	0x3
+ 856 00f6 04000000 		.4byte	old_char.6783
+ 857 00fa 09       		.uleb128 0x9
+ 858 00fb A1030000 		.4byte	.LASF20
+ 859 00ff 01       		.byte	0x1
+ 860 0100 B3       		.byte	0xb3
+ 861 0101 81000000 		.4byte	0x81
+ 862 0105 00000000 		.4byte	.LLST0
+ 863 0109 0A       		.uleb128 0xa
+ 864 010a 08000000 		.4byte	.LVL0
+ 865 010e 6F050000 		.4byte	0x56f
+ 866 0112 0B       		.uleb128 0xb
+ 867 0113 1C000000 		.4byte	.LVL2
+ 868 0117 7A050000 		.4byte	0x57a
+ 869 011b 2F010000 		.4byte	0x12f
+ 870 011f 0C       		.uleb128 0xc
+ 871 0120 01       		.uleb128 0x1
+ 872 0121 50       		.byte	0x50
+ 873 0122 02       		.uleb128 0x2
+ 874 0123 7D       		.byte	0x7d
+ 875 0124 00       		.sleb128 0
+ 876 0125 0C       		.uleb128 0xc
+ 877 0126 01       		.uleb128 0x1
+ 878 0127 51       		.byte	0x51
+ 879 0128 05       		.uleb128 0x5
+ 880 0129 03       		.byte	0x3
+ 881 012a 00000000 		.4byte	.LC0
+ 882 012e 00       		.byte	0
+ 883 012f 0B       		.uleb128 0xb
+ 884 0130 22000000 		.4byte	.LVL3
+ 885 0134 85050000 		.4byte	0x585
+ 886 0138 43010000 		.4byte	0x143
+ 887 013c 0C       		.uleb128 0xc
+ 888 013d 01       		.uleb128 0x1
+ 889 013e 50       		.byte	0x50
+ 890 013f 02       		.uleb128 0x2
+ 891 0140 7D       		.byte	0x7d
+ 892 0141 00       		.sleb128 0
+ 893 0142 00       		.byte	0
+ 894 0143 0A       		.uleb128 0xa
+ 895 0144 26000000 		.4byte	.LVL4
+ 896 0148 90050000 		.4byte	0x590
+ 897 014c 0B       		.uleb128 0xb
+ 898 014d 36000000 		.4byte	.LVL7
+ 899 0151 85050000 		.4byte	0x585
+ 900 0155 63010000 		.4byte	0x163
+ 901 0159 0C       		.uleb128 0xc
+ 902 015a 01       		.uleb128 0x1
+ 903 015b 50       		.byte	0x50
+ 904 015c 05       		.uleb128 0x5
+ 905 015d 03       		.byte	0x3
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 23
 
 
- 907 015e 18000000 		.4byte	.LC1
- 908 0162 00       		.byte	0
- 909 0163 0B       		.uleb128 0xb
- 910 0164 48000000 		.4byte	.LVL10
- 911 0168 70050000 		.4byte	0x570
- 912 016c 7A010000 		.4byte	0x17a
- 913 0170 0C       		.uleb128 0xc
- 914 0171 01       		.uleb128 0x1
- 915 0172 50       		.byte	0x50
- 916 0173 05       		.uleb128 0x5
- 917 0174 03       		.byte	0x3
- 918 0175 44000000 		.4byte	.LC2
- 919 0179 00       		.byte	0
- 920 017a 0B       		.uleb128 0xb
- 921 017b 60000000 		.4byte	.LVL13
- 922 017f 70050000 		.4byte	0x570
- 923 0183 91010000 		.4byte	0x191
- 924 0187 0C       		.uleb128 0xc
- 925 0188 01       		.uleb128 0x1
- 926 0189 50       		.byte	0x50
- 927 018a 05       		.uleb128 0x5
- 928 018b 03       		.byte	0x3
- 929 018c 70000000 		.4byte	.LC3
- 930 0190 00       		.byte	0
- 931 0191 0B       		.uleb128 0xb
- 932 0192 70000000 		.4byte	.LVL16
- 933 0196 70050000 		.4byte	0x570
- 934 019a A8010000 		.4byte	0x1a8
- 935 019e 0C       		.uleb128 0xc
- 936 019f 01       		.uleb128 0x1
- 937 01a0 50       		.byte	0x50
- 938 01a1 05       		.uleb128 0x5
- 939 01a2 03       		.byte	0x3
- 940 01a3 98000000 		.4byte	.LC4
- 941 01a7 00       		.byte	0
- 942 01a8 0B       		.uleb128 0xb
- 943 01a9 78000000 		.4byte	.LVL19
- 944 01ad 70050000 		.4byte	0x570
- 945 01b1 BF010000 		.4byte	0x1bf
- 946 01b5 0C       		.uleb128 0xc
- 947 01b6 01       		.uleb128 0x1
- 948 01b7 50       		.byte	0x50
- 949 01b8 05       		.uleb128 0x5
- 950 01b9 03       		.byte	0x3
- 951 01ba C0000000 		.4byte	.LC5
- 952 01be 00       		.byte	0
- 953 01bf 0B       		.uleb128 0xb
- 954 01c0 88000000 		.4byte	.LVL22
- 955 01c4 70050000 		.4byte	0x570
- 956 01c8 D6010000 		.4byte	0x1d6
- 957 01cc 0C       		.uleb128 0xc
- 958 01cd 01       		.uleb128 0x1
- 959 01ce 50       		.byte	0x50
- 960 01cf 05       		.uleb128 0x5
- 961 01d0 03       		.byte	0x3
- 962 01d1 0C010000 		.4byte	.LC6
- 963 01d5 00       		.byte	0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 24
+ 906 015e 18000000 		.4byte	.LC1
+ 907 0162 00       		.byte	0
+ 908 0163 0B       		.uleb128 0xb
+ 909 0164 46000000 		.4byte	.LVL10
+ 910 0168 85050000 		.4byte	0x585
+ 911 016c 7A010000 		.4byte	0x17a
+ 912 0170 0C       		.uleb128 0xc
+ 913 0171 01       		.uleb128 0x1
+ 914 0172 50       		.byte	0x50
+ 915 0173 05       		.uleb128 0x5
+ 916 0174 03       		.byte	0x3
+ 917 0175 44000000 		.4byte	.LC2
+ 918 0179 00       		.byte	0
+ 919 017a 0B       		.uleb128 0xb
+ 920 017b 5E000000 		.4byte	.LVL13
+ 921 017f 85050000 		.4byte	0x585
+ 922 0183 91010000 		.4byte	0x191
+ 923 0187 0C       		.uleb128 0xc
+ 924 0188 01       		.uleb128 0x1
+ 925 0189 50       		.byte	0x50
+ 926 018a 05       		.uleb128 0x5
+ 927 018b 03       		.byte	0x3
+ 928 018c 70000000 		.4byte	.LC3
+ 929 0190 00       		.byte	0
+ 930 0191 0B       		.uleb128 0xb
+ 931 0192 6E000000 		.4byte	.LVL16
+ 932 0196 85050000 		.4byte	0x585
+ 933 019a A8010000 		.4byte	0x1a8
+ 934 019e 0C       		.uleb128 0xc
+ 935 019f 01       		.uleb128 0x1
+ 936 01a0 50       		.byte	0x50
+ 937 01a1 05       		.uleb128 0x5
+ 938 01a2 03       		.byte	0x3
+ 939 01a3 98000000 		.4byte	.LC4
+ 940 01a7 00       		.byte	0
+ 941 01a8 0B       		.uleb128 0xb
+ 942 01a9 76000000 		.4byte	.LVL19
+ 943 01ad 85050000 		.4byte	0x585
+ 944 01b1 BF010000 		.4byte	0x1bf
+ 945 01b5 0C       		.uleb128 0xc
+ 946 01b6 01       		.uleb128 0x1
+ 947 01b7 50       		.byte	0x50
+ 948 01b8 05       		.uleb128 0x5
+ 949 01b9 03       		.byte	0x3
+ 950 01ba C0000000 		.4byte	.LC5
+ 951 01be 00       		.byte	0
+ 952 01bf 0B       		.uleb128 0xb
+ 953 01c0 86000000 		.4byte	.LVL22
+ 954 01c4 85050000 		.4byte	0x585
+ 955 01c8 D6010000 		.4byte	0x1d6
+ 956 01cc 0C       		.uleb128 0xc
+ 957 01cd 01       		.uleb128 0x1
+ 958 01ce 50       		.byte	0x50
+ 959 01cf 05       		.uleb128 0x5
+ 960 01d0 03       		.byte	0x3
+ 961 01d1 0C010000 		.4byte	.LC6
+ 962 01d5 00       		.byte	0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 24
 
 
- 964 01d6 0B       		.uleb128 0xb
- 965 01d7 98000000 		.4byte	.LVL25
- 966 01db 70050000 		.4byte	0x570
- 967 01df ED010000 		.4byte	0x1ed
- 968 01e3 0C       		.uleb128 0xc
- 969 01e4 01       		.uleb128 0x1
- 970 01e5 50       		.byte	0x50
- 971 01e6 05       		.uleb128 0x5
- 972 01e7 03       		.byte	0x3
- 973 01e8 28010000 		.4byte	.LC7
- 974 01ec 00       		.byte	0
- 975 01ed 0A       		.uleb128 0xa
- 976 01ee A0000000 		.4byte	.LVL26
- 977 01f2 86050000 		.4byte	0x586
- 978 01f6 0A       		.uleb128 0xa
- 979 01f7 A4000000 		.4byte	.LVL27
- 980 01fb 91050000 		.4byte	0x591
- 981 01ff 00       		.byte	0
- 982 0200 0D       		.uleb128 0xd
- 983 0201 A7000000 		.4byte	0xa7
- 984 0205 10020000 		.4byte	0x210
- 985 0209 0E       		.uleb128 0xe
- 986 020a BF000000 		.4byte	0xbf
- 987 020e 13       		.byte	0x13
- 988 020f 00       		.byte	0
- 989 0210 0F       		.uleb128 0xf
- 990 0211 1B020000 		.4byte	.LASF22
- 991 0215 01       		.byte	0x1
- 992 0216 EA       		.byte	0xea
- 993 0217 00000000 		.4byte	.LFB71
- 994 021b 4C000000 		.4byte	.LFE71-.LFB71
- 995 021f 01       		.uleb128 0x1
- 996 0220 9C       		.byte	0x9c
- 997 0221 49020000 		.4byte	0x249
- 998 0225 08       		.uleb128 0x8
- 999 0226 44020000 		.4byte	.LASF23
- 1000 022a 01       		.byte	0x1
- 1001 022b EC       		.byte	0xec
- 1002 022c 8D000000 		.4byte	0x8d
- 1003 0230 05       		.uleb128 0x5
- 1004 0231 03       		.byte	0x3
- 1005 0232 0C000000 		.4byte	actualPosition.6801
- 1006 0236 0A       		.uleb128 0xa
- 1007 0237 3E000000 		.4byte	.LVL28
- 1008 023b 9C050000 		.4byte	0x59c
- 1009 023f 0A       		.uleb128 0xa
- 1010 0240 42000000 		.4byte	.LVL29
- 1011 0244 A7050000 		.4byte	0x5a7
- 1012 0248 00       		.byte	0
- 1013 0249 10       		.uleb128 0x10
- 1014 024a 72000000 		.4byte	.LASF63
- 1015 024e 01       		.byte	0x1
- 1016 024f 28       		.byte	0x28
- 1017 0250 68000000 		.4byte	0x68
- 1018 0254 00000000 		.4byte	.LFB64
- 1019 0258 70000000 		.4byte	.LFE64-.LFB64
- 1020 025c 01       		.uleb128 0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 25
+ 963 01d6 0B       		.uleb128 0xb
+ 964 01d7 96000000 		.4byte	.LVL25
+ 965 01db 85050000 		.4byte	0x585
+ 966 01df ED010000 		.4byte	0x1ed
+ 967 01e3 0C       		.uleb128 0xc
+ 968 01e4 01       		.uleb128 0x1
+ 969 01e5 50       		.byte	0x50
+ 970 01e6 05       		.uleb128 0x5
+ 971 01e7 03       		.byte	0x3
+ 972 01e8 28010000 		.4byte	.LC7
+ 973 01ec 00       		.byte	0
+ 974 01ed 0A       		.uleb128 0xa
+ 975 01ee 9E000000 		.4byte	.LVL26
+ 976 01f2 9B050000 		.4byte	0x59b
+ 977 01f6 0A       		.uleb128 0xa
+ 978 01f7 A2000000 		.4byte	.LVL27
+ 979 01fb A6050000 		.4byte	0x5a6
+ 980 01ff 00       		.byte	0
+ 981 0200 0D       		.uleb128 0xd
+ 982 0201 A7000000 		.4byte	0xa7
+ 983 0205 10020000 		.4byte	0x210
+ 984 0209 0E       		.uleb128 0xe
+ 985 020a BF000000 		.4byte	0xbf
+ 986 020e 1F       		.byte	0x1f
+ 987 020f 00       		.byte	0
+ 988 0210 0F       		.uleb128 0xf
+ 989 0211 15020000 		.4byte	.LASF22
+ 990 0215 01       		.byte	0x1
+ 991 0216 EB       		.byte	0xeb
+ 992 0217 00000000 		.4byte	.LFB71
+ 993 021b 4C000000 		.4byte	.LFE71-.LFB71
+ 994 021f 01       		.uleb128 0x1
+ 995 0220 9C       		.byte	0x9c
+ 996 0221 49020000 		.4byte	0x249
+ 997 0225 08       		.uleb128 0x8
+ 998 0226 3E020000 		.4byte	.LASF23
+ 999 022a 01       		.byte	0x1
+ 1000 022b ED       		.byte	0xed
+ 1001 022c 8D000000 		.4byte	0x8d
+ 1002 0230 05       		.uleb128 0x5
+ 1003 0231 03       		.byte	0x3
+ 1004 0232 0C000000 		.4byte	actualPosition.6791
+ 1005 0236 0A       		.uleb128 0xa
+ 1006 0237 3E000000 		.4byte	.LVL28
+ 1007 023b B1050000 		.4byte	0x5b1
+ 1008 023f 0A       		.uleb128 0xa
+ 1009 0240 42000000 		.4byte	.LVL29
+ 1010 0244 BC050000 		.4byte	0x5bc
+ 1011 0248 00       		.byte	0
+ 1012 0249 10       		.uleb128 0x10
+ 1013 024a 54000000 		.4byte	.LASF63
+ 1014 024e 01       		.byte	0x1
+ 1015 024f 28       		.byte	0x28
+ 1016 0250 68000000 		.4byte	0x68
+ 1017 0254 00000000 		.4byte	.LFB64
+ 1018 0258 70000000 		.4byte	.LFE64-.LFB64
+ 1019 025c 01       		.uleb128 0x1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 25
 
 
- 1021 025d 9C       		.byte	0x9c
- 1022 025e F4020000 		.4byte	0x2f4
- 1023 0262 08       		.uleb128 0x8
- 1024 0263 45030000 		.4byte	.LASF24
- 1025 0267 01       		.byte	0x1
- 1026 0268 3C       		.byte	0x3c
- 1027 0269 F4020000 		.4byte	0x2f4
- 1028 026d 03       		.uleb128 0x3
- 1029 026e 91       		.byte	0x91
- 1030 026f BC7F     		.sleb128 -68
- 1031 0271 0A       		.uleb128 0xa
- 1032 0272 0A000000 		.4byte	.LVL30
- 1033 0276 B2050000 		.4byte	0x5b2
- 1034 027a 0B       		.uleb128 0xb
- 1035 027b 10000000 		.4byte	.LVL31
- 1036 027f BD050000 		.4byte	0x5bd
- 1037 0283 91020000 		.4byte	0x291
- 1038 0287 0C       		.uleb128 0xc
- 1039 0288 01       		.uleb128 0x1
- 1040 0289 50       		.byte	0x50
- 1041 028a 05       		.uleb128 0x5
- 1042 028b 03       		.byte	0x3
- 1043 028c 00000000 		.4byte	my_isr_UART
- 1044 0290 00       		.byte	0
- 1045 0291 0A       		.uleb128 0xa
- 1046 0292 14000000 		.4byte	.LVL32
- 1047 0296 C8050000 		.4byte	0x5c8
- 1048 029a 0B       		.uleb128 0xb
- 1049 029b 1A000000 		.4byte	.LVL33
- 1050 029f D3050000 		.4byte	0x5d3
- 1051 02a3 B1020000 		.4byte	0x2b1
- 1052 02a7 0C       		.uleb128 0xc
- 1053 02a8 01       		.uleb128 0x1
- 1054 02a9 50       		.byte	0x50
- 1055 02aa 05       		.uleb128 0x5
- 1056 02ab 03       		.byte	0x3
- 1057 02ac 00000000 		.4byte	my_isr_TIMER
- 1058 02b0 00       		.byte	0
- 1059 02b1 0A       		.uleb128 0xa
- 1060 02b2 1E000000 		.4byte	.LVL34
- 1061 02b6 DE050000 		.4byte	0x5de
- 1062 02ba 0B       		.uleb128 0xb
- 1063 02bb 24000000 		.4byte	.LVL35
- 1064 02bf E9050000 		.4byte	0x5e9
- 1065 02c3 D1020000 		.4byte	0x2d1
- 1066 02c7 0C       		.uleb128 0xc
- 1067 02c8 01       		.uleb128 0x1
- 1068 02c9 50       		.byte	0x50
- 1069 02ca 05       		.uleb128 0x5
- 1070 02cb 03       		.byte	0x3
- 1071 02cc 00000000 		.4byte	my_isr_PWM
- 1072 02d0 00       		.byte	0
- 1073 02d1 0A       		.uleb128 0xa
- 1074 02d2 28000000 		.4byte	.LVL36
- 1075 02d6 F4050000 		.4byte	0x5f4
- 1076 02da 0A       		.uleb128 0xa
- 1077 02db 2C000000 		.4byte	.LVL37
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 26
+ 1020 025d 9C       		.byte	0x9c
+ 1021 025e F4020000 		.4byte	0x2f4
+ 1022 0262 08       		.uleb128 0x8
+ 1023 0263 43030000 		.4byte	.LASF24
+ 1024 0267 01       		.byte	0x1
+ 1025 0268 3D       		.byte	0x3d
+ 1026 0269 F4020000 		.4byte	0x2f4
+ 1027 026d 03       		.uleb128 0x3
+ 1028 026e 91       		.byte	0x91
+ 1029 026f BC7F     		.sleb128 -68
+ 1030 0271 0A       		.uleb128 0xa
+ 1031 0272 0A000000 		.4byte	.LVL30
+ 1032 0276 C7050000 		.4byte	0x5c7
+ 1033 027a 0B       		.uleb128 0xb
+ 1034 027b 10000000 		.4byte	.LVL31
+ 1035 027f D2050000 		.4byte	0x5d2
+ 1036 0283 91020000 		.4byte	0x291
+ 1037 0287 0C       		.uleb128 0xc
+ 1038 0288 01       		.uleb128 0x1
+ 1039 0289 50       		.byte	0x50
+ 1040 028a 05       		.uleb128 0x5
+ 1041 028b 03       		.byte	0x3
+ 1042 028c 00000000 		.4byte	my_isr_UART
+ 1043 0290 00       		.byte	0
+ 1044 0291 0A       		.uleb128 0xa
+ 1045 0292 14000000 		.4byte	.LVL32
+ 1046 0296 DD050000 		.4byte	0x5dd
+ 1047 029a 0B       		.uleb128 0xb
+ 1048 029b 1A000000 		.4byte	.LVL33
+ 1049 029f E8050000 		.4byte	0x5e8
+ 1050 02a3 B1020000 		.4byte	0x2b1
+ 1051 02a7 0C       		.uleb128 0xc
+ 1052 02a8 01       		.uleb128 0x1
+ 1053 02a9 50       		.byte	0x50
+ 1054 02aa 05       		.uleb128 0x5
+ 1055 02ab 03       		.byte	0x3
+ 1056 02ac 00000000 		.4byte	my_isr_TIMER
+ 1057 02b0 00       		.byte	0
+ 1058 02b1 0A       		.uleb128 0xa
+ 1059 02b2 1E000000 		.4byte	.LVL34
+ 1060 02b6 F3050000 		.4byte	0x5f3
+ 1061 02ba 0B       		.uleb128 0xb
+ 1062 02bb 24000000 		.4byte	.LVL35
+ 1063 02bf FE050000 		.4byte	0x5fe
+ 1064 02c3 D1020000 		.4byte	0x2d1
+ 1065 02c7 0C       		.uleb128 0xc
+ 1066 02c8 01       		.uleb128 0x1
+ 1067 02c9 50       		.byte	0x50
+ 1068 02ca 05       		.uleb128 0x5
+ 1069 02cb 03       		.byte	0x3
+ 1070 02cc 00000000 		.4byte	my_isr_PWM
+ 1071 02d0 00       		.byte	0
+ 1072 02d1 0A       		.uleb128 0xa
+ 1073 02d2 28000000 		.4byte	.LVL36
+ 1074 02d6 09060000 		.4byte	0x609
+ 1075 02da 0A       		.uleb128 0xa
+ 1076 02db 2C000000 		.4byte	.LVL37
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 26
 
 
- 1078 02df FF050000 		.4byte	0x5ff
- 1079 02e3 11       		.uleb128 0x11
- 1080 02e4 5C000000 		.4byte	.LVL38
- 1081 02e8 70050000 		.4byte	0x570
- 1082 02ec 0C       		.uleb128 0xc
- 1083 02ed 01       		.uleb128 0x1
- 1084 02ee 50       		.byte	0x50
- 1085 02ef 02       		.uleb128 0x2
- 1086 02f0 74       		.byte	0x74
- 1087 02f1 64       		.sleb128 -28
- 1088 02f2 00       		.byte	0
- 1089 02f3 00       		.byte	0
- 1090 02f4 0D       		.uleb128 0xd
- 1091 02f5 A7000000 		.4byte	0xa7
- 1092 02f9 04030000 		.4byte	0x304
- 1093 02fd 0E       		.uleb128 0xe
- 1094 02fe BF000000 		.4byte	0xbf
- 1095 0302 31       		.byte	0x31
- 1096 0303 00       		.byte	0
- 1097 0304 0F       		.uleb128 0xf
- 1098 0305 35030000 		.4byte	.LASF25
- 1099 0309 01       		.byte	0x1
- 1100 030a 47       		.byte	0x47
- 1101 030b 00000000 		.4byte	.LFB65
- 1102 030f 2C000000 		.4byte	.LFE65-.LFB65
- 1103 0313 01       		.uleb128 0x1
- 1104 0314 9C       		.byte	0x9c
- 1105 0315 3C030000 		.4byte	0x33c
- 1106 0319 0B       		.uleb128 0xb
- 1107 031a 12000000 		.4byte	.LVL39
- 1108 031e 0A060000 		.4byte	0x60a
- 1109 0322 2C030000 		.4byte	0x32c
- 1110 0326 0C       		.uleb128 0xc
- 1111 0327 01       		.uleb128 0x1
- 1112 0328 50       		.byte	0x50
- 1113 0329 01       		.uleb128 0x1
- 1114 032a 31       		.byte	0x31
- 1115 032b 00       		.byte	0
- 1116 032c 11       		.uleb128 0x11
- 1117 032d 24000000 		.4byte	.LVL40
- 1118 0331 0A060000 		.4byte	0x60a
- 1119 0335 0C       		.uleb128 0xc
- 1120 0336 01       		.uleb128 0x1
- 1121 0337 50       		.byte	0x50
- 1122 0338 01       		.uleb128 0x1
- 1123 0339 30       		.byte	0x30
- 1124 033a 00       		.byte	0
- 1125 033b 00       		.byte	0
- 1126 033c 12       		.uleb128 0x12
- 1127 033d F0000000 		.4byte	.LASF64
- 1128 0341 01       		.byte	0x1
- 1129 0342 53       		.byte	0x53
- 1130 0343 00000000 		.4byte	.LFB66
- 1131 0347 68000000 		.4byte	.LFE66-.LFB66
- 1132 034b 01       		.uleb128 0x1
- 1133 034c 9C       		.byte	0x9c
- 1134 034d 0F       		.uleb128 0xf
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 27
+ 1077 02df 14060000 		.4byte	0x614
+ 1078 02e3 11       		.uleb128 0x11
+ 1079 02e4 5C000000 		.4byte	.LVL38
+ 1080 02e8 85050000 		.4byte	0x585
+ 1081 02ec 0C       		.uleb128 0xc
+ 1082 02ed 01       		.uleb128 0x1
+ 1083 02ee 50       		.byte	0x50
+ 1084 02ef 02       		.uleb128 0x2
+ 1085 02f0 74       		.byte	0x74
+ 1086 02f1 64       		.sleb128 -28
+ 1087 02f2 00       		.byte	0
+ 1088 02f3 00       		.byte	0
+ 1089 02f4 0D       		.uleb128 0xd
+ 1090 02f5 A7000000 		.4byte	0xa7
+ 1091 02f9 04030000 		.4byte	0x304
+ 1092 02fd 0E       		.uleb128 0xe
+ 1093 02fe BF000000 		.4byte	0xbf
+ 1094 0302 31       		.byte	0x31
+ 1095 0303 00       		.byte	0
+ 1096 0304 0F       		.uleb128 0xf
+ 1097 0305 33030000 		.4byte	.LASF25
+ 1098 0309 01       		.byte	0x1
+ 1099 030a 48       		.byte	0x48
+ 1100 030b 00000000 		.4byte	.LFB65
+ 1101 030f 2C000000 		.4byte	.LFE65-.LFB65
+ 1102 0313 01       		.uleb128 0x1
+ 1103 0314 9C       		.byte	0x9c
+ 1104 0315 3C030000 		.4byte	0x33c
+ 1105 0319 0B       		.uleb128 0xb
+ 1106 031a 12000000 		.4byte	.LVL39
+ 1107 031e 1F060000 		.4byte	0x61f
+ 1108 0322 2C030000 		.4byte	0x32c
+ 1109 0326 0C       		.uleb128 0xc
+ 1110 0327 01       		.uleb128 0x1
+ 1111 0328 50       		.byte	0x50
+ 1112 0329 01       		.uleb128 0x1
+ 1113 032a 31       		.byte	0x31
+ 1114 032b 00       		.byte	0
+ 1115 032c 11       		.uleb128 0x11
+ 1116 032d 24000000 		.4byte	.LVL40
+ 1117 0331 1F060000 		.4byte	0x61f
+ 1118 0335 0C       		.uleb128 0xc
+ 1119 0336 01       		.uleb128 0x1
+ 1120 0337 50       		.byte	0x50
+ 1121 0338 01       		.uleb128 0x1
+ 1122 0339 30       		.byte	0x30
+ 1123 033a 00       		.byte	0
+ 1124 033b 00       		.byte	0
+ 1125 033c 12       		.uleb128 0x12
+ 1126 033d D9000000 		.4byte	.LASF64
+ 1127 0341 01       		.byte	0x1
+ 1128 0342 54       		.byte	0x54
+ 1129 0343 00000000 		.4byte	.LFB66
+ 1130 0347 68000000 		.4byte	.LFE66-.LFB66
+ 1131 034b 01       		.uleb128 0x1
+ 1132 034c 9C       		.byte	0x9c
+ 1133 034d 0F       		.uleb128 0xf
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 27
 
 
- 1135 034e 26030000 		.4byte	.LASF26
- 1136 0352 01       		.byte	0x1
- 1137 0353 6E       		.byte	0x6e
- 1138 0354 00000000 		.4byte	.LFB67
- 1139 0358 0C000000 		.4byte	.LFE67-.LFB67
- 1140 035c 01       		.uleb128 0x1
- 1141 035d 9C       		.byte	0x9c
- 1142 035e 75030000 		.4byte	0x375
- 1143 0362 0A       		.uleb128 0xa
- 1144 0363 06000000 		.4byte	.LVL41
- 1145 0367 3C030000 		.4byte	0x33c
- 1146 036b 0A       		.uleb128 0xa
- 1147 036c 0A000000 		.4byte	.LVL42
- 1148 0370 04030000 		.4byte	0x304
- 1149 0374 00       		.byte	0
- 1150 0375 0F       		.uleb128 0xf
- 1151 0376 FB020000 		.4byte	.LASF27
- 1152 037a 01       		.byte	0x1
- 1153 037b E3       		.byte	0xe3
- 1154 037c 00000000 		.4byte	.LFB70
- 1155 0380 0C000000 		.4byte	.LFE70-.LFB70
- 1156 0384 01       		.uleb128 0x1
- 1157 0385 9C       		.byte	0x9c
- 1158 0386 9D030000 		.4byte	0x39d
- 1159 038a 0A       		.uleb128 0xa
- 1160 038b 06000000 		.4byte	.LVL43
- 1161 038f 4D030000 		.4byte	0x34d
- 1162 0393 0A       		.uleb128 0xa
- 1163 0394 0A000000 		.4byte	.LVL44
- 1164 0398 15060000 		.4byte	0x615
- 1165 039c 00       		.byte	0
- 1166 039d 0F       		.uleb128 0xf
- 1167 039e 77000000 		.4byte	.LASF28
- 1168 03a2 01       		.byte	0x1
- 1169 03a3 7D       		.byte	0x7d
- 1170 03a4 00000000 		.4byte	.LFB68
- 1171 03a8 84000000 		.4byte	.LFE68-.LFB68
- 1172 03ac 01       		.uleb128 0x1
- 1173 03ad 9C       		.byte	0x9c
- 1174 03ae CA040000 		.4byte	0x4ca
- 1175 03b2 13       		.uleb128 0x13
- 1176 03b3 6900     		.ascii	"i\000"
- 1177 03b5 01       		.byte	0x1
- 1178 03b6 7F       		.byte	0x7f
- 1179 03b7 81000000 		.4byte	0x81
- 1180 03bb 55000000 		.4byte	.LLST1
- 1181 03bf 09       		.uleb128 0x9
- 1182 03c0 35000000 		.4byte	.LASF29
- 1183 03c4 01       		.byte	0x1
- 1184 03c5 7F       		.byte	0x7f
- 1185 03c6 81000000 		.4byte	0x81
- 1186 03ca A1000000 		.4byte	.LLST2
- 1187 03ce 08       		.uleb128 0x8
- 1188 03cf 3E020000 		.4byte	.LASF30
- 1189 03d3 01       		.byte	0x1
- 1190 03d4 80       		.byte	0x80
- 1191 03d5 F4020000 		.4byte	0x2f4
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 28
+ 1134 034e 24030000 		.4byte	.LASF26
+ 1135 0352 01       		.byte	0x1
+ 1136 0353 6F       		.byte	0x6f
+ 1137 0354 00000000 		.4byte	.LFB67
+ 1138 0358 0C000000 		.4byte	.LFE67-.LFB67
+ 1139 035c 01       		.uleb128 0x1
+ 1140 035d 9C       		.byte	0x9c
+ 1141 035e 75030000 		.4byte	0x375
+ 1142 0362 0A       		.uleb128 0xa
+ 1143 0363 06000000 		.4byte	.LVL41
+ 1144 0367 3C030000 		.4byte	0x33c
+ 1145 036b 0A       		.uleb128 0xa
+ 1146 036c 0A000000 		.4byte	.LVL42
+ 1147 0370 04030000 		.4byte	0x304
+ 1148 0374 00       		.byte	0
+ 1149 0375 0F       		.uleb128 0xf
+ 1150 0376 F9020000 		.4byte	.LASF27
+ 1151 037a 01       		.byte	0x1
+ 1152 037b E4       		.byte	0xe4
+ 1153 037c 00000000 		.4byte	.LFB70
+ 1154 0380 0C000000 		.4byte	.LFE70-.LFB70
+ 1155 0384 01       		.uleb128 0x1
+ 1156 0385 9C       		.byte	0x9c
+ 1157 0386 9D030000 		.4byte	0x39d
+ 1158 038a 0A       		.uleb128 0xa
+ 1159 038b 06000000 		.4byte	.LVL43
+ 1160 038f 4D030000 		.4byte	0x34d
+ 1161 0393 0A       		.uleb128 0xa
+ 1162 0394 0A000000 		.4byte	.LVL44
+ 1163 0398 2A060000 		.4byte	0x62a
+ 1164 039c 00       		.byte	0
+ 1165 039d 0F       		.uleb128 0xf
+ 1166 039e 59000000 		.4byte	.LASF28
+ 1167 03a2 01       		.byte	0x1
+ 1168 03a3 7E       		.byte	0x7e
+ 1169 03a4 00000000 		.4byte	.LFB68
+ 1170 03a8 84000000 		.4byte	.LFE68-.LFB68
+ 1171 03ac 01       		.uleb128 0x1
+ 1172 03ad 9C       		.byte	0x9c
+ 1173 03ae CA040000 		.4byte	0x4ca
+ 1174 03b2 13       		.uleb128 0x13
+ 1175 03b3 6900     		.ascii	"i\000"
+ 1176 03b5 01       		.byte	0x1
+ 1177 03b6 80       		.byte	0x80
+ 1178 03b7 81000000 		.4byte	0x81
+ 1179 03bb 55000000 		.4byte	.LLST1
+ 1180 03bf 09       		.uleb128 0x9
+ 1181 03c0 17000000 		.4byte	.LASF29
+ 1182 03c4 01       		.byte	0x1
+ 1183 03c5 80       		.byte	0x80
+ 1184 03c6 81000000 		.4byte	0x81
+ 1185 03ca A1000000 		.4byte	.LLST2
+ 1186 03ce 08       		.uleb128 0x8
+ 1187 03cf 38020000 		.4byte	.LASF30
+ 1188 03d3 01       		.byte	0x1
+ 1189 03d4 81       		.byte	0x81
+ 1190 03d5 F4020000 		.4byte	0x2f4
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 28
 
 
- 1192 03d9 02       		.uleb128 0x2
- 1193 03da 91       		.byte	0x91
- 1194 03db 44       		.sleb128 -60
- 1195 03dc 08       		.uleb128 0x8
- 1196 03dd D5010000 		.4byte	.LASF18
- 1197 03e1 01       		.byte	0x1
- 1198 03e2 98       		.byte	0x98
- 1199 03e3 00020000 		.4byte	0x200
- 1200 03e7 03       		.uleb128 0x3
- 1201 03e8 91       		.byte	0x91
- 1202 03e9 B07F     		.sleb128 -80
- 1203 03eb 0B       		.uleb128 0xb
- 1204 03ec 0C000000 		.4byte	.LVL45
- 1205 03f0 20060000 		.4byte	0x620
- 1206 03f4 04040000 		.4byte	0x404
- 1207 03f8 0C       		.uleb128 0xc
- 1208 03f9 01       		.uleb128 0x1
- 1209 03fa 50       		.byte	0x50
- 1210 03fb 02       		.uleb128 0x2
- 1211 03fc 08       		.byte	0x8
- 1212 03fd 68       		.byte	0x68
- 1213 03fe 0C       		.uleb128 0xc
- 1214 03ff 01       		.uleb128 0x1
- 1215 0400 51       		.byte	0x51
- 1216 0401 01       		.uleb128 0x1
- 1217 0402 30       		.byte	0x30
- 1218 0403 00       		.byte	0
- 1219 0404 0B       		.uleb128 0xb
- 1220 0405 18000000 		.4byte	.LVL48
- 1221 0409 65050000 		.4byte	0x565
- 1222 040d 27040000 		.4byte	0x427
- 1223 0411 0C       		.uleb128 0xc
- 1224 0412 01       		.uleb128 0x1
- 1225 0413 50       		.byte	0x50
- 1226 0414 02       		.uleb128 0x2
- 1227 0415 91       		.byte	0x91
- 1228 0416 44       		.sleb128 -60
- 1229 0417 0C       		.uleb128 0xc
- 1230 0418 01       		.uleb128 0x1
- 1231 0419 51       		.byte	0x51
- 1232 041a 05       		.uleb128 0x5
- 1233 041b 03       		.byte	0x3
- 1234 041c 4C010000 		.4byte	.LC9
- 1235 0420 0C       		.uleb128 0xc
- 1236 0421 01       		.uleb128 0x1
- 1237 0422 52       		.byte	0x52
- 1238 0423 02       		.uleb128 0x2
- 1239 0424 74       		.byte	0x74
- 1240 0425 00       		.sleb128 0
- 1241 0426 00       		.byte	0
- 1242 0427 0B       		.uleb128 0xb
- 1243 0428 1E000000 		.4byte	.LVL49
- 1244 042c 70050000 		.4byte	0x570
- 1245 0430 3B040000 		.4byte	0x43b
- 1246 0434 0C       		.uleb128 0xc
- 1247 0435 01       		.uleb128 0x1
- 1248 0436 50       		.byte	0x50
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 29
+ 1191 03d9 02       		.uleb128 0x2
+ 1192 03da 91       		.byte	0x91
+ 1193 03db 44       		.sleb128 -60
+ 1194 03dc 08       		.uleb128 0x8
+ 1195 03dd CF010000 		.4byte	.LASF18
+ 1196 03e1 01       		.byte	0x1
+ 1197 03e2 99       		.byte	0x99
+ 1198 03e3 CA040000 		.4byte	0x4ca
+ 1199 03e7 03       		.uleb128 0x3
+ 1200 03e8 91       		.byte	0x91
+ 1201 03e9 B07F     		.sleb128 -80
+ 1202 03eb 0B       		.uleb128 0xb
+ 1203 03ec 0C000000 		.4byte	.LVL45
+ 1204 03f0 35060000 		.4byte	0x635
+ 1205 03f4 04040000 		.4byte	0x404
+ 1206 03f8 0C       		.uleb128 0xc
+ 1207 03f9 01       		.uleb128 0x1
+ 1208 03fa 50       		.byte	0x50
+ 1209 03fb 02       		.uleb128 0x2
+ 1210 03fc 08       		.byte	0x8
+ 1211 03fd 68       		.byte	0x68
+ 1212 03fe 0C       		.uleb128 0xc
+ 1213 03ff 01       		.uleb128 0x1
+ 1214 0400 51       		.byte	0x51
+ 1215 0401 01       		.uleb128 0x1
+ 1216 0402 30       		.byte	0x30
+ 1217 0403 00       		.byte	0
+ 1218 0404 0B       		.uleb128 0xb
+ 1219 0405 18000000 		.4byte	.LVL48
+ 1220 0409 7A050000 		.4byte	0x57a
+ 1221 040d 27040000 		.4byte	0x427
+ 1222 0411 0C       		.uleb128 0xc
+ 1223 0412 01       		.uleb128 0x1
+ 1224 0413 50       		.byte	0x50
+ 1225 0414 02       		.uleb128 0x2
+ 1226 0415 91       		.byte	0x91
+ 1227 0416 44       		.sleb128 -60
+ 1228 0417 0C       		.uleb128 0xc
+ 1229 0418 01       		.uleb128 0x1
+ 1230 0419 51       		.byte	0x51
+ 1231 041a 05       		.uleb128 0x5
+ 1232 041b 03       		.byte	0x3
+ 1233 041c 4C010000 		.4byte	.LC9
+ 1234 0420 0C       		.uleb128 0xc
+ 1235 0421 01       		.uleb128 0x1
+ 1236 0422 52       		.byte	0x52
+ 1237 0423 02       		.uleb128 0x2
+ 1238 0424 74       		.byte	0x74
+ 1239 0425 00       		.sleb128 0
+ 1240 0426 00       		.byte	0
+ 1241 0427 0B       		.uleb128 0xb
+ 1242 0428 1E000000 		.4byte	.LVL49
+ 1243 042c 85050000 		.4byte	0x585
+ 1244 0430 3B040000 		.4byte	0x43b
+ 1245 0434 0C       		.uleb128 0xc
+ 1246 0435 01       		.uleb128 0x1
+ 1247 0436 50       		.byte	0x50
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 29
 
 
- 1249 0437 02       		.uleb128 0x2
- 1250 0438 91       		.byte	0x91
- 1251 0439 44       		.sleb128 -60
- 1252 043a 00       		.byte	0
- 1253 043b 0B       		.uleb128 0xb
- 1254 043c 28000000 		.4byte	.LVL50
- 1255 0440 2B060000 		.4byte	0x62b
- 1256 0444 4E040000 		.4byte	0x44e
- 1257 0448 0C       		.uleb128 0xc
- 1258 0449 01       		.uleb128 0x1
- 1259 044a 50       		.byte	0x50
- 1260 044b 01       		.uleb128 0x1
- 1261 044c 30       		.byte	0x30
- 1262 044d 00       		.byte	0
- 1263 044e 0B       		.uleb128 0xb
- 1264 044f 30000000 		.4byte	.LVL51
- 1265 0453 36060000 		.4byte	0x636
- 1266 0457 67040000 		.4byte	0x467
- 1267 045b 0C       		.uleb128 0xc
- 1268 045c 01       		.uleb128 0x1
- 1269 045d 50       		.byte	0x50
- 1270 045e 02       		.uleb128 0x2
- 1271 045f 08       		.byte	0x8
- 1272 0460 68       		.byte	0x68
- 1273 0461 0C       		.uleb128 0xc
- 1274 0462 01       		.uleb128 0x1
- 1275 0463 51       		.byte	0x51
- 1276 0464 01       		.uleb128 0x1
- 1277 0465 30       		.byte	0x30
- 1278 0466 00       		.byte	0
- 1279 0467 0B       		.uleb128 0xb
- 1280 0468 38000000 		.4byte	.LVL53
- 1281 046c 41060000 		.4byte	0x641
- 1282 0470 7A040000 		.4byte	0x47a
- 1283 0474 0C       		.uleb128 0xc
- 1284 0475 01       		.uleb128 0x1
- 1285 0476 50       		.byte	0x50
- 1286 0477 01       		.uleb128 0x1
- 1287 0478 31       		.byte	0x31
- 1288 0479 00       		.byte	0
- 1289 047a 0B       		.uleb128 0xb
- 1290 047b 4A000000 		.4byte	.LVL56
- 1291 047f 41060000 		.4byte	0x641
- 1292 0483 8D040000 		.4byte	0x48d
- 1293 0487 0C       		.uleb128 0xc
- 1294 0488 01       		.uleb128 0x1
- 1295 0489 50       		.byte	0x50
- 1296 048a 01       		.uleb128 0x1
- 1297 048b 30       		.byte	0x30
- 1298 048c 00       		.byte	0
- 1299 048d 0A       		.uleb128 0xa
- 1300 048e 52000000 		.4byte	.LVL57
- 1301 0492 4C060000 		.4byte	0x64c
- 1302 0496 0B       		.uleb128 0xb
- 1303 0497 64000000 		.4byte	.LVL59
- 1304 049b 65050000 		.4byte	0x565
- 1305 049f B9040000 		.4byte	0x4b9
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 30
+ 1248 0437 02       		.uleb128 0x2
+ 1249 0438 91       		.byte	0x91
+ 1250 0439 44       		.sleb128 -60
+ 1251 043a 00       		.byte	0
+ 1252 043b 0B       		.uleb128 0xb
+ 1253 043c 28000000 		.4byte	.LVL50
+ 1254 0440 40060000 		.4byte	0x640
+ 1255 0444 4E040000 		.4byte	0x44e
+ 1256 0448 0C       		.uleb128 0xc
+ 1257 0449 01       		.uleb128 0x1
+ 1258 044a 50       		.byte	0x50
+ 1259 044b 01       		.uleb128 0x1
+ 1260 044c 30       		.byte	0x30
+ 1261 044d 00       		.byte	0
+ 1262 044e 0B       		.uleb128 0xb
+ 1263 044f 30000000 		.4byte	.LVL51
+ 1264 0453 4B060000 		.4byte	0x64b
+ 1265 0457 67040000 		.4byte	0x467
+ 1266 045b 0C       		.uleb128 0xc
+ 1267 045c 01       		.uleb128 0x1
+ 1268 045d 50       		.byte	0x50
+ 1269 045e 02       		.uleb128 0x2
+ 1270 045f 08       		.byte	0x8
+ 1271 0460 68       		.byte	0x68
+ 1272 0461 0C       		.uleb128 0xc
+ 1273 0462 01       		.uleb128 0x1
+ 1274 0463 51       		.byte	0x51
+ 1275 0464 01       		.uleb128 0x1
+ 1276 0465 30       		.byte	0x30
+ 1277 0466 00       		.byte	0
+ 1278 0467 0B       		.uleb128 0xb
+ 1279 0468 38000000 		.4byte	.LVL53
+ 1280 046c 56060000 		.4byte	0x656
+ 1281 0470 7A040000 		.4byte	0x47a
+ 1282 0474 0C       		.uleb128 0xc
+ 1283 0475 01       		.uleb128 0x1
+ 1284 0476 50       		.byte	0x50
+ 1285 0477 01       		.uleb128 0x1
+ 1286 0478 31       		.byte	0x31
+ 1287 0479 00       		.byte	0
+ 1288 047a 0B       		.uleb128 0xb
+ 1289 047b 4A000000 		.4byte	.LVL56
+ 1290 047f 56060000 		.4byte	0x656
+ 1291 0483 8D040000 		.4byte	0x48d
+ 1292 0487 0C       		.uleb128 0xc
+ 1293 0488 01       		.uleb128 0x1
+ 1294 0489 50       		.byte	0x50
+ 1295 048a 01       		.uleb128 0x1
+ 1296 048b 30       		.byte	0x30
+ 1297 048c 00       		.byte	0
+ 1298 048d 0A       		.uleb128 0xa
+ 1299 048e 52000000 		.4byte	.LVL57
+ 1300 0492 61060000 		.4byte	0x661
+ 1301 0496 0B       		.uleb128 0xb
+ 1302 0497 64000000 		.4byte	.LVL59
+ 1303 049b 7A050000 		.4byte	0x57a
+ 1304 049f B9040000 		.4byte	0x4b9
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 30
 
 
- 1306 04a3 0C       		.uleb128 0xc
- 1307 04a4 01       		.uleb128 0x1
- 1308 04a5 50       		.byte	0x50
- 1309 04a6 02       		.uleb128 0x2
- 1310 04a7 7D       		.byte	0x7d
- 1311 04a8 00       		.sleb128 0
- 1312 04a9 0C       		.uleb128 0xc
- 1313 04aa 01       		.uleb128 0x1
- 1314 04ab 51       		.byte	0x51
- 1315 04ac 05       		.uleb128 0x5
- 1316 04ad 03       		.byte	0x3
- 1317 04ae 60010000 		.4byte	.LC10
- 1318 04b2 0C       		.uleb128 0xc
- 1319 04b3 01       		.uleb128 0x1
- 1320 04b4 52       		.byte	0x52
- 1321 04b5 02       		.uleb128 0x2
- 1322 04b6 74       		.byte	0x74
- 1323 04b7 00       		.sleb128 0
- 1324 04b8 00       		.byte	0
- 1325 04b9 11       		.uleb128 0x11
- 1326 04ba 6A000000 		.4byte	.LVL60
- 1327 04be 70050000 		.4byte	0x570
- 1328 04c2 0C       		.uleb128 0xc
- 1329 04c3 01       		.uleb128 0x1
- 1330 04c4 50       		.byte	0x50
- 1331 04c5 02       		.uleb128 0x2
- 1332 04c6 7D       		.byte	0x7d
- 1333 04c7 00       		.sleb128 0
- 1334 04c8 00       		.byte	0
- 1335 04c9 00       		.byte	0
- 1336 04ca 14       		.uleb128 0x14
- 1337 04cb B0030000 		.4byte	.LASF31
- 1338 04cf 05       		.byte	0x5
- 1339 04d0 1207     		.2byte	0x712
- 1340 04d2 D6040000 		.4byte	0x4d6
- 1341 04d6 06       		.uleb128 0x6
- 1342 04d7 76000000 		.4byte	0x76
- 1343 04db 0D       		.uleb128 0xd
- 1344 04dc AE000000 		.4byte	0xae
- 1345 04e0 EB040000 		.4byte	0x4eb
- 1346 04e4 0E       		.uleb128 0xe
- 1347 04e5 BF000000 		.4byte	0xbf
- 1348 04e9 06       		.byte	0x6
- 1349 04ea 00       		.byte	0
- 1350 04eb 15       		.uleb128 0x15
- 1351 04ec 74010000 		.4byte	.LASF32
- 1352 04f0 01       		.byte	0x1
- 1353 04f1 22       		.byte	0x22
- 1354 04f2 FC040000 		.4byte	0x4fc
- 1355 04f6 05       		.uleb128 0x5
- 1356 04f7 03       		.byte	0x3
- 1357 04f8 00000000 		.4byte	rtc_data
- 1358 04fc 06       		.uleb128 0x6
- 1359 04fd DB040000 		.4byte	0x4db
- 1360 0501 15       		.uleb128 0x15
- 1361 0502 55000000 		.4byte	.LASF33
- 1362 0506 01       		.byte	0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 31
+ 1305 04a3 0C       		.uleb128 0xc
+ 1306 04a4 01       		.uleb128 0x1
+ 1307 04a5 50       		.byte	0x50
+ 1308 04a6 02       		.uleb128 0x2
+ 1309 04a7 7D       		.byte	0x7d
+ 1310 04a8 00       		.sleb128 0
+ 1311 04a9 0C       		.uleb128 0xc
+ 1312 04aa 01       		.uleb128 0x1
+ 1313 04ab 51       		.byte	0x51
+ 1314 04ac 05       		.uleb128 0x5
+ 1315 04ad 03       		.byte	0x3
+ 1316 04ae 60010000 		.4byte	.LC10
+ 1317 04b2 0C       		.uleb128 0xc
+ 1318 04b3 01       		.uleb128 0x1
+ 1319 04b4 52       		.byte	0x52
+ 1320 04b5 02       		.uleb128 0x2
+ 1321 04b6 74       		.byte	0x74
+ 1322 04b7 00       		.sleb128 0
+ 1323 04b8 00       		.byte	0
+ 1324 04b9 11       		.uleb128 0x11
+ 1325 04ba 6A000000 		.4byte	.LVL60
+ 1326 04be 85050000 		.4byte	0x585
+ 1327 04c2 0C       		.uleb128 0xc
+ 1328 04c3 01       		.uleb128 0x1
+ 1329 04c4 50       		.byte	0x50
+ 1330 04c5 02       		.uleb128 0x2
+ 1331 04c6 7D       		.byte	0x7d
+ 1332 04c7 00       		.sleb128 0
+ 1333 04c8 00       		.byte	0
+ 1334 04c9 00       		.byte	0
+ 1335 04ca 0D       		.uleb128 0xd
+ 1336 04cb A7000000 		.4byte	0xa7
+ 1337 04cf DA040000 		.4byte	0x4da
+ 1338 04d3 0E       		.uleb128 0xe
+ 1339 04d4 BF000000 		.4byte	0xbf
+ 1340 04d8 13       		.byte	0x13
+ 1341 04d9 00       		.byte	0
+ 1342 04da 14       		.uleb128 0x14
+ 1343 04db AE030000 		.4byte	.LASF31
+ 1344 04df 05       		.byte	0x5
+ 1345 04e0 1207     		.2byte	0x712
+ 1346 04e2 E6040000 		.4byte	0x4e6
+ 1347 04e6 06       		.uleb128 0x6
+ 1348 04e7 76000000 		.4byte	0x76
+ 1349 04eb 0D       		.uleb128 0xd
+ 1350 04ec AE000000 		.4byte	0xae
+ 1351 04f0 FB040000 		.4byte	0x4fb
+ 1352 04f4 0E       		.uleb128 0xe
+ 1353 04f5 BF000000 		.4byte	0xbf
+ 1354 04f9 06       		.byte	0x6
+ 1355 04fa 00       		.byte	0
+ 1356 04fb 15       		.uleb128 0x15
+ 1357 04fc 6E010000 		.4byte	.LASF32
+ 1358 0500 01       		.byte	0x1
+ 1359 0501 22       		.byte	0x22
+ 1360 0502 0C050000 		.4byte	0x50c
+ 1361 0506 05       		.uleb128 0x5
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 31
 
 
- 1363 0507 23       		.byte	0x23
- 1364 0508 AE000000 		.4byte	0xae
- 1365 050c 05       		.uleb128 0x5
- 1366 050d 03       		.byte	0x3
- 1367 050e 00000000 		.4byte	room_temp
- 1368 0512 15       		.uleb128 0x15
- 1369 0513 5E010000 		.4byte	.LASF34
- 1370 0517 01       		.byte	0x1
- 1371 0518 24       		.byte	0x24
- 1372 0519 AE000000 		.4byte	0xae
- 1373 051d 05       		.uleb128 0x5
- 1374 051e 03       		.byte	0x3
- 1375 051f 00000000 		.4byte	window_position_index
- 1376 0523 0D       		.uleb128 0xd
- 1377 0524 B3000000 		.4byte	0xb3
- 1378 0528 33050000 		.4byte	0x533
- 1379 052c 0E       		.uleb128 0xe
- 1380 052d BF000000 		.4byte	0xbf
- 1381 0531 05       		.byte	0x5
- 1382 0532 00       		.byte	0
- 1383 0533 15       		.uleb128 0x15
- 1384 0534 E0000000 		.4byte	.LASF35
- 1385 0538 01       		.byte	0x1
- 1386 0539 25       		.byte	0x25
- 1387 053a 44050000 		.4byte	0x544
- 1388 053e 05       		.uleb128 0x5
- 1389 053f 03       		.byte	0x3
- 1390 0540 00000000 		.4byte	window_position
- 1391 0544 06       		.uleb128 0x6
- 1392 0545 23050000 		.4byte	0x523
- 1393 0549 15       		.uleb128 0x15
- 1394 054a 66020000 		.4byte	.LASF36
- 1395 054e 01       		.byte	0x1
- 1396 054f 26       		.byte	0x26
- 1397 0550 B3000000 		.4byte	0xb3
- 1398 0554 05       		.uleb128 0x5
- 1399 0555 03       		.byte	0x3
- 1400 0556 00000000 		.4byte	OneWireVal
- 1401 055a 16       		.uleb128 0x16
- 1402 055b 23000000 		.4byte	.LASF37
- 1403 055f 23000000 		.4byte	.LASF37
- 1404 0563 06       		.byte	0x6
- 1405 0564 0E       		.byte	0xe
- 1406 0565 16       		.uleb128 0x16
- 1407 0566 DE010000 		.4byte	.LASF38
- 1408 056a DE010000 		.4byte	.LASF38
- 1409 056e 07       		.byte	0x7
- 1410 056f E7       		.byte	0xe7
- 1411 0570 16       		.uleb128 0x16
- 1412 0571 B9000000 		.4byte	.LASF39
- 1413 0575 B9000000 		.4byte	.LASF39
- 1414 0579 08       		.byte	0x8
- 1415 057a 8B       		.byte	0x8b
- 1416 057b 16       		.uleb128 0x16
- 1417 057c AC000000 		.4byte	.LASF40
- 1418 0580 AC000000 		.4byte	.LASF40
- 1419 0584 08       		.byte	0x8
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 32
+ 1362 0507 03       		.byte	0x3
+ 1363 0508 00000000 		.4byte	rtc_data
+ 1364 050c 06       		.uleb128 0x6
+ 1365 050d EB040000 		.4byte	0x4eb
+ 1366 0511 15       		.uleb128 0x15
+ 1367 0512 37000000 		.4byte	.LASF33
+ 1368 0516 01       		.byte	0x1
+ 1369 0517 23       		.byte	0x23
+ 1370 0518 AE000000 		.4byte	0xae
+ 1371 051c 05       		.uleb128 0x5
+ 1372 051d 03       		.byte	0x3
+ 1373 051e 00000000 		.4byte	room_temp
+ 1374 0522 15       		.uleb128 0x15
+ 1375 0523 58010000 		.4byte	.LASF34
+ 1376 0527 01       		.byte	0x1
+ 1377 0528 24       		.byte	0x24
+ 1378 0529 AE000000 		.4byte	0xae
+ 1379 052d 05       		.uleb128 0x5
+ 1380 052e 03       		.byte	0x3
+ 1381 052f 00000000 		.4byte	window_position_index
+ 1382 0533 0D       		.uleb128 0xd
+ 1383 0534 B3000000 		.4byte	0xb3
+ 1384 0538 43050000 		.4byte	0x543
+ 1385 053c 0E       		.uleb128 0xe
+ 1386 053d BF000000 		.4byte	0xbf
+ 1387 0541 05       		.byte	0x5
+ 1388 0542 00       		.byte	0
+ 1389 0543 15       		.uleb128 0x15
+ 1390 0544 C9000000 		.4byte	.LASF35
+ 1391 0548 01       		.byte	0x1
+ 1392 0549 25       		.byte	0x25
+ 1393 054a 54050000 		.4byte	0x554
+ 1394 054e 05       		.uleb128 0x5
+ 1395 054f 03       		.byte	0x3
+ 1396 0550 00000000 		.4byte	window_position
+ 1397 0554 06       		.uleb128 0x6
+ 1398 0555 33050000 		.4byte	0x533
+ 1399 0559 15       		.uleb128 0x15
+ 1400 055a 60020000 		.4byte	.LASF36
+ 1401 055e 01       		.byte	0x1
+ 1402 055f 26       		.byte	0x26
+ 1403 0560 6A050000 		.4byte	0x56a
+ 1404 0564 05       		.uleb128 0x5
+ 1405 0565 03       		.byte	0x3
+ 1406 0566 00000000 		.4byte	OneWireVal
+ 1407 056a 06       		.uleb128 0x6
+ 1408 056b 99000000 		.4byte	0x99
+ 1409 056f 16       		.uleb128 0x16
+ 1410 0570 27010000 		.4byte	.LASF37
+ 1411 0574 27010000 		.4byte	.LASF37
+ 1412 0578 06       		.byte	0x6
+ 1413 0579 0E       		.byte	0xe
+ 1414 057a 16       		.uleb128 0x16
+ 1415 057b D8010000 		.4byte	.LASF38
+ 1416 057f D8010000 		.4byte	.LASF38
+ 1417 0583 07       		.byte	0x7
+ 1418 0584 E7       		.byte	0xe7
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 32
 
 
- 1420 0585 71       		.byte	0x71
- 1421 0586 16       		.uleb128 0x16
- 1422 0587 8B020000 		.4byte	.LASF41
- 1423 058b 8B020000 		.4byte	.LASF41
- 1424 058f 08       		.byte	0x8
- 1425 0590 75       		.byte	0x75
- 1426 0591 16       		.uleb128 0x16
- 1427 0592 8D030000 		.4byte	.LASF42
- 1428 0596 8D030000 		.4byte	.LASF42
- 1429 059a 09       		.byte	0x9
- 1430 059b 28       		.byte	0x28
- 1431 059c 16       		.uleb128 0x16
- 1432 059d 2D010000 		.4byte	.LASF43
- 1433 05a1 2D010000 		.4byte	.LASF43
- 1434 05a5 0A       		.byte	0xa
- 1435 05a6 C3       		.byte	0xc3
- 1436 05a7 16       		.uleb128 0x16
- 1437 05a8 95000000 		.4byte	.LASF44
- 1438 05ac 95000000 		.4byte	.LASF44
- 1439 05b0 0A       		.byte	0xa
- 1440 05b1 97       		.byte	0x97
- 1441 05b2 16       		.uleb128 0x16
- 1442 05b3 CF000000 		.4byte	.LASF45
- 1443 05b7 CF000000 		.4byte	.LASF45
- 1444 05bb 08       		.byte	0x8
- 1445 05bc 54       		.byte	0x54
- 1446 05bd 16       		.uleb128 0x16
- 1447 05be 71020000 		.4byte	.LASF46
- 1448 05c2 71020000 		.4byte	.LASF46
- 1449 05c6 09       		.byte	0x9
- 1450 05c7 18       		.byte	0x18
- 1451 05c8 16       		.uleb128 0x16
- 1452 05c9 21010000 		.4byte	.LASF47
- 1453 05cd 21010000 		.4byte	.LASF47
- 1454 05d1 0B       		.byte	0xb
- 1455 05d2 5A       		.byte	0x5a
- 1456 05d3 16       		.uleb128 0x16
- 1457 05d4 4C010000 		.4byte	.LASF48
- 1458 05d8 4C010000 		.4byte	.LASF48
- 1459 05dc 0C       		.byte	0xc
- 1460 05dd 18       		.byte	0x18
- 1461 05de 16       		.uleb128 0x16
- 1462 05df 67030000 		.4byte	.LASF49
- 1463 05e3 67030000 		.4byte	.LASF49
- 1464 05e7 0A       		.byte	0xa
- 1465 05e8 92       		.byte	0x92
- 1466 05e9 16       		.uleb128 0x16
- 1467 05ea 7D030000 		.4byte	.LASF50
- 1468 05ee 7D030000 		.4byte	.LASF50
- 1469 05f2 0D       		.byte	0xd
- 1470 05f3 18       		.byte	0x18
- 1471 05f4 16       		.uleb128 0x16
- 1472 05f5 3E010000 		.4byte	.LASF51
- 1473 05f9 3E010000 		.4byte	.LASF51
- 1474 05fd 0E       		.byte	0xe
- 1475 05fe 93       		.byte	0x93
- 1476 05ff 16       		.uleb128 0x16
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 33
+ 1419 0585 16       		.uleb128 0x16
+ 1420 0586 A2000000 		.4byte	.LASF39
+ 1421 058a A2000000 		.4byte	.LASF39
+ 1422 058e 08       		.byte	0x8
+ 1423 058f 8B       		.byte	0x8b
+ 1424 0590 16       		.uleb128 0x16
+ 1425 0591 95000000 		.4byte	.LASF40
+ 1426 0595 95000000 		.4byte	.LASF40
+ 1427 0599 08       		.byte	0x8
+ 1428 059a 71       		.byte	0x71
+ 1429 059b 16       		.uleb128 0x16
+ 1430 059c 89020000 		.4byte	.LASF41
+ 1431 05a0 89020000 		.4byte	.LASF41
+ 1432 05a4 08       		.byte	0x8
+ 1433 05a5 75       		.byte	0x75
+ 1434 05a6 16       		.uleb128 0x16
+ 1435 05a7 8B030000 		.4byte	.LASF42
+ 1436 05ab 8B030000 		.4byte	.LASF42
+ 1437 05af 09       		.byte	0x9
+ 1438 05b0 28       		.byte	0x28
+ 1439 05b1 16       		.uleb128 0x16
+ 1440 05b2 16010000 		.4byte	.LASF43
+ 1441 05b6 16010000 		.4byte	.LASF43
+ 1442 05ba 0A       		.byte	0xa
+ 1443 05bb C3       		.byte	0xc3
+ 1444 05bc 16       		.uleb128 0x16
+ 1445 05bd 75000000 		.4byte	.LASF44
+ 1446 05c1 75000000 		.4byte	.LASF44
+ 1447 05c5 0A       		.byte	0xa
+ 1448 05c6 97       		.byte	0x97
+ 1449 05c7 16       		.uleb128 0x16
+ 1450 05c8 B8000000 		.4byte	.LASF45
+ 1451 05cc B8000000 		.4byte	.LASF45
+ 1452 05d0 08       		.byte	0x8
+ 1453 05d1 54       		.byte	0x54
+ 1454 05d2 16       		.uleb128 0x16
+ 1455 05d3 6B020000 		.4byte	.LASF46
+ 1456 05d7 6B020000 		.4byte	.LASF46
+ 1457 05db 09       		.byte	0x9
+ 1458 05dc 18       		.byte	0x18
+ 1459 05dd 16       		.uleb128 0x16
+ 1460 05de 0A010000 		.4byte	.LASF47
+ 1461 05e2 0A010000 		.4byte	.LASF47
+ 1462 05e6 0B       		.byte	0xb
+ 1463 05e7 5A       		.byte	0x5a
+ 1464 05e8 16       		.uleb128 0x16
+ 1465 05e9 46010000 		.4byte	.LASF48
+ 1466 05ed 46010000 		.4byte	.LASF48
+ 1467 05f1 0C       		.byte	0xc
+ 1468 05f2 18       		.byte	0x18
+ 1469 05f3 16       		.uleb128 0x16
+ 1470 05f4 65030000 		.4byte	.LASF49
+ 1471 05f8 65030000 		.4byte	.LASF49
+ 1472 05fc 0A       		.byte	0xa
+ 1473 05fd 92       		.byte	0x92
+ 1474 05fe 16       		.uleb128 0x16
+ 1475 05ff 7B030000 		.4byte	.LASF50
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 33
 
 
- 1477 0600 0E010000 		.4byte	.LASF52
- 1478 0604 0E010000 		.4byte	.LASF52
- 1479 0608 06       		.byte	0x6
- 1480 0609 0D       		.byte	0xd
- 1481 060a 16       		.uleb128 0x16
- 1482 060b B8020000 		.4byte	.LASF53
- 1483 060f B8020000 		.4byte	.LASF53
- 1484 0613 0F       		.byte	0xf
- 1485 0614 26       		.byte	0x26
- 1486 0615 16       		.uleb128 0x16
- 1487 0616 3C000000 		.4byte	.LASF54
- 1488 061a 3C000000 		.4byte	.LASF54
- 1489 061e 0B       		.byte	0xb
- 1490 061f 5E       		.byte	0x5e
- 1491 0620 16       		.uleb128 0x16
- 1492 0621 CA020000 		.4byte	.LASF55
- 1493 0625 CA020000 		.4byte	.LASF55
- 1494 0629 0E       		.byte	0xe
- 1495 062a B1       		.byte	0xb1
- 1496 062b 16       		.uleb128 0x16
- 1497 062c 26020000 		.4byte	.LASF56
- 1498 0630 26020000 		.4byte	.LASF56
- 1499 0634 0E       		.byte	0xe
- 1500 0635 B6       		.byte	0xb6
- 1501 0636 16       		.uleb128 0x16
- 1502 0637 9E020000 		.4byte	.LASF57
- 1503 063b 9E020000 		.4byte	.LASF57
- 1504 063f 0E       		.byte	0xe
- 1505 0640 B3       		.byte	0xb3
- 1506 0641 16       		.uleb128 0x16
- 1507 0642 0C000000 		.4byte	.LASF58
- 1508 0646 0C000000 		.4byte	.LASF58
- 1509 064a 0E       		.byte	0xe
- 1510 064b B7       		.byte	0xb7
- 1511 064c 16       		.uleb128 0x16
- 1512 064d 0F030000 		.4byte	.LASF59
- 1513 0651 0F030000 		.4byte	.LASF59
- 1514 0655 0E       		.byte	0xe
- 1515 0656 B5       		.byte	0xb5
- 1516 0657 00       		.byte	0
- 1517              		.section	.debug_abbrev,"",%progbits
- 1518              	.Ldebug_abbrev0:
- 1519 0000 01       		.uleb128 0x1
- 1520 0001 11       		.uleb128 0x11
- 1521 0002 01       		.byte	0x1
- 1522 0003 25       		.uleb128 0x25
- 1523 0004 0E       		.uleb128 0xe
- 1524 0005 13       		.uleb128 0x13
- 1525 0006 0B       		.uleb128 0xb
- 1526 0007 03       		.uleb128 0x3
- 1527 0008 0E       		.uleb128 0xe
- 1528 0009 1B       		.uleb128 0x1b
- 1529 000a 0E       		.uleb128 0xe
- 1530 000b 55       		.uleb128 0x55
- 1531 000c 17       		.uleb128 0x17
- 1532 000d 11       		.uleb128 0x11
- 1533 000e 01       		.uleb128 0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 34
+ 1476 0603 7B030000 		.4byte	.LASF50
+ 1477 0607 0D       		.byte	0xd
+ 1478 0608 18       		.byte	0x18
+ 1479 0609 16       		.uleb128 0x16
+ 1480 060a 38010000 		.4byte	.LASF51
+ 1481 060e 38010000 		.4byte	.LASF51
+ 1482 0612 0E       		.byte	0xe
+ 1483 0613 93       		.byte	0x93
+ 1484 0614 16       		.uleb128 0x16
+ 1485 0615 7C020000 		.4byte	.LASF52
+ 1486 0619 7C020000 		.4byte	.LASF52
+ 1487 061d 06       		.byte	0x6
+ 1488 061e 0D       		.byte	0xd
+ 1489 061f 16       		.uleb128 0x16
+ 1490 0620 B6020000 		.4byte	.LASF53
+ 1491 0624 B6020000 		.4byte	.LASF53
+ 1492 0628 0F       		.byte	0xf
+ 1493 0629 26       		.byte	0x26
+ 1494 062a 16       		.uleb128 0x16
+ 1495 062b 1E000000 		.4byte	.LASF54
+ 1496 062f 1E000000 		.4byte	.LASF54
+ 1497 0633 0B       		.byte	0xb
+ 1498 0634 5E       		.byte	0x5e
+ 1499 0635 16       		.uleb128 0x16
+ 1500 0636 C8020000 		.4byte	.LASF55
+ 1501 063a C8020000 		.4byte	.LASF55
+ 1502 063e 0E       		.byte	0xe
+ 1503 063f B1       		.byte	0xb1
+ 1504 0640 16       		.uleb128 0x16
+ 1505 0641 20020000 		.4byte	.LASF56
+ 1506 0645 20020000 		.4byte	.LASF56
+ 1507 0649 0E       		.byte	0xe
+ 1508 064a B6       		.byte	0xb6
+ 1509 064b 16       		.uleb128 0x16
+ 1510 064c 9C020000 		.4byte	.LASF57
+ 1511 0650 9C020000 		.4byte	.LASF57
+ 1512 0654 0E       		.byte	0xe
+ 1513 0655 B3       		.byte	0xb3
+ 1514 0656 16       		.uleb128 0x16
+ 1515 0657 00000000 		.4byte	.LASF58
+ 1516 065b 00000000 		.4byte	.LASF58
+ 1517 065f 0E       		.byte	0xe
+ 1518 0660 B7       		.byte	0xb7
+ 1519 0661 16       		.uleb128 0x16
+ 1520 0662 0D030000 		.4byte	.LASF59
+ 1521 0666 0D030000 		.4byte	.LASF59
+ 1522 066a 0E       		.byte	0xe
+ 1523 066b B5       		.byte	0xb5
+ 1524 066c 00       		.byte	0
+ 1525              		.section	.debug_abbrev,"",%progbits
+ 1526              	.Ldebug_abbrev0:
+ 1527 0000 01       		.uleb128 0x1
+ 1528 0001 11       		.uleb128 0x11
+ 1529 0002 01       		.byte	0x1
+ 1530 0003 25       		.uleb128 0x25
+ 1531 0004 0E       		.uleb128 0xe
+ 1532 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 34
 
 
- 1534 000f 10       		.uleb128 0x10
- 1535 0010 17       		.uleb128 0x17
- 1536 0011 00       		.byte	0
- 1537 0012 00       		.byte	0
- 1538 0013 02       		.uleb128 0x2
- 1539 0014 24       		.uleb128 0x24
- 1540 0015 00       		.byte	0
- 1541 0016 0B       		.uleb128 0xb
- 1542 0017 0B       		.uleb128 0xb
- 1543 0018 3E       		.uleb128 0x3e
- 1544 0019 0B       		.uleb128 0xb
- 1545 001a 03       		.uleb128 0x3
- 1546 001b 0E       		.uleb128 0xe
- 1547 001c 00       		.byte	0
- 1548 001d 00       		.byte	0
- 1549 001e 03       		.uleb128 0x3
- 1550 001f 16       		.uleb128 0x16
- 1551 0020 00       		.byte	0
- 1552 0021 03       		.uleb128 0x3
- 1553 0022 0E       		.uleb128 0xe
- 1554 0023 3A       		.uleb128 0x3a
- 1555 0024 0B       		.uleb128 0xb
- 1556 0025 3B       		.uleb128 0x3b
- 1557 0026 0B       		.uleb128 0xb
- 1558 0027 49       		.uleb128 0x49
- 1559 0028 13       		.uleb128 0x13
- 1560 0029 00       		.byte	0
- 1561 002a 00       		.byte	0
- 1562 002b 04       		.uleb128 0x4
- 1563 002c 24       		.uleb128 0x24
- 1564 002d 00       		.byte	0
- 1565 002e 0B       		.uleb128 0xb
- 1566 002f 0B       		.uleb128 0xb
- 1567 0030 3E       		.uleb128 0x3e
- 1568 0031 0B       		.uleb128 0xb
- 1569 0032 03       		.uleb128 0x3
- 1570 0033 08       		.uleb128 0x8
- 1571 0034 00       		.byte	0
- 1572 0035 00       		.byte	0
- 1573 0036 05       		.uleb128 0x5
- 1574 0037 16       		.uleb128 0x16
- 1575 0038 00       		.byte	0
- 1576 0039 03       		.uleb128 0x3
- 1577 003a 0E       		.uleb128 0xe
- 1578 003b 3A       		.uleb128 0x3a
- 1579 003c 0B       		.uleb128 0xb
- 1580 003d 3B       		.uleb128 0x3b
- 1581 003e 05       		.uleb128 0x5
- 1582 003f 49       		.uleb128 0x49
- 1583 0040 13       		.uleb128 0x13
- 1584 0041 00       		.byte	0
- 1585 0042 00       		.byte	0
- 1586 0043 06       		.uleb128 0x6
- 1587 0044 35       		.uleb128 0x35
- 1588 0045 00       		.byte	0
- 1589 0046 49       		.uleb128 0x49
- 1590 0047 13       		.uleb128 0x13
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 35
+ 1533 0006 0B       		.uleb128 0xb
+ 1534 0007 03       		.uleb128 0x3
+ 1535 0008 0E       		.uleb128 0xe
+ 1536 0009 1B       		.uleb128 0x1b
+ 1537 000a 0E       		.uleb128 0xe
+ 1538 000b 55       		.uleb128 0x55
+ 1539 000c 17       		.uleb128 0x17
+ 1540 000d 11       		.uleb128 0x11
+ 1541 000e 01       		.uleb128 0x1
+ 1542 000f 10       		.uleb128 0x10
+ 1543 0010 17       		.uleb128 0x17
+ 1544 0011 00       		.byte	0
+ 1545 0012 00       		.byte	0
+ 1546 0013 02       		.uleb128 0x2
+ 1547 0014 24       		.uleb128 0x24
+ 1548 0015 00       		.byte	0
+ 1549 0016 0B       		.uleb128 0xb
+ 1550 0017 0B       		.uleb128 0xb
+ 1551 0018 3E       		.uleb128 0x3e
+ 1552 0019 0B       		.uleb128 0xb
+ 1553 001a 03       		.uleb128 0x3
+ 1554 001b 0E       		.uleb128 0xe
+ 1555 001c 00       		.byte	0
+ 1556 001d 00       		.byte	0
+ 1557 001e 03       		.uleb128 0x3
+ 1558 001f 16       		.uleb128 0x16
+ 1559 0020 00       		.byte	0
+ 1560 0021 03       		.uleb128 0x3
+ 1561 0022 0E       		.uleb128 0xe
+ 1562 0023 3A       		.uleb128 0x3a
+ 1563 0024 0B       		.uleb128 0xb
+ 1564 0025 3B       		.uleb128 0x3b
+ 1565 0026 0B       		.uleb128 0xb
+ 1566 0027 49       		.uleb128 0x49
+ 1567 0028 13       		.uleb128 0x13
+ 1568 0029 00       		.byte	0
+ 1569 002a 00       		.byte	0
+ 1570 002b 04       		.uleb128 0x4
+ 1571 002c 24       		.uleb128 0x24
+ 1572 002d 00       		.byte	0
+ 1573 002e 0B       		.uleb128 0xb
+ 1574 002f 0B       		.uleb128 0xb
+ 1575 0030 3E       		.uleb128 0x3e
+ 1576 0031 0B       		.uleb128 0xb
+ 1577 0032 03       		.uleb128 0x3
+ 1578 0033 08       		.uleb128 0x8
+ 1579 0034 00       		.byte	0
+ 1580 0035 00       		.byte	0
+ 1581 0036 05       		.uleb128 0x5
+ 1582 0037 16       		.uleb128 0x16
+ 1583 0038 00       		.byte	0
+ 1584 0039 03       		.uleb128 0x3
+ 1585 003a 0E       		.uleb128 0xe
+ 1586 003b 3A       		.uleb128 0x3a
+ 1587 003c 0B       		.uleb128 0xb
+ 1588 003d 3B       		.uleb128 0x3b
+ 1589 003e 05       		.uleb128 0x5
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 35
 
 
- 1591 0048 00       		.byte	0
- 1592 0049 00       		.byte	0
- 1593 004a 07       		.uleb128 0x7
- 1594 004b 2E       		.uleb128 0x2e
- 1595 004c 01       		.byte	0x1
- 1596 004d 3F       		.uleb128 0x3f
- 1597 004e 19       		.uleb128 0x19
- 1598 004f 03       		.uleb128 0x3
- 1599 0050 0E       		.uleb128 0xe
- 1600 0051 3A       		.uleb128 0x3a
- 1601 0052 0B       		.uleb128 0xb
- 1602 0053 3B       		.uleb128 0x3b
- 1603 0054 0B       		.uleb128 0xb
- 1604 0055 27       		.uleb128 0x27
- 1605 0056 19       		.uleb128 0x19
- 1606 0057 11       		.uleb128 0x11
- 1607 0058 01       		.uleb128 0x1
- 1608 0059 12       		.uleb128 0x12
- 1609 005a 06       		.uleb128 0x6
- 1610 005b 40       		.uleb128 0x40
- 1611 005c 18       		.uleb128 0x18
- 1612 005d 9642     		.uleb128 0x2116
- 1613 005f 19       		.uleb128 0x19
- 1614 0060 01       		.uleb128 0x1
- 1615 0061 13       		.uleb128 0x13
- 1616 0062 00       		.byte	0
- 1617 0063 00       		.byte	0
- 1618 0064 08       		.uleb128 0x8
- 1619 0065 34       		.uleb128 0x34
- 1620 0066 00       		.byte	0
- 1621 0067 03       		.uleb128 0x3
- 1622 0068 0E       		.uleb128 0xe
- 1623 0069 3A       		.uleb128 0x3a
- 1624 006a 0B       		.uleb128 0xb
- 1625 006b 3B       		.uleb128 0x3b
- 1626 006c 0B       		.uleb128 0xb
- 1627 006d 49       		.uleb128 0x49
- 1628 006e 13       		.uleb128 0x13
- 1629 006f 02       		.uleb128 0x2
- 1630 0070 18       		.uleb128 0x18
- 1631 0071 00       		.byte	0
- 1632 0072 00       		.byte	0
- 1633 0073 09       		.uleb128 0x9
- 1634 0074 34       		.uleb128 0x34
- 1635 0075 00       		.byte	0
- 1636 0076 03       		.uleb128 0x3
- 1637 0077 0E       		.uleb128 0xe
- 1638 0078 3A       		.uleb128 0x3a
- 1639 0079 0B       		.uleb128 0xb
- 1640 007a 3B       		.uleb128 0x3b
- 1641 007b 0B       		.uleb128 0xb
- 1642 007c 49       		.uleb128 0x49
- 1643 007d 13       		.uleb128 0x13
- 1644 007e 02       		.uleb128 0x2
- 1645 007f 17       		.uleb128 0x17
- 1646 0080 00       		.byte	0
- 1647 0081 00       		.byte	0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 36
+ 1590 003f 49       		.uleb128 0x49
+ 1591 0040 13       		.uleb128 0x13
+ 1592 0041 00       		.byte	0
+ 1593 0042 00       		.byte	0
+ 1594 0043 06       		.uleb128 0x6
+ 1595 0044 35       		.uleb128 0x35
+ 1596 0045 00       		.byte	0
+ 1597 0046 49       		.uleb128 0x49
+ 1598 0047 13       		.uleb128 0x13
+ 1599 0048 00       		.byte	0
+ 1600 0049 00       		.byte	0
+ 1601 004a 07       		.uleb128 0x7
+ 1602 004b 2E       		.uleb128 0x2e
+ 1603 004c 01       		.byte	0x1
+ 1604 004d 3F       		.uleb128 0x3f
+ 1605 004e 19       		.uleb128 0x19
+ 1606 004f 03       		.uleb128 0x3
+ 1607 0050 0E       		.uleb128 0xe
+ 1608 0051 3A       		.uleb128 0x3a
+ 1609 0052 0B       		.uleb128 0xb
+ 1610 0053 3B       		.uleb128 0x3b
+ 1611 0054 0B       		.uleb128 0xb
+ 1612 0055 27       		.uleb128 0x27
+ 1613 0056 19       		.uleb128 0x19
+ 1614 0057 11       		.uleb128 0x11
+ 1615 0058 01       		.uleb128 0x1
+ 1616 0059 12       		.uleb128 0x12
+ 1617 005a 06       		.uleb128 0x6
+ 1618 005b 40       		.uleb128 0x40
+ 1619 005c 18       		.uleb128 0x18
+ 1620 005d 9642     		.uleb128 0x2116
+ 1621 005f 19       		.uleb128 0x19
+ 1622 0060 01       		.uleb128 0x1
+ 1623 0061 13       		.uleb128 0x13
+ 1624 0062 00       		.byte	0
+ 1625 0063 00       		.byte	0
+ 1626 0064 08       		.uleb128 0x8
+ 1627 0065 34       		.uleb128 0x34
+ 1628 0066 00       		.byte	0
+ 1629 0067 03       		.uleb128 0x3
+ 1630 0068 0E       		.uleb128 0xe
+ 1631 0069 3A       		.uleb128 0x3a
+ 1632 006a 0B       		.uleb128 0xb
+ 1633 006b 3B       		.uleb128 0x3b
+ 1634 006c 0B       		.uleb128 0xb
+ 1635 006d 49       		.uleb128 0x49
+ 1636 006e 13       		.uleb128 0x13
+ 1637 006f 02       		.uleb128 0x2
+ 1638 0070 18       		.uleb128 0x18
+ 1639 0071 00       		.byte	0
+ 1640 0072 00       		.byte	0
+ 1641 0073 09       		.uleb128 0x9
+ 1642 0074 34       		.uleb128 0x34
+ 1643 0075 00       		.byte	0
+ 1644 0076 03       		.uleb128 0x3
+ 1645 0077 0E       		.uleb128 0xe
+ 1646 0078 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 36
 
 
- 1648 0082 0A       		.uleb128 0xa
- 1649 0083 898201   		.uleb128 0x4109
- 1650 0086 00       		.byte	0
- 1651 0087 11       		.uleb128 0x11
- 1652 0088 01       		.uleb128 0x1
- 1653 0089 31       		.uleb128 0x31
- 1654 008a 13       		.uleb128 0x13
- 1655 008b 00       		.byte	0
- 1656 008c 00       		.byte	0
- 1657 008d 0B       		.uleb128 0xb
- 1658 008e 898201   		.uleb128 0x4109
- 1659 0091 01       		.byte	0x1
- 1660 0092 11       		.uleb128 0x11
- 1661 0093 01       		.uleb128 0x1
- 1662 0094 31       		.uleb128 0x31
- 1663 0095 13       		.uleb128 0x13
- 1664 0096 01       		.uleb128 0x1
- 1665 0097 13       		.uleb128 0x13
- 1666 0098 00       		.byte	0
- 1667 0099 00       		.byte	0
- 1668 009a 0C       		.uleb128 0xc
- 1669 009b 8A8201   		.uleb128 0x410a
- 1670 009e 00       		.byte	0
- 1671 009f 02       		.uleb128 0x2
- 1672 00a0 18       		.uleb128 0x18
- 1673 00a1 9142     		.uleb128 0x2111
- 1674 00a3 18       		.uleb128 0x18
- 1675 00a4 00       		.byte	0
- 1676 00a5 00       		.byte	0
- 1677 00a6 0D       		.uleb128 0xd
- 1678 00a7 01       		.uleb128 0x1
- 1679 00a8 01       		.byte	0x1
- 1680 00a9 49       		.uleb128 0x49
- 1681 00aa 13       		.uleb128 0x13
- 1682 00ab 01       		.uleb128 0x1
- 1683 00ac 13       		.uleb128 0x13
- 1684 00ad 00       		.byte	0
- 1685 00ae 00       		.byte	0
- 1686 00af 0E       		.uleb128 0xe
- 1687 00b0 21       		.uleb128 0x21
- 1688 00b1 00       		.byte	0
- 1689 00b2 49       		.uleb128 0x49
- 1690 00b3 13       		.uleb128 0x13
- 1691 00b4 2F       		.uleb128 0x2f
- 1692 00b5 0B       		.uleb128 0xb
- 1693 00b6 00       		.byte	0
- 1694 00b7 00       		.byte	0
- 1695 00b8 0F       		.uleb128 0xf
- 1696 00b9 2E       		.uleb128 0x2e
- 1697 00ba 01       		.byte	0x1
- 1698 00bb 3F       		.uleb128 0x3f
- 1699 00bc 19       		.uleb128 0x19
- 1700 00bd 03       		.uleb128 0x3
- 1701 00be 0E       		.uleb128 0xe
- 1702 00bf 3A       		.uleb128 0x3a
- 1703 00c0 0B       		.uleb128 0xb
- 1704 00c1 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 37
+ 1647 0079 0B       		.uleb128 0xb
+ 1648 007a 3B       		.uleb128 0x3b
+ 1649 007b 0B       		.uleb128 0xb
+ 1650 007c 49       		.uleb128 0x49
+ 1651 007d 13       		.uleb128 0x13
+ 1652 007e 02       		.uleb128 0x2
+ 1653 007f 17       		.uleb128 0x17
+ 1654 0080 00       		.byte	0
+ 1655 0081 00       		.byte	0
+ 1656 0082 0A       		.uleb128 0xa
+ 1657 0083 898201   		.uleb128 0x4109
+ 1658 0086 00       		.byte	0
+ 1659 0087 11       		.uleb128 0x11
+ 1660 0088 01       		.uleb128 0x1
+ 1661 0089 31       		.uleb128 0x31
+ 1662 008a 13       		.uleb128 0x13
+ 1663 008b 00       		.byte	0
+ 1664 008c 00       		.byte	0
+ 1665 008d 0B       		.uleb128 0xb
+ 1666 008e 898201   		.uleb128 0x4109
+ 1667 0091 01       		.byte	0x1
+ 1668 0092 11       		.uleb128 0x11
+ 1669 0093 01       		.uleb128 0x1
+ 1670 0094 31       		.uleb128 0x31
+ 1671 0095 13       		.uleb128 0x13
+ 1672 0096 01       		.uleb128 0x1
+ 1673 0097 13       		.uleb128 0x13
+ 1674 0098 00       		.byte	0
+ 1675 0099 00       		.byte	0
+ 1676 009a 0C       		.uleb128 0xc
+ 1677 009b 8A8201   		.uleb128 0x410a
+ 1678 009e 00       		.byte	0
+ 1679 009f 02       		.uleb128 0x2
+ 1680 00a0 18       		.uleb128 0x18
+ 1681 00a1 9142     		.uleb128 0x2111
+ 1682 00a3 18       		.uleb128 0x18
+ 1683 00a4 00       		.byte	0
+ 1684 00a5 00       		.byte	0
+ 1685 00a6 0D       		.uleb128 0xd
+ 1686 00a7 01       		.uleb128 0x1
+ 1687 00a8 01       		.byte	0x1
+ 1688 00a9 49       		.uleb128 0x49
+ 1689 00aa 13       		.uleb128 0x13
+ 1690 00ab 01       		.uleb128 0x1
+ 1691 00ac 13       		.uleb128 0x13
+ 1692 00ad 00       		.byte	0
+ 1693 00ae 00       		.byte	0
+ 1694 00af 0E       		.uleb128 0xe
+ 1695 00b0 21       		.uleb128 0x21
+ 1696 00b1 00       		.byte	0
+ 1697 00b2 49       		.uleb128 0x49
+ 1698 00b3 13       		.uleb128 0x13
+ 1699 00b4 2F       		.uleb128 0x2f
+ 1700 00b5 0B       		.uleb128 0xb
+ 1701 00b6 00       		.byte	0
+ 1702 00b7 00       		.byte	0
+ 1703 00b8 0F       		.uleb128 0xf
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 37
 
 
- 1705 00c2 0B       		.uleb128 0xb
- 1706 00c3 27       		.uleb128 0x27
- 1707 00c4 19       		.uleb128 0x19
- 1708 00c5 11       		.uleb128 0x11
- 1709 00c6 01       		.uleb128 0x1
- 1710 00c7 12       		.uleb128 0x12
- 1711 00c8 06       		.uleb128 0x6
- 1712 00c9 40       		.uleb128 0x40
- 1713 00ca 18       		.uleb128 0x18
- 1714 00cb 9742     		.uleb128 0x2117
- 1715 00cd 19       		.uleb128 0x19
- 1716 00ce 01       		.uleb128 0x1
- 1717 00cf 13       		.uleb128 0x13
- 1718 00d0 00       		.byte	0
- 1719 00d1 00       		.byte	0
- 1720 00d2 10       		.uleb128 0x10
- 1721 00d3 2E       		.uleb128 0x2e
- 1722 00d4 01       		.byte	0x1
- 1723 00d5 3F       		.uleb128 0x3f
- 1724 00d6 19       		.uleb128 0x19
- 1725 00d7 03       		.uleb128 0x3
- 1726 00d8 0E       		.uleb128 0xe
- 1727 00d9 3A       		.uleb128 0x3a
- 1728 00da 0B       		.uleb128 0xb
- 1729 00db 3B       		.uleb128 0x3b
- 1730 00dc 0B       		.uleb128 0xb
- 1731 00dd 27       		.uleb128 0x27
- 1732 00de 19       		.uleb128 0x19
- 1733 00df 49       		.uleb128 0x49
- 1734 00e0 13       		.uleb128 0x13
- 1735 00e1 8701     		.uleb128 0x87
- 1736 00e3 19       		.uleb128 0x19
- 1737 00e4 11       		.uleb128 0x11
- 1738 00e5 01       		.uleb128 0x1
- 1739 00e6 12       		.uleb128 0x12
- 1740 00e7 06       		.uleb128 0x6
- 1741 00e8 40       		.uleb128 0x40
- 1742 00e9 18       		.uleb128 0x18
- 1743 00ea 9742     		.uleb128 0x2117
- 1744 00ec 19       		.uleb128 0x19
- 1745 00ed 01       		.uleb128 0x1
- 1746 00ee 13       		.uleb128 0x13
- 1747 00ef 00       		.byte	0
- 1748 00f0 00       		.byte	0
- 1749 00f1 11       		.uleb128 0x11
- 1750 00f2 898201   		.uleb128 0x4109
- 1751 00f5 01       		.byte	0x1
- 1752 00f6 11       		.uleb128 0x11
- 1753 00f7 01       		.uleb128 0x1
- 1754 00f8 31       		.uleb128 0x31
- 1755 00f9 13       		.uleb128 0x13
- 1756 00fa 00       		.byte	0
- 1757 00fb 00       		.byte	0
- 1758 00fc 12       		.uleb128 0x12
- 1759 00fd 2E       		.uleb128 0x2e
- 1760 00fe 00       		.byte	0
- 1761 00ff 3F       		.uleb128 0x3f
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 38
+ 1704 00b9 2E       		.uleb128 0x2e
+ 1705 00ba 01       		.byte	0x1
+ 1706 00bb 3F       		.uleb128 0x3f
+ 1707 00bc 19       		.uleb128 0x19
+ 1708 00bd 03       		.uleb128 0x3
+ 1709 00be 0E       		.uleb128 0xe
+ 1710 00bf 3A       		.uleb128 0x3a
+ 1711 00c0 0B       		.uleb128 0xb
+ 1712 00c1 3B       		.uleb128 0x3b
+ 1713 00c2 0B       		.uleb128 0xb
+ 1714 00c3 27       		.uleb128 0x27
+ 1715 00c4 19       		.uleb128 0x19
+ 1716 00c5 11       		.uleb128 0x11
+ 1717 00c6 01       		.uleb128 0x1
+ 1718 00c7 12       		.uleb128 0x12
+ 1719 00c8 06       		.uleb128 0x6
+ 1720 00c9 40       		.uleb128 0x40
+ 1721 00ca 18       		.uleb128 0x18
+ 1722 00cb 9742     		.uleb128 0x2117
+ 1723 00cd 19       		.uleb128 0x19
+ 1724 00ce 01       		.uleb128 0x1
+ 1725 00cf 13       		.uleb128 0x13
+ 1726 00d0 00       		.byte	0
+ 1727 00d1 00       		.byte	0
+ 1728 00d2 10       		.uleb128 0x10
+ 1729 00d3 2E       		.uleb128 0x2e
+ 1730 00d4 01       		.byte	0x1
+ 1731 00d5 3F       		.uleb128 0x3f
+ 1732 00d6 19       		.uleb128 0x19
+ 1733 00d7 03       		.uleb128 0x3
+ 1734 00d8 0E       		.uleb128 0xe
+ 1735 00d9 3A       		.uleb128 0x3a
+ 1736 00da 0B       		.uleb128 0xb
+ 1737 00db 3B       		.uleb128 0x3b
+ 1738 00dc 0B       		.uleb128 0xb
+ 1739 00dd 27       		.uleb128 0x27
+ 1740 00de 19       		.uleb128 0x19
+ 1741 00df 49       		.uleb128 0x49
+ 1742 00e0 13       		.uleb128 0x13
+ 1743 00e1 8701     		.uleb128 0x87
+ 1744 00e3 19       		.uleb128 0x19
+ 1745 00e4 11       		.uleb128 0x11
+ 1746 00e5 01       		.uleb128 0x1
+ 1747 00e6 12       		.uleb128 0x12
+ 1748 00e7 06       		.uleb128 0x6
+ 1749 00e8 40       		.uleb128 0x40
+ 1750 00e9 18       		.uleb128 0x18
+ 1751 00ea 9742     		.uleb128 0x2117
+ 1752 00ec 19       		.uleb128 0x19
+ 1753 00ed 01       		.uleb128 0x1
+ 1754 00ee 13       		.uleb128 0x13
+ 1755 00ef 00       		.byte	0
+ 1756 00f0 00       		.byte	0
+ 1757 00f1 11       		.uleb128 0x11
+ 1758 00f2 898201   		.uleb128 0x4109
+ 1759 00f5 01       		.byte	0x1
+ 1760 00f6 11       		.uleb128 0x11
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 38
 
 
- 1762 0100 19       		.uleb128 0x19
- 1763 0101 03       		.uleb128 0x3
- 1764 0102 0E       		.uleb128 0xe
- 1765 0103 3A       		.uleb128 0x3a
- 1766 0104 0B       		.uleb128 0xb
- 1767 0105 3B       		.uleb128 0x3b
- 1768 0106 0B       		.uleb128 0xb
- 1769 0107 27       		.uleb128 0x27
- 1770 0108 19       		.uleb128 0x19
- 1771 0109 11       		.uleb128 0x11
- 1772 010a 01       		.uleb128 0x1
- 1773 010b 12       		.uleb128 0x12
- 1774 010c 06       		.uleb128 0x6
- 1775 010d 40       		.uleb128 0x40
- 1776 010e 18       		.uleb128 0x18
- 1777 010f 9742     		.uleb128 0x2117
- 1778 0111 19       		.uleb128 0x19
- 1779 0112 00       		.byte	0
- 1780 0113 00       		.byte	0
- 1781 0114 13       		.uleb128 0x13
- 1782 0115 34       		.uleb128 0x34
- 1783 0116 00       		.byte	0
- 1784 0117 03       		.uleb128 0x3
- 1785 0118 08       		.uleb128 0x8
- 1786 0119 3A       		.uleb128 0x3a
- 1787 011a 0B       		.uleb128 0xb
- 1788 011b 3B       		.uleb128 0x3b
- 1789 011c 0B       		.uleb128 0xb
- 1790 011d 49       		.uleb128 0x49
- 1791 011e 13       		.uleb128 0x13
- 1792 011f 02       		.uleb128 0x2
- 1793 0120 17       		.uleb128 0x17
- 1794 0121 00       		.byte	0
- 1795 0122 00       		.byte	0
- 1796 0123 14       		.uleb128 0x14
- 1797 0124 34       		.uleb128 0x34
- 1798 0125 00       		.byte	0
- 1799 0126 03       		.uleb128 0x3
- 1800 0127 0E       		.uleb128 0xe
- 1801 0128 3A       		.uleb128 0x3a
- 1802 0129 0B       		.uleb128 0xb
- 1803 012a 3B       		.uleb128 0x3b
- 1804 012b 05       		.uleb128 0x5
- 1805 012c 49       		.uleb128 0x49
- 1806 012d 13       		.uleb128 0x13
- 1807 012e 3F       		.uleb128 0x3f
- 1808 012f 19       		.uleb128 0x19
- 1809 0130 3C       		.uleb128 0x3c
- 1810 0131 19       		.uleb128 0x19
- 1811 0132 00       		.byte	0
- 1812 0133 00       		.byte	0
- 1813 0134 15       		.uleb128 0x15
- 1814 0135 34       		.uleb128 0x34
- 1815 0136 00       		.byte	0
- 1816 0137 03       		.uleb128 0x3
- 1817 0138 0E       		.uleb128 0xe
- 1818 0139 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 39
+ 1761 00f7 01       		.uleb128 0x1
+ 1762 00f8 31       		.uleb128 0x31
+ 1763 00f9 13       		.uleb128 0x13
+ 1764 00fa 00       		.byte	0
+ 1765 00fb 00       		.byte	0
+ 1766 00fc 12       		.uleb128 0x12
+ 1767 00fd 2E       		.uleb128 0x2e
+ 1768 00fe 00       		.byte	0
+ 1769 00ff 3F       		.uleb128 0x3f
+ 1770 0100 19       		.uleb128 0x19
+ 1771 0101 03       		.uleb128 0x3
+ 1772 0102 0E       		.uleb128 0xe
+ 1773 0103 3A       		.uleb128 0x3a
+ 1774 0104 0B       		.uleb128 0xb
+ 1775 0105 3B       		.uleb128 0x3b
+ 1776 0106 0B       		.uleb128 0xb
+ 1777 0107 27       		.uleb128 0x27
+ 1778 0108 19       		.uleb128 0x19
+ 1779 0109 11       		.uleb128 0x11
+ 1780 010a 01       		.uleb128 0x1
+ 1781 010b 12       		.uleb128 0x12
+ 1782 010c 06       		.uleb128 0x6
+ 1783 010d 40       		.uleb128 0x40
+ 1784 010e 18       		.uleb128 0x18
+ 1785 010f 9742     		.uleb128 0x2117
+ 1786 0111 19       		.uleb128 0x19
+ 1787 0112 00       		.byte	0
+ 1788 0113 00       		.byte	0
+ 1789 0114 13       		.uleb128 0x13
+ 1790 0115 34       		.uleb128 0x34
+ 1791 0116 00       		.byte	0
+ 1792 0117 03       		.uleb128 0x3
+ 1793 0118 08       		.uleb128 0x8
+ 1794 0119 3A       		.uleb128 0x3a
+ 1795 011a 0B       		.uleb128 0xb
+ 1796 011b 3B       		.uleb128 0x3b
+ 1797 011c 0B       		.uleb128 0xb
+ 1798 011d 49       		.uleb128 0x49
+ 1799 011e 13       		.uleb128 0x13
+ 1800 011f 02       		.uleb128 0x2
+ 1801 0120 17       		.uleb128 0x17
+ 1802 0121 00       		.byte	0
+ 1803 0122 00       		.byte	0
+ 1804 0123 14       		.uleb128 0x14
+ 1805 0124 34       		.uleb128 0x34
+ 1806 0125 00       		.byte	0
+ 1807 0126 03       		.uleb128 0x3
+ 1808 0127 0E       		.uleb128 0xe
+ 1809 0128 3A       		.uleb128 0x3a
+ 1810 0129 0B       		.uleb128 0xb
+ 1811 012a 3B       		.uleb128 0x3b
+ 1812 012b 05       		.uleb128 0x5
+ 1813 012c 49       		.uleb128 0x49
+ 1814 012d 13       		.uleb128 0x13
+ 1815 012e 3F       		.uleb128 0x3f
+ 1816 012f 19       		.uleb128 0x19
+ 1817 0130 3C       		.uleb128 0x3c
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 39
 
 
- 1819 013a 0B       		.uleb128 0xb
- 1820 013b 3B       		.uleb128 0x3b
- 1821 013c 0B       		.uleb128 0xb
- 1822 013d 49       		.uleb128 0x49
- 1823 013e 13       		.uleb128 0x13
- 1824 013f 3F       		.uleb128 0x3f
- 1825 0140 19       		.uleb128 0x19
- 1826 0141 02       		.uleb128 0x2
- 1827 0142 18       		.uleb128 0x18
- 1828 0143 00       		.byte	0
- 1829 0144 00       		.byte	0
- 1830 0145 16       		.uleb128 0x16
- 1831 0146 2E       		.uleb128 0x2e
- 1832 0147 00       		.byte	0
- 1833 0148 3F       		.uleb128 0x3f
- 1834 0149 19       		.uleb128 0x19
- 1835 014a 3C       		.uleb128 0x3c
- 1836 014b 19       		.uleb128 0x19
- 1837 014c 6E       		.uleb128 0x6e
- 1838 014d 0E       		.uleb128 0xe
- 1839 014e 03       		.uleb128 0x3
- 1840 014f 0E       		.uleb128 0xe
- 1841 0150 3A       		.uleb128 0x3a
- 1842 0151 0B       		.uleb128 0xb
- 1843 0152 3B       		.uleb128 0x3b
- 1844 0153 0B       		.uleb128 0xb
- 1845 0154 00       		.byte	0
- 1846 0155 00       		.byte	0
- 1847 0156 00       		.byte	0
- 1848              		.section	.debug_loc,"",%progbits
- 1849              	.Ldebug_loc0:
- 1850              	.LLST0:
- 1851 0000 2A000000 		.4byte	.LVL5
- 1852 0004 34000000 		.4byte	.LVL6
- 1853 0008 0100     		.2byte	0x1
- 1854 000a 50       		.byte	0x50
- 1855 000b 3A000000 		.4byte	.LVL8
- 1856 000f 44000000 		.4byte	.LVL9
- 1857 0013 0100     		.2byte	0x1
- 1858 0015 50       		.byte	0x50
- 1859 0016 4A000000 		.4byte	.LVL11
- 1860 001a 5C000000 		.4byte	.LVL12
- 1861 001e 0100     		.2byte	0x1
- 1862 0020 50       		.byte	0x50
- 1863 0021 62000000 		.4byte	.LVL14
- 1864 0025 6C000000 		.4byte	.LVL15
- 1865 0029 0100     		.2byte	0x1
- 1866 002b 50       		.byte	0x50
- 1867 002c 72000000 		.4byte	.LVL17
- 1868 0030 74000000 		.4byte	.LVL18
- 1869 0034 0100     		.2byte	0x1
- 1870 0036 50       		.byte	0x50
- 1871 0037 7A000000 		.4byte	.LVL20
- 1872 003b 84000000 		.4byte	.LVL21
- 1873 003f 0100     		.2byte	0x1
- 1874 0041 50       		.byte	0x50
- 1875 0042 8A000000 		.4byte	.LVL23
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 40
+ 1818 0131 19       		.uleb128 0x19
+ 1819 0132 00       		.byte	0
+ 1820 0133 00       		.byte	0
+ 1821 0134 15       		.uleb128 0x15
+ 1822 0135 34       		.uleb128 0x34
+ 1823 0136 00       		.byte	0
+ 1824 0137 03       		.uleb128 0x3
+ 1825 0138 0E       		.uleb128 0xe
+ 1826 0139 3A       		.uleb128 0x3a
+ 1827 013a 0B       		.uleb128 0xb
+ 1828 013b 3B       		.uleb128 0x3b
+ 1829 013c 0B       		.uleb128 0xb
+ 1830 013d 49       		.uleb128 0x49
+ 1831 013e 13       		.uleb128 0x13
+ 1832 013f 3F       		.uleb128 0x3f
+ 1833 0140 19       		.uleb128 0x19
+ 1834 0141 02       		.uleb128 0x2
+ 1835 0142 18       		.uleb128 0x18
+ 1836 0143 00       		.byte	0
+ 1837 0144 00       		.byte	0
+ 1838 0145 16       		.uleb128 0x16
+ 1839 0146 2E       		.uleb128 0x2e
+ 1840 0147 00       		.byte	0
+ 1841 0148 3F       		.uleb128 0x3f
+ 1842 0149 19       		.uleb128 0x19
+ 1843 014a 3C       		.uleb128 0x3c
+ 1844 014b 19       		.uleb128 0x19
+ 1845 014c 6E       		.uleb128 0x6e
+ 1846 014d 0E       		.uleb128 0xe
+ 1847 014e 03       		.uleb128 0x3
+ 1848 014f 0E       		.uleb128 0xe
+ 1849 0150 3A       		.uleb128 0x3a
+ 1850 0151 0B       		.uleb128 0xb
+ 1851 0152 3B       		.uleb128 0x3b
+ 1852 0153 0B       		.uleb128 0xb
+ 1853 0154 00       		.byte	0
+ 1854 0155 00       		.byte	0
+ 1855 0156 00       		.byte	0
+ 1856              		.section	.debug_loc,"",%progbits
+ 1857              	.Ldebug_loc0:
+ 1858              	.LLST0:
+ 1859 0000 28000000 		.4byte	.LVL5
+ 1860 0004 32000000 		.4byte	.LVL6
+ 1861 0008 0100     		.2byte	0x1
+ 1862 000a 50       		.byte	0x50
+ 1863 000b 38000000 		.4byte	.LVL8
+ 1864 000f 42000000 		.4byte	.LVL9
+ 1865 0013 0100     		.2byte	0x1
+ 1866 0015 50       		.byte	0x50
+ 1867 0016 48000000 		.4byte	.LVL11
+ 1868 001a 5A000000 		.4byte	.LVL12
+ 1869 001e 0100     		.2byte	0x1
+ 1870 0020 50       		.byte	0x50
+ 1871 0021 60000000 		.4byte	.LVL14
+ 1872 0025 6A000000 		.4byte	.LVL15
+ 1873 0029 0100     		.2byte	0x1
+ 1874 002b 50       		.byte	0x50
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 40
 
 
- 1876 0046 94000000 		.4byte	.LVL24
- 1877 004a 0100     		.2byte	0x1
- 1878 004c 50       		.byte	0x50
- 1879 004d 00000000 		.4byte	0
- 1880 0051 00000000 		.4byte	0
- 1881              	.LLST1:
- 1882 0055 30000000 		.4byte	.LVL51
- 1883 0059 32000000 		.4byte	.LVL52
- 1884 005d 0200     		.2byte	0x2
- 1885 005f 30       		.byte	0x30
- 1886 0060 9F       		.byte	0x9f
- 1887 0061 32000000 		.4byte	.LVL52
- 1888 0065 3E000000 		.4byte	.LVL54
- 1889 0069 0100     		.2byte	0x1
- 1890 006b 54       		.byte	0x54
- 1891 006c 40000000 		.4byte	.LVL55
- 1892 0070 52000000 		.4byte	.LVL57
- 1893 0074 0100     		.2byte	0x1
- 1894 0076 54       		.byte	0x54
- 1895 0077 52000000 		.4byte	.LVL57
- 1896 007b 56000000 		.4byte	.LVL58
- 1897 007f 0200     		.2byte	0x2
- 1898 0081 30       		.byte	0x30
- 1899 0082 9F       		.byte	0x9f
- 1900 0083 56000000 		.4byte	.LVL58
- 1901 0087 6C000000 		.4byte	.LVL61
- 1902 008b 0100     		.2byte	0x1
- 1903 008d 54       		.byte	0x54
- 1904 008e 6E000000 		.4byte	.LVL62
- 1905 0092 76000000 		.4byte	.LVL63
- 1906 0096 0100     		.2byte	0x1
- 1907 0098 54       		.byte	0x54
- 1908 0099 00000000 		.4byte	0
- 1909 009d 00000000 		.4byte	0
- 1910              	.LLST2:
- 1911 00a1 0E000000 		.4byte	.LVL46
- 1912 00a5 14000000 		.4byte	.LVL47
- 1913 00a9 0100     		.2byte	0x1
- 1914 00ab 50       		.byte	0x50
- 1915 00ac 00000000 		.4byte	0
- 1916 00b0 00000000 		.4byte	0
- 1917              		.section	.debug_aranges,"",%progbits
- 1918 0000 54000000 		.4byte	0x54
- 1919 0004 0200     		.2byte	0x2
- 1920 0006 00000000 		.4byte	.Ldebug_info0
- 1921 000a 04       		.byte	0x4
- 1922 000b 00       		.byte	0
- 1923 000c 0000     		.2byte	0
- 1924 000e 0000     		.2byte	0
- 1925 0010 00000000 		.4byte	.LFB69
- 1926 0014 CC000000 		.4byte	.LFE69-.LFB69
- 1927 0018 00000000 		.4byte	.LFB71
- 1928 001c 4C000000 		.4byte	.LFE71-.LFB71
- 1929 0020 00000000 		.4byte	.LFB64
- 1930 0024 70000000 		.4byte	.LFE64-.LFB64
- 1931 0028 00000000 		.4byte	.LFB65
- 1932 002c 2C000000 		.4byte	.LFE65-.LFB65
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 41
+ 1875 002c 70000000 		.4byte	.LVL17
+ 1876 0030 72000000 		.4byte	.LVL18
+ 1877 0034 0100     		.2byte	0x1
+ 1878 0036 50       		.byte	0x50
+ 1879 0037 78000000 		.4byte	.LVL20
+ 1880 003b 82000000 		.4byte	.LVL21
+ 1881 003f 0100     		.2byte	0x1
+ 1882 0041 50       		.byte	0x50
+ 1883 0042 88000000 		.4byte	.LVL23
+ 1884 0046 92000000 		.4byte	.LVL24
+ 1885 004a 0100     		.2byte	0x1
+ 1886 004c 50       		.byte	0x50
+ 1887 004d 00000000 		.4byte	0
+ 1888 0051 00000000 		.4byte	0
+ 1889              	.LLST1:
+ 1890 0055 30000000 		.4byte	.LVL51
+ 1891 0059 32000000 		.4byte	.LVL52
+ 1892 005d 0200     		.2byte	0x2
+ 1893 005f 30       		.byte	0x30
+ 1894 0060 9F       		.byte	0x9f
+ 1895 0061 32000000 		.4byte	.LVL52
+ 1896 0065 3E000000 		.4byte	.LVL54
+ 1897 0069 0100     		.2byte	0x1
+ 1898 006b 54       		.byte	0x54
+ 1899 006c 40000000 		.4byte	.LVL55
+ 1900 0070 52000000 		.4byte	.LVL57
+ 1901 0074 0100     		.2byte	0x1
+ 1902 0076 54       		.byte	0x54
+ 1903 0077 52000000 		.4byte	.LVL57
+ 1904 007b 56000000 		.4byte	.LVL58
+ 1905 007f 0200     		.2byte	0x2
+ 1906 0081 30       		.byte	0x30
+ 1907 0082 9F       		.byte	0x9f
+ 1908 0083 56000000 		.4byte	.LVL58
+ 1909 0087 6C000000 		.4byte	.LVL61
+ 1910 008b 0100     		.2byte	0x1
+ 1911 008d 54       		.byte	0x54
+ 1912 008e 6E000000 		.4byte	.LVL62
+ 1913 0092 76000000 		.4byte	.LVL63
+ 1914 0096 0100     		.2byte	0x1
+ 1915 0098 54       		.byte	0x54
+ 1916 0099 00000000 		.4byte	0
+ 1917 009d 00000000 		.4byte	0
+ 1918              	.LLST2:
+ 1919 00a1 0E000000 		.4byte	.LVL46
+ 1920 00a5 14000000 		.4byte	.LVL47
+ 1921 00a9 0100     		.2byte	0x1
+ 1922 00ab 50       		.byte	0x50
+ 1923 00ac 00000000 		.4byte	0
+ 1924 00b0 00000000 		.4byte	0
+ 1925              		.section	.debug_aranges,"",%progbits
+ 1926 0000 54000000 		.4byte	0x54
+ 1927 0004 0200     		.2byte	0x2
+ 1928 0006 00000000 		.4byte	.Ldebug_info0
+ 1929 000a 04       		.byte	0x4
+ 1930 000b 00       		.byte	0
+ 1931 000c 0000     		.2byte	0
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 41
 
 
- 1933 0030 00000000 		.4byte	.LFB66
- 1934 0034 68000000 		.4byte	.LFE66-.LFB66
- 1935 0038 00000000 		.4byte	.LFB67
- 1936 003c 0C000000 		.4byte	.LFE67-.LFB67
- 1937 0040 00000000 		.4byte	.LFB70
- 1938 0044 0C000000 		.4byte	.LFE70-.LFB70
- 1939 0048 00000000 		.4byte	.LFB68
- 1940 004c 84000000 		.4byte	.LFE68-.LFB68
- 1941 0050 00000000 		.4byte	0
- 1942 0054 00000000 		.4byte	0
- 1943              		.section	.debug_ranges,"",%progbits
- 1944              	.Ldebug_ranges0:
- 1945 0000 00000000 		.4byte	.LFB69
- 1946 0004 CC000000 		.4byte	.LFE69
- 1947 0008 00000000 		.4byte	.LFB71
- 1948 000c 4C000000 		.4byte	.LFE71
- 1949 0010 00000000 		.4byte	.LFB64
- 1950 0014 70000000 		.4byte	.LFE64
- 1951 0018 00000000 		.4byte	.LFB65
- 1952 001c 2C000000 		.4byte	.LFE65
- 1953 0020 00000000 		.4byte	.LFB66
- 1954 0024 68000000 		.4byte	.LFE66
- 1955 0028 00000000 		.4byte	.LFB67
- 1956 002c 0C000000 		.4byte	.LFE67
- 1957 0030 00000000 		.4byte	.LFB70
- 1958 0034 0C000000 		.4byte	.LFE70
- 1959 0038 00000000 		.4byte	.LFB68
- 1960 003c 84000000 		.4byte	.LFE68
- 1961 0040 00000000 		.4byte	0
- 1962 0044 00000000 		.4byte	0
- 1963              		.section	.debug_line,"",%progbits
- 1964              	.Ldebug_line0:
- 1965 0000 6F030000 		.section	.debug_str,"MS",%progbits,1
- 1965      02003702 
- 1965      00000201 
- 1965      FB0E0D00 
- 1965      01010101 
- 1966              	.LASF16:
- 1967 0000 6C6F6E67 		.ascii	"long double\000"
- 1967      20646F75 
- 1967      626C6500 
- 1968              	.LASF58:
- 1969 000c 4932435F 		.ascii	"I2C_RTC_MasterReadByte\000"
- 1969      5254435F 
- 1969      4D617374 
- 1969      65725265 
- 1969      61644279 
- 1970              	.LASF37:
- 1971 0023 4F6E6557 		.ascii	"OneWire_read_data\000"
- 1971      6972655F 
- 1971      72656164 
- 1971      5F646174 
- 1971      6100
- 1972              	.LASF29:
- 1973 0035 72657375 		.ascii	"result\000"
- 1973      6C7400
- 1974              	.LASF54:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 42
+ 1932 000e 0000     		.2byte	0
+ 1933 0010 00000000 		.4byte	.LFB69
+ 1934 0014 CC000000 		.4byte	.LFE69-.LFB69
+ 1935 0018 00000000 		.4byte	.LFB71
+ 1936 001c 4C000000 		.4byte	.LFE71-.LFB71
+ 1937 0020 00000000 		.4byte	.LFB64
+ 1938 0024 70000000 		.4byte	.LFE64-.LFB64
+ 1939 0028 00000000 		.4byte	.LFB65
+ 1940 002c 2C000000 		.4byte	.LFE65-.LFB65
+ 1941 0030 00000000 		.4byte	.LFB66
+ 1942 0034 68000000 		.4byte	.LFE66-.LFB66
+ 1943 0038 00000000 		.4byte	.LFB67
+ 1944 003c 0C000000 		.4byte	.LFE67-.LFB67
+ 1945 0040 00000000 		.4byte	.LFB70
+ 1946 0044 0C000000 		.4byte	.LFE70-.LFB70
+ 1947 0048 00000000 		.4byte	.LFB68
+ 1948 004c 84000000 		.4byte	.LFE68-.LFB68
+ 1949 0050 00000000 		.4byte	0
+ 1950 0054 00000000 		.4byte	0
+ 1951              		.section	.debug_ranges,"",%progbits
+ 1952              	.Ldebug_ranges0:
+ 1953 0000 00000000 		.4byte	.LFB69
+ 1954 0004 CC000000 		.4byte	.LFE69
+ 1955 0008 00000000 		.4byte	.LFB71
+ 1956 000c 4C000000 		.4byte	.LFE71
+ 1957 0010 00000000 		.4byte	.LFB64
+ 1958 0014 70000000 		.4byte	.LFE64
+ 1959 0018 00000000 		.4byte	.LFB65
+ 1960 001c 2C000000 		.4byte	.LFE65
+ 1961 0020 00000000 		.4byte	.LFB66
+ 1962 0024 68000000 		.4byte	.LFE66
+ 1963 0028 00000000 		.4byte	.LFB67
+ 1964 002c 0C000000 		.4byte	.LFE67
+ 1965 0030 00000000 		.4byte	.LFB70
+ 1966 0034 0C000000 		.4byte	.LFE70
+ 1967 0038 00000000 		.4byte	.LFB68
+ 1968 003c 84000000 		.4byte	.LFE68
+ 1969 0040 00000000 		.4byte	0
+ 1970 0044 00000000 		.4byte	0
+ 1971              		.section	.debug_line,"",%progbits
+ 1972              	.Ldebug_line0:
+ 1973 0000 6F030000 		.section	.debug_str,"MS",%progbits,1
+ 1973      02003702 
+ 1973      00000201 
+ 1973      FB0E0D00 
+ 1973      01010101 
+ 1974              	.LASF58:
+ 1975 0000 4932435F 		.ascii	"I2C_RTC_MasterReadByte\000"
+ 1975      5254435F 
+ 1975      4D617374 
+ 1975      65725265 
+ 1975      61644279 
+ 1976              	.LASF29:
+ 1977 0017 72657375 		.ascii	"result\000"
+ 1977      6C7400
+ 1978              	.LASF54:
+ 1979 001e 54696D65 		.ascii	"Timer_ReadStatusRegister\000"
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 42
 
 
- 1975 003c 54696D65 		.ascii	"Timer_ReadStatusRegister\000"
- 1975      725F5265 
- 1975      61645374 
- 1975      61747573 
- 1975      52656769 
- 1976              	.LASF33:
- 1977 0055 726F6F6D 		.ascii	"room_temp\000"
- 1977      5F74656D 
- 1977      7000
- 1978              	.LASF2:
- 1979 005f 73686F72 		.ascii	"short int\000"
- 1979      7420696E 
- 1979      7400
- 1980              	.LASF17:
- 1981 0069 73697A65 		.ascii	"sizetype\000"
- 1981      74797065 
- 1981      00
- 1982              	.LASF63:
- 1983 0072 6D61696E 		.ascii	"main\000"
- 1983      00
- 1984              	.LASF28:
- 1985 0077 7265616C 		.ascii	"real_Time_Clock\000"
- 1985      5F54696D 
- 1985      655F436C 
- 1985      6F636B00 
- 1986              	.LASF6:
- 1987 0087 6C6F6E67 		.ascii	"long long int\000"
- 1987      206C6F6E 
- 1987      6720696E 
- 1987      7400
- 1988              	.LASF44:
- 1989 0095 50574D5F 		.ascii	"PWM_ReadStatusRegister\000"
- 1989      52656164 
- 1989      53746174 
- 1989      75735265 
- 1989      67697374 
- 1990              	.LASF40:
- 1991 00ac 55415254 		.ascii	"UART_GetChar\000"
- 1991      5F476574 
- 1991      43686172 
- 1991      00
- 1992              	.LASF39:
- 1993 00b9 55415254 		.ascii	"UART_PutString\000"
- 1993      5F507574 
- 1993      53747269 
- 1993      6E6700
- 1994              	.LASF12:
- 1995 00c8 75696E74 		.ascii	"uint16\000"
- 1995      313600
- 1996              	.LASF45:
- 1997 00cf 55415254 		.ascii	"UART_Start\000"
- 1997      5F537461 
- 1997      727400
- 1998              	.LASF11:
- 1999 00da 75696E74 		.ascii	"uint8\000"
- 1999      3800
- 2000              	.LASF35:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 43
+ 1979      725F5265 
+ 1979      61645374 
+ 1979      61747573 
+ 1979      52656769 
+ 1980              	.LASF33:
+ 1981 0037 726F6F6D 		.ascii	"room_temp\000"
+ 1981      5F74656D 
+ 1981      7000
+ 1982              	.LASF2:
+ 1983 0041 73686F72 		.ascii	"short int\000"
+ 1983      7420696E 
+ 1983      7400
+ 1984              	.LASF17:
+ 1985 004b 73697A65 		.ascii	"sizetype\000"
+ 1985      74797065 
+ 1985      00
+ 1986              	.LASF63:
+ 1987 0054 6D61696E 		.ascii	"main\000"
+ 1987      00
+ 1988              	.LASF28:
+ 1989 0059 7265616C 		.ascii	"real_Time_Clock\000"
+ 1989      5F54696D 
+ 1989      655F436C 
+ 1989      6F636B00 
+ 1990              	.LASF16:
+ 1991 0069 6C6F6E67 		.ascii	"long double\000"
+ 1991      20646F75 
+ 1991      626C6500 
+ 1992              	.LASF44:
+ 1993 0075 50574D5F 		.ascii	"PWM_ReadStatusRegister\000"
+ 1993      52656164 
+ 1993      53746174 
+ 1993      75735265 
+ 1993      67697374 
+ 1994              	.LASF4:
+ 1995 008c 6C6F6E67 		.ascii	"long int\000"
+ 1995      20696E74 
+ 1995      00
+ 1996              	.LASF40:
+ 1997 0095 55415254 		.ascii	"UART_GetChar\000"
+ 1997      5F476574 
+ 1997      43686172 
+ 1997      00
+ 1998              	.LASF39:
+ 1999 00a2 55415254 		.ascii	"UART_PutString\000"
+ 1999      5F507574 
+ 1999      53747269 
+ 1999      6E6700
+ 2000              	.LASF12:
+ 2001 00b1 75696E74 		.ascii	"uint16\000"
+ 2001      313600
+ 2002              	.LASF45:
+ 2003 00b8 55415254 		.ascii	"UART_Start\000"
+ 2003      5F537461 
+ 2003      727400
+ 2004              	.LASF11:
+ 2005 00c3 75696E74 		.ascii	"uint8\000"
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 43
 
 
- 2001 00e0 77696E64 		.ascii	"window_position\000"
- 2001      6F775F70 
- 2001      6F736974 
- 2001      696F6E00 
- 2002              	.LASF64:
- 2003 00f0 77696E64 		.ascii	"window_position_control\000"
- 2003      6F775F70 
- 2003      6F736974 
- 2003      696F6E5F 
- 2003      636F6E74 
- 2004              	.LASF13:
- 2005 0108 666C6F61 		.ascii	"float\000"
- 2005      7400
- 2006              	.LASF52:
- 2007 010e 4F6E6557 		.ascii	"OneWire_start\000"
- 2007      6972655F 
- 2007      73746172 
- 2007      7400
- 2008              	.LASF15:
- 2009 011c 63686172 		.ascii	"char\000"
- 2009      00
- 2010              	.LASF47:
- 2011 0121 54696D65 		.ascii	"Timer_Start\000"
- 2011      725F5374 
- 2011      61727400 
- 2012              	.LASF43:
- 2013 012d 50574D5F 		.ascii	"PWM_WriteCompare\000"
- 2013      57726974 
- 2013      65436F6D 
- 2013      70617265 
- 2013      00
- 2014              	.LASF51:
- 2015 013e 4932435F 		.ascii	"I2C_RTC_Start\000"
- 2015      5254435F 
- 2015      53746172 
- 2015      7400
- 2016              	.LASF48:
- 2017 014c 6973725F 		.ascii	"isr_Timer_StartEx\000"
- 2017      54696D65 
+ 2005      3800
+ 2006              	.LASF35:
+ 2007 00c9 77696E64 		.ascii	"window_position\000"
+ 2007      6F775F70 
+ 2007      6F736974 
+ 2007      696F6E00 
+ 2008              	.LASF64:
+ 2009 00d9 77696E64 		.ascii	"window_position_control\000"
+ 2009      6F775F70 
+ 2009      6F736974 
+ 2009      696F6E5F 
+ 2009      636F6E74 
+ 2010              	.LASF13:
+ 2011 00f1 666C6F61 		.ascii	"float\000"
+ 2011      7400
+ 2012              	.LASF6:
+ 2013 00f7 6C6F6E67 		.ascii	"long long int\000"
+ 2013      206C6F6E 
+ 2013      6720696E 
+ 2013      7400
+ 2014              	.LASF15:
+ 2015 0105 63686172 		.ascii	"char\000"
+ 2015      00
+ 2016              	.LASF47:
+ 2017 010a 54696D65 		.ascii	"Timer_Start\000"
  2017      725F5374 
- 2017      61727445 
- 2017      7800
- 2018              	.LASF34:
- 2019 015e 77696E64 		.ascii	"window_position_index\000"
- 2019      6F775F70 
- 2019      6F736974 
- 2019      696F6E5F 
- 2019      696E6465 
- 2020              	.LASF32:
- 2021 0174 7274635F 		.ascii	"rtc_data\000"
+ 2017      61727400 
+ 2018              	.LASF43:
+ 2019 0116 50574D5F 		.ascii	"PWM_WriteCompare\000"
+ 2019      57726974 
+ 2019      65436F6D 
+ 2019      70617265 
+ 2019      00
+ 2020              	.LASF37:
+ 2021 0127 4F6E6557 		.ascii	"OneWireRead_data\000"
+ 2021      69726552 
+ 2021      6561645F 
  2021      64617461 
  2021      00
- 2022              	.LASF62:
- 2023 017d 433A5C55 		.ascii	"C:\\Users\\Arold\\Documents\\GitHub\\Green-House\\G"
- 2023      73657273 
- 2023      5C41726F 
- 2023      6C645C44 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 44
+ 2022              	.LASF51:
+ 2023 0138 4932435F 		.ascii	"I2C_RTC_Start\000"
+ 2023      5254435F 
+ 2023      53746172 
+ 2023      7400
+ 2024              	.LASF48:
+ 2025 0146 6973725F 		.ascii	"isr_Timer_StartEx\000"
+ 2025      54696D65 
+ 2025      725F5374 
+ 2025      61727445 
+ 2025      7800
+ 2026              	.LASF34:
+ 2027 0158 77696E64 		.ascii	"window_position_index\000"
+ 2027      6F775F70 
+ 2027      6F736974 
+ 2027      696F6E5F 
+ 2027      696E6465 
+ 2028              	.LASF32:
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 44
 
 
- 2023      6F63756D 
- 2024 01aa 7265656E 		.ascii	"reen_House\\Green_House.cydsn\000"
- 2024      5F486F75 
- 2024      73655C47 
- 2024      7265656E 
- 2024      5F486F75 
- 2025              	.LASF1:
- 2026 01c7 756E7369 		.ascii	"unsigned char\000"
- 2026      676E6564 
- 2026      20636861 
- 2026      7200
- 2027              	.LASF18:
- 2028 01d5 74657374 		.ascii	"testData\000"
- 2028      44617461 
- 2028      00
- 2029              	.LASF38:
- 2030 01de 73707269 		.ascii	"sprintf\000"
- 2030      6E746600 
- 2031              	.LASF19:
- 2032 01e6 6F6C645F 		.ascii	"old_char\000"
- 2032      63686172 
- 2032      00
- 2033              	.LASF10:
- 2034 01ef 696E7433 		.ascii	"int32_t\000"
- 2034      325F7400 
- 2035              	.LASF7:
- 2036 01f7 6C6F6E67 		.ascii	"long long unsigned int\000"
- 2036      206C6F6E 
- 2036      6720756E 
- 2036      7369676E 
- 2036      65642069 
- 2037              	.LASF8:
- 2038 020e 756E7369 		.ascii	"unsigned int\000"
- 2038      676E6564 
- 2038      20696E74 
- 2038      00
- 2039              	.LASF22:
- 2040 021b 6D795F69 		.ascii	"my_isr_PWM\000"
- 2040      73725F50 
- 2040      574D00
- 2041              	.LASF56:
- 2042 0226 4932435F 		.ascii	"I2C_RTC_MasterWriteByte\000"
- 2042      5254435F 
- 2042      4D617374 
- 2042      65725772 
- 2042      69746542 
- 2043              	.LASF30:
- 2044 023e 64656275 		.ascii	"debug\000"
- 2044      6700
- 2045              	.LASF23:
- 2046 0244 61637475 		.ascii	"actualPosition\000"
- 2046      616C506F 
- 2046      73697469 
- 2046      6F6E00
- 2047              	.LASF3:
- 2048 0253 73686F72 		.ascii	"short unsigned int\000"
- 2048      7420756E 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 45
+ 2029 016e 7274635F 		.ascii	"rtc_data\000"
+ 2029      64617461 
+ 2029      00
+ 2030              	.LASF62:
+ 2031 0177 433A5C55 		.ascii	"C:\\Users\\Arold\\Documents\\GitHub\\Green-House\\G"
+ 2031      73657273 
+ 2031      5C41726F 
+ 2031      6C645C44 
+ 2031      6F63756D 
+ 2032 01a4 7265656E 		.ascii	"reen_House\\Green_House.cydsn\000"
+ 2032      5F486F75 
+ 2032      73655C47 
+ 2032      7265656E 
+ 2032      5F486F75 
+ 2033              	.LASF1:
+ 2034 01c1 756E7369 		.ascii	"unsigned char\000"
+ 2034      676E6564 
+ 2034      20636861 
+ 2034      7200
+ 2035              	.LASF18:
+ 2036 01cf 74657374 		.ascii	"testData\000"
+ 2036      44617461 
+ 2036      00
+ 2037              	.LASF38:
+ 2038 01d8 73707269 		.ascii	"sprintf\000"
+ 2038      6E746600 
+ 2039              	.LASF19:
+ 2040 01e0 6F6C645F 		.ascii	"old_char\000"
+ 2040      63686172 
+ 2040      00
+ 2041              	.LASF10:
+ 2042 01e9 696E7433 		.ascii	"int32_t\000"
+ 2042      325F7400 
+ 2043              	.LASF7:
+ 2044 01f1 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2044      206C6F6E 
+ 2044      6720756E 
+ 2044      7369676E 
+ 2044      65642069 
+ 2045              	.LASF8:
+ 2046 0208 756E7369 		.ascii	"unsigned int\000"
+ 2046      676E6564 
+ 2046      20696E74 
+ 2046      00
+ 2047              	.LASF22:
+ 2048 0215 6D795F69 		.ascii	"my_isr_PWM\000"
+ 2048      73725F50 
+ 2048      574D00
+ 2049              	.LASF56:
+ 2050 0220 4932435F 		.ascii	"I2C_RTC_MasterWriteByte\000"
+ 2050      5254435F 
+ 2050      4D617374 
+ 2050      65725772 
+ 2050      69746542 
+ 2051              	.LASF30:
+ 2052 0238 64656275 		.ascii	"debug\000"
+ 2052      6700
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 45
 
 
- 2048      7369676E 
- 2048      65642069 
- 2048      6E7400
- 2049              	.LASF36:
- 2050 0266 4F6E6557 		.ascii	"OneWireVal\000"
- 2050      69726556 
- 2050      616C00
- 2051              	.LASF46:
- 2052 0271 6973725F 		.ascii	"isr_UART_StartEx\000"
- 2052      55415254 
- 2052      5F537461 
- 2052      72744578 
- 2052      00
- 2053              	.LASF4:
- 2054 0282 6C6F6E67 		.ascii	"long int\000"
- 2054      20696E74 
- 2054      00
- 2055              	.LASF41:
- 2056 028b 55415254 		.ascii	"UART_ClearRxBuffer\000"
- 2056      5F436C65 
- 2056      61725278 
- 2056      42756666 
- 2056      657200
- 2057              	.LASF57:
- 2058 029e 4932435F 		.ascii	"I2C_RTC_MasterSendRestart\000"
- 2058      5254435F 
- 2058      4D617374 
- 2058      65725365 
- 2058      6E645265 
- 2059              	.LASF53:
- 2060 02b8 4C45445F 		.ascii	"LED_Heating_Write\000"
- 2060      48656174 
- 2060      696E675F 
- 2060      57726974 
- 2060      6500
- 2061              	.LASF55:
- 2062 02ca 4932435F 		.ascii	"I2C_RTC_MasterSendStart\000"
- 2062      5254435F 
- 2062      4D617374 
- 2062      65725365 
- 2062      6E645374 
- 2063              	.LASF61:
- 2064 02e2 6D61696E 		.ascii	"main.c\000"
- 2064      2E6300
- 2065              	.LASF5:
- 2066 02e9 6C6F6E67 		.ascii	"long unsigned int\000"
- 2066      20756E73 
- 2066      69676E65 
- 2066      6420696E 
- 2066      7400
- 2067              	.LASF27:
- 2068 02fb 6D795F69 		.ascii	"my_isr_TIMER\000"
- 2068      73725F54 
- 2068      494D4552 
- 2068      00
- 2069              	.LASF14:
- 2070 0308 646F7562 		.ascii	"double\000"
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 46
+ 2053              	.LASF23:
+ 2054 023e 61637475 		.ascii	"actualPosition\000"
+ 2054      616C506F 
+ 2054      73697469 
+ 2054      6F6E00
+ 2055              	.LASF3:
+ 2056 024d 73686F72 		.ascii	"short unsigned int\000"
+ 2056      7420756E 
+ 2056      7369676E 
+ 2056      65642069 
+ 2056      6E7400
+ 2057              	.LASF36:
+ 2058 0260 4F6E6557 		.ascii	"OneWireVal\000"
+ 2058      69726556 
+ 2058      616C00
+ 2059              	.LASF46:
+ 2060 026b 6973725F 		.ascii	"isr_UART_StartEx\000"
+ 2060      55415254 
+ 2060      5F537461 
+ 2060      72744578 
+ 2060      00
+ 2061              	.LASF52:
+ 2062 027c 4F6E6557 		.ascii	"OneWireStart\000"
+ 2062      69726553 
+ 2062      74617274 
+ 2062      00
+ 2063              	.LASF41:
+ 2064 0289 55415254 		.ascii	"UART_ClearRxBuffer\000"
+ 2064      5F436C65 
+ 2064      61725278 
+ 2064      42756666 
+ 2064      657200
+ 2065              	.LASF57:
+ 2066 029c 4932435F 		.ascii	"I2C_RTC_MasterSendRestart\000"
+ 2066      5254435F 
+ 2066      4D617374 
+ 2066      65725365 
+ 2066      6E645265 
+ 2067              	.LASF53:
+ 2068 02b6 4C45445F 		.ascii	"LED_Heating_Write\000"
+ 2068      48656174 
+ 2068      696E675F 
+ 2068      57726974 
+ 2068      6500
+ 2069              	.LASF55:
+ 2070 02c8 4932435F 		.ascii	"I2C_RTC_MasterSendStart\000"
+ 2070      5254435F 
+ 2070      4D617374 
+ 2070      65725365 
+ 2070      6E645374 
+ 2071              	.LASF61:
+ 2072 02e0 6D61696E 		.ascii	"main.c\000"
+ 2072      2E6300
+ 2073              	.LASF5:
+ 2074 02e7 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2074      20756E73 
+ 2074      69676E65 
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 46
 
 
- 2070      6C6500
- 2071              	.LASF59:
- 2072 030f 4932435F 		.ascii	"I2C_RTC_MasterSendStop\000"
- 2072      5254435F 
- 2072      4D617374 
- 2072      65725365 
- 2072      6E645374 
- 2073              	.LASF26:
- 2074 0326 72656164 		.ascii	"read_Room_Temp\000"
- 2074      5F526F6F 
- 2074      6D5F5465 
- 2074      6D7000
- 2075              	.LASF25:
- 2076 0335 68656174 		.ascii	"heating_control\000"
- 2076      696E675F 
- 2076      636F6E74 
- 2076      726F6C00 
- 2077              	.LASF24:
- 2078 0345 70726F6A 		.ascii	"projectName\000"
- 2078      6563744E 
- 2078      616D6500 
- 2079              	.LASF9:
- 2080 0351 5F5F696E 		.ascii	"__int32_t\000"
- 2080      7433325F 
- 2080      7400
- 2081              	.LASF0:
- 2082 035b 7369676E 		.ascii	"signed char\000"
- 2082      65642063 
- 2082      68617200 
- 2083              	.LASF49:
- 2084 0367 50574D5F 		.ascii	"PWM_Start\000"
- 2084      53746172 
- 2084      7400
- 2085              	.LASF21:
- 2086 0371 6D795F69 		.ascii	"my_isr_UART\000"
- 2086      73725F55 
- 2086      41525400 
- 2087              	.LASF50:
- 2088 037d 6973725F 		.ascii	"isr_PWM_StartEx\000"
- 2088      50574D5F 
- 2088      53746172 
- 2088      74457800 
- 2089              	.LASF42:
- 2090 038d 6973725F 		.ascii	"isr_UART_ClearPending\000"
- 2090      55415254 
- 2090      5F436C65 
- 2090      61725065 
- 2090      6E64696E 
- 2091              	.LASF20:
- 2092 03a3 63757272 		.ascii	"current_char\000"
- 2092      656E745F 
- 2092      63686172 
- 2092      00
- 2093              	.LASF31:
- 2094 03b0 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 2094      52784275 
- 2094      66666572 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccR4sExQ.s 			page 47
+ 2074      6420696E 
+ 2074      7400
+ 2075              	.LASF27:
+ 2076 02f9 6D795F69 		.ascii	"my_isr_TIMER\000"
+ 2076      73725F54 
+ 2076      494D4552 
+ 2076      00
+ 2077              	.LASF14:
+ 2078 0306 646F7562 		.ascii	"double\000"
+ 2078      6C6500
+ 2079              	.LASF59:
+ 2080 030d 4932435F 		.ascii	"I2C_RTC_MasterSendStop\000"
+ 2080      5254435F 
+ 2080      4D617374 
+ 2080      65725365 
+ 2080      6E645374 
+ 2081              	.LASF26:
+ 2082 0324 72656164 		.ascii	"read_Room_Temp\000"
+ 2082      5F526F6F 
+ 2082      6D5F5465 
+ 2082      6D7000
+ 2083              	.LASF25:
+ 2084 0333 68656174 		.ascii	"heating_control\000"
+ 2084      696E675F 
+ 2084      636F6E74 
+ 2084      726F6C00 
+ 2085              	.LASF24:
+ 2086 0343 70726F6A 		.ascii	"projectName\000"
+ 2086      6563744E 
+ 2086      616D6500 
+ 2087              	.LASF9:
+ 2088 034f 5F5F696E 		.ascii	"__int32_t\000"
+ 2088      7433325F 
+ 2088      7400
+ 2089              	.LASF0:
+ 2090 0359 7369676E 		.ascii	"signed char\000"
+ 2090      65642063 
+ 2090      68617200 
+ 2091              	.LASF49:
+ 2092 0365 50574D5F 		.ascii	"PWM_Start\000"
+ 2092      53746172 
+ 2092      7400
+ 2093              	.LASF21:
+ 2094 036f 6D795F69 		.ascii	"my_isr_UART\000"
+ 2094      73725F55 
+ 2094      41525400 
+ 2095              	.LASF50:
+ 2096 037b 6973725F 		.ascii	"isr_PWM_StartEx\000"
+ 2096      50574D5F 
+ 2096      53746172 
+ 2096      74457800 
+ 2097              	.LASF42:
+ 2098 038b 6973725F 		.ascii	"isr_UART_ClearPending\000"
+ 2098      55415254 
+ 2098      5F436C65 
+ 2098      61725065 
+ 2098      6E64696E 
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\cciKFLGf.s 			page 47
 
 
- 2094      00
- 2095              	.LASF60:
- 2096 03bd 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 2096      43313120 
- 2096      352E342E 
- 2096      31203230 
- 2096      31363036 
- 2097 03f0 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
- 2097      20726576 
- 2097      6973696F 
- 2097      6E203233 
- 2097      37373135 
- 2098 0423 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 2098      66756E63 
- 2098      74696F6E 
- 2098      2D736563 
- 2098      74696F6E 
- 2099              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 2099              	.LASF20:
+ 2100 03a1 63757272 		.ascii	"current_char\000"
+ 2100      656E745F 
+ 2100      63686172 
+ 2100      00
+ 2101              	.LASF31:
+ 2102 03ae 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2102      52784275 
+ 2102      66666572 
+ 2102      00
+ 2103              	.LASF60:
+ 2104 03bb 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2104      43313120 
+ 2104      352E342E 
+ 2104      31203230 
+ 2104      31363036 
+ 2105 03ee 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2105      20726576 
+ 2105      6973696F 
+ 2105      6E203233 
+ 2105      37373135 
+ 2106 0421 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2106      66756E63 
+ 2106      74696F6E 
+ 2106      2D736563 
+ 2106      74696F6E 
+ 2107              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
