@@ -11,6 +11,10 @@
 */
 #include "project.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
 #include <OneWireLab.h>
 
 // Define and global variables
@@ -18,9 +22,17 @@
 # define True 1
 # define False 0
 # define Servo_First_Position 899
-#define TRANSBUFFER_SIZE  150
+# define TRANSBUFFER_SIZE  150
 # define ROOM  1
 # define SOIL  0
+# define MAX_LENGTH              (4u)
+# define VALID_DAY_LENGTH        (2u)
+# define VALID_MONTH_LENGTH      (2u)
+# define VALID_SHORT_YEAR_LENGTH (2u)
+# define VALID_LONG_YEAR_LENGTH  (4u)
+#define RTC_ACCESS_RETRY         (50u)
+#define  RTC_MAX_YEAR            (4u)
+
 
 // Function prototypes
 void read_Room_Temp(void);
@@ -96,7 +108,11 @@ int main(void)
     isr_PWM_StartEx(my_isr_PWM);
     
     //
-    I2C_RTC_Start();
+    RTC_Start();
+    
+    RTC_ReadSecond();
+    RTC_ReadMinute();
+    RTC_ReadHour();
     
     OneWireStart();
     
@@ -202,46 +218,6 @@ uint16 get_CapData(void) {
     capData = CapSense_ReadSensorRaw(0);  // read the CapSense value of sensor number 0
     return capData;
 }
-
-
-void real_Time_Clock(void)
-{
-    uint8 i, result = 0;
-    char debug[50];
-    
-    // read the real time clock module data from the i2c master
-    do
-    {
-        result = I2C_RTC_MasterSendStart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
-        sprintf(debug,"Endless loop: %d\r\n" , result);
-        UART_PutString(debug);
-    }while(result!=I2C_RTC_MSTR_NO_ERROR);
-    
-    result = I2C_RTC_MasterWriteByte(0x00);
-    
-    result = I2C_RTC_MasterSendRestart(RTC_slaveAddress, I2C_RTC_WRITE_XFER_MODE);
-    
-    for(i=0; i<6; i++)
-    {
-        rtc_data[i] = I2C_RTC_MasterReadByte(I2C_RTC_ACK_DATA);
-    }
-    
-    rtc_data[6] = I2C_RTC_MasterReadByte(I2C_RTC_NAK_DATA);
-    
-    I2C_RTC_MasterSendStop();
-    
-    // send the result to the commad window
-    char testData[20];
-    for(i=0; i<7; i++)
-    {
-        sprintf(testData,"Byte %d : %d\r\n" ,i , rtc_data[i]);
-        UART_PutString(testData);
-    }
-    //rtc_data[i]>>4&0x07
-}
-
-
-
 CY_ISR(my_isr_UART)
 {   
    // real_Time_Clock();
@@ -468,6 +444,138 @@ int read (int fd, const void *Ch, size_t count) {
   return CharCnt;  
 }  
 
+// RTC 
+
+static void Rtc_PrintDateTime(void)
+{
+	
+    /* Get the current RTC date and time */
+    
+    RTC_TIME_DATE *dateTime;
+    dateTime = RTC_ReadTime();
+	
+	/* Display current date and time */
+	printf("\rCurrent Time: %u : %u : %u  %u/%u/%u\r\n", \
+			dateTime->Hour, dateTime->Min, dateTime->Sec, \
+			dateTime->DayOfWeek, dateTime->Month, dateTime->Year);
+}
+
+static void Rtc_SetTime(void)
+{
+	/* Variables used to store user input */
+	char dateStr[MAX_LENGTH], monthStr[MAX_LENGTH], yearStr[MAX_LENGTH];
+	char secStr[MAX_LENGTH], minStr[MAX_LENGTH], hourStr[MAX_LENGTH];
+
+	/* Variables used to store date and time information */
+	uint32_t date, month, year, sec, min, hour;
+
+	/* Variable used to store return status of RTC API */
+	//cy_en_rtc_status_t  rtcApiStatus;
+
+	uint32_t rtcAccessRetry = RTC_ACCESS_RETRY;
+
+	printf("\r\nEnter new date (DD MM YY)\r\n");
+	scanf("%s %s %s", dateStr, monthStr, yearStr);
+
+	/* validate user input */
+	if(strlen(dateStr)<= VALID_DAY_LENGTH && strlen(monthStr)<= VALID_MONTH_LENGTH  && \
+	(strlen(yearStr)<= VALID_SHORT_YEAR_LENGTH || strlen(yearStr)== VALID_LONG_YEAR_LENGTH ))
+	{
+		printf("\rEnter new time in 24-hour format (HH MM SS)\r\n");
+		sscanf("%s %s %s", hourStr, minStr, secStr);
+        
+        RTC_TIME_DATE *time;
+
+		/* Convert string input to decimal */
+		time-> DayOfWeek = atoi(dateStr);
+	    time-> Month  = atoi(monthStr);
+		time ->Year   = atoi(yearStr);
+		time -> Sec   = atoi(secStr);
+		time -> Min   = atoi(minStr);
+		time -> Hour  = atoi(hourStr);
+
+		/* If user input 4 digits Year information, set 2 digits Year */
+		if(year > RTC_MAX_YEAR)
+		{
+			year = year % 100u;
+		}
+
+		if(ValidateDateTime(&time)
+		{
+			/* Set date and time.
+			 * RTC block doesn't allow to access, when synchronizing the user registers
+			 * and the internal actual RTC registers. It will return RTC_BUSY value, if
+			 * it is not available to update the configuration values. Needs to retry,
+			 * if it doesn't return CY_RTC_SUCCESS.
+			 */
+			do
+			{
+				RTC_WriteTime(&time);
+				rtcAccessRetry --;
+			} while ((RTC_ReadStatus() != RTC_STATUS_DST) && (rtcAccessRetry != 0));
+
+			if((RTC_ReadStatus() != RTC_STATUS_DST))
+			{
+				printf("\r\nFailed to update date and time\r\n");
+				PrintAvailableCommand();
+			}
+			else
+			{
+				printf("\r\nDate and Time updated !!\r\n");
+				Rtc_PrintDateTime();
+			}
+		}
+		else
+		{
+			printf("\r\nInvalid values! Please enter the values in specified format\r\n");
+			//PrintAvailableCommand();
+		}
+	}
+	else
+	{
+		printf("\r\nInvalid values! Please enter the values in specified format\r\n");
+		//PrintAvailableCommand();
+	}
+}
+
+bool ValidateDateTime(RTC_TIME_DATE *datetime)
+{
+	uint8_t daysInMonth;
+	/* Variable used to store days in months table */
+	static uint8_t daysInMonthTable[RTC_MONTHS_IN_YEAR] = {
+		RTC_DAYS_IN_JANUARY,
+		RTC_DAYS_IN_FEBRUARY,
+		RTC_DAYS_IN_MARCH,
+		RTC_DAYS_IN_APRIL,
+		RTC_DAYS_IN_MAY,
+		RTC_DAYS_IN_JUNE,
+		RTC_DAYS_IN_JULY,
+		RTC_DAYS_IN_AUGUST,
+		RTC_DAYS_IN_SEPTEMBER,
+		RTC_DAYS_IN_OCTOBER,
+		RTC_DAYS_IN_NOVEMBER,
+		RTC_DAYS_IN_DECEMBER};
+
+	bool status = True ;
+    
+            /*RTC_IS_SEC(sec) & CY_RTC_IS_MIN_VALID(min) & \
+			CY_RTC_IS_HOUR_VALID(hour) & CY_RTC_IS_MONTH_VALID(month) & \
+			CY_RTC_IS_YEAR_SHORT_VALID(year); */
+
+
+	if(status)
+	{
+		daysInMonth = daysInMonthTable[datetime->Month - 1];
+
+		if(RTC_LEAP_YEAR(datetime->Year) && \
+			(datetime->Month == RTC_FEBRUARY))
+		{
+			daysInMonth++;
+		}
+		status &= (datetime->DayOfWeek > 0U) && (datetime->DayOfWeek <= daysInMonth);
+	}
+	return status;
+}
 
 
 

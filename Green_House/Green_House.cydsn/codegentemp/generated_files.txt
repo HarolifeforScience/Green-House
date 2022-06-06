@@ -25,20 +25,9 @@
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\UART_BOOT.c" value="SOURCE_C;CortexM3;;;;UART" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_UART.c" value="SOURCE_C;CortexM3;;;;isr_UART" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_UART.h" value="HEADER;;;;;isr_UART" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SDA_aliases.h" value="HEADER;;;;;I2C_RTC_SDA" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SDA.c" value="SOURCE_C;CortexM3;;;;I2C_RTC_SDA" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SDA.h" value="HEADER;;;;;I2C_RTC_SDA" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC.h" value="HEADER;;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_BOOT.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_INT.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_PM.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SLAVE.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_MASTER.c" value="SOURCE_C;CortexM3;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_PVT.h" value="HEADER;;;;;I2C_RTC" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SCL_aliases.h" value="HEADER;;;;;I2C_RTC_SCL" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SCL.c" value="SOURCE_C;CortexM3;;;;I2C_RTC_SCL" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\I2C_RTC_SCL.h" value="HEADER;;;;;I2C_RTC_SCL" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\RTC.c" value="SOURCE_C;CortexM3;;;;RTC" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\RTC.h" value="HEADER;;;;;RTC" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\RTC_INT.c" value="SOURCE_C;CortexM3;;;;RTC" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Clock.c" value="SOURCE_C;CortexM3;;;;Clock" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Clock.h" value="HEADER;;;;;Clock" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\PWM.c" value="SOURCE_C;CortexM3;;;;PWM" />

@@ -2,7 +2,7 @@
 --	Conversion of Green_House.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Mon Jun 06 16:36:32 2022
+--	Mon Jun 06 20:49:17 2022
 --
 
 USE cypress.cypress.all;
@@ -361,41 +361,7 @@ SIGNAL tmpFB_0__Tx_net_0 : bit;
 SIGNAL tmpIO_0__Tx_net_0 : bit;
 TERMINAL tmpSIOVREF__Tx_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Tx_net_0 : bit;
-SIGNAL tmpOE__I2C_RTC_SDA_net_0 : bit;
-SIGNAL tmpFB_0__I2C_RTC_SDA_net_0 : bit;
-SIGNAL Net_66 : bit;
-TERMINAL tmpSIOVREF__I2C_RTC_SDA_net_0 : bit;
-SIGNAL tmpINTERRUPT_0__I2C_RTC_SDA_net_0 : bit;
-SIGNAL \I2C_RTC:sda_x_wire\ : bit;
-SIGNAL \I2C_RTC:Net_643_1\ : bit;
-SIGNAL \I2C_RTC:Net_697\ : bit;
-SIGNAL \I2C_RTC:bus_clk\ : bit;
-SIGNAL \I2C_RTC:Net_1109_0\ : bit;
-SIGNAL \I2C_RTC:Net_1109_1\ : bit;
-SIGNAL \I2C_RTC:Net_643_0\ : bit;
-SIGNAL \I2C_RTC:Net_643_2\ : bit;
-SIGNAL \I2C_RTC:scl_x_wire\ : bit;
-SIGNAL \I2C_RTC:Net_969\ : bit;
-SIGNAL \I2C_RTC:Net_968\ : bit;
-SIGNAL \I2C_RTC:udb_clk\ : bit;
-SIGNAL Net_70 : bit;
-SIGNAL \I2C_RTC:Net_973\ : bit;
-SIGNAL Net_71 : bit;
-SIGNAL \I2C_RTC:Net_974\ : bit;
-SIGNAL \I2C_RTC:scl_yfb\ : bit;
-SIGNAL \I2C_RTC:sda_yfb\ : bit;
-SIGNAL \I2C_RTC:tmpOE__Bufoe_scl_net_0\ : bit;
-SIGNAL Net_67 : bit;
-SIGNAL \I2C_RTC:tmpOE__Bufoe_sda_net_0\ : bit;
-SIGNAL \I2C_RTC:timeout_clk\ : bit;
-SIGNAL Net_76 : bit;
-SIGNAL \I2C_RTC:Net_975\ : bit;
-SIGNAL Net_74 : bit;
-SIGNAL Net_75 : bit;
-SIGNAL tmpOE__I2C_RTC_SCL_net_0 : bit;
-SIGNAL tmpFB_0__I2C_RTC_SCL_net_0 : bit;
-TERMINAL tmpSIOVREF__I2C_RTC_SCL_net_0 : bit;
-SIGNAL tmpINTERRUPT_0__I2C_RTC_SCL_net_0 : bit;
+SIGNAL \RTC:Net_5\ : bit;
 SIGNAL Net_124 : bit;
 SIGNAL \PWM:PWMUDB:km_run\ : bit;
 SIGNAL \PWM:PWMUDB:min_kill_reg\ : bit;
@@ -2076,179 +2042,13 @@ isr_UART:cy_isr_v1_0
 	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_14);
-I2C_RTC_SDA:cy_psoc3_pins_v1_10
-	GENERIC MAP(id=>"22863ebe-a37b-476f-b252-6e49a8c00b12",
-		drive_mode=>"100",
-		ibuf_enabled=>"1",
-		init_dr_st=>"1",
-		input_sync=>"1",
-		input_clk_en=>'0',
-		input_sync_mode=>"0",
-		intr_mode=>"00",
-		invert_in_clock=>'0',
-		invert_in_clock_en=>'0',
-		invert_in_reset=>'0',
-		invert_out_clock=>'0',
-		invert_out_clock_en=>'0',
-		invert_out_reset=>'0',
-		io_voltage=>"",
-		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
-		output_sync=>"0",
-		output_clk_en=>'0',
-		output_mode=>"0",
-		output_reset=>'0',
-		output_clock_mode=>"0",
-		oe_sync=>"0",
-		oe_conn=>"0",
-		oe_reset=>'0',
-		pin_aliases=>"",
-		pin_mode=>"B",
-		por_state=>4,
-		sio_group_cnt=>0,
-		sio_hifreq=>"00000000",
-		sio_hyst=>"1",
-		sio_ibuf=>"00000000",
-		sio_info=>"00",
-		sio_obuf=>"00000000",
-		sio_refsel=>"00000000",
-		sio_vtrip=>"00000000",
-		sio_vohsel=>"00000000",
-		slew_rate=>"0",
-		spanning=>'0',
-		sw_only=>'0',
-		vtrip=>"00",
-		width=>1,
-		port_alias_required=>'0',
-		port_alias_group=>"",
-		use_annotation=>"0",
-		pa_in_clock=>-1,
-		pa_in_clock_en=>-1,
-		pa_in_reset=>-1,
-		pa_out_clock=>-1,
-		pa_out_clock_en=>-1,
-		pa_out_reset=>-1,
-		ovt_needed=>"0",
-		ovt_slew_control=>"00",
-		ovt_hyst_trim=>"0",
-		input_buffer_sel=>"00")
-	PORT MAP(oe=>(one),
-		y=>(zero),
-		fb=>(tmpFB_0__I2C_RTC_SDA_net_0),
-		analog=>(open),
-		io=>Net_66,
-		siovref=>(tmpSIOVREF__I2C_RTC_SDA_net_0),
-		annotation=>(open),
-		in_clock=>zero,
-		in_clock_en=>one,
-		in_reset=>zero,
-		out_clock=>zero,
-		out_clock_en=>one,
-		out_reset=>zero,
-		interrupt=>tmpINTERRUPT_0__I2C_RTC_SDA_net_0);
-\I2C_RTC:I2C_IRQ\:cy_isr_v1_0
-	GENERIC MAP(int_type=>"00",
+\RTC:isr\:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
-	PORT MAP(int_signal=>\I2C_RTC:Net_697\);
-\I2C_RTC:I2C_FF\:cy_psoc3_i2c_v1_0
-	GENERIC MAP(cy_registers=>"",
-		use_wakeup=>'0')
-	PORT MAP(clock=>\I2C_RTC:bus_clk\,
-		scl_in=>\I2C_RTC:Net_1109_0\,
-		sda_in=>\I2C_RTC:Net_1109_1\,
-		scl_out=>\I2C_RTC:Net_643_0\,
-		sda_out=>\I2C_RTC:sda_x_wire\,
-		interrupt=>\I2C_RTC:Net_697\);
-\I2C_RTC:BusClock\:cy_clock_v1_0
-	GENERIC MAP(cy_registers=>"",
-		id=>"6f2d57bd-b6d0-4115-93da-ded3485bf4ed/5ece924d-20ba-480e-9102-bc082dcdd926",
-		source_clock_id=>"75C2148C-3656-4d8a-846D-0CAE99AB6FF7",
-		divisor=>0,
-		period=>"0",
-		is_direct=>'1',
-		is_digital=>'1')
-	PORT MAP(clock_out=>\I2C_RTC:bus_clk\,
-		dig_domain_out=>open);
-\I2C_RTC:Bufoe_scl\:cy_bufoe
-	PORT MAP(x=>\I2C_RTC:Net_643_0\,
-		oe=>one,
-		y=>Net_67,
-		yfb=>\I2C_RTC:Net_1109_0\);
-\I2C_RTC:Bufoe_sda\:cy_bufoe
-	PORT MAP(x=>\I2C_RTC:sda_x_wire\,
-		oe=>one,
-		y=>Net_66,
-		yfb=>\I2C_RTC:Net_1109_1\);
-I2C_RTC_SCL:cy_psoc3_pins_v1_10
-	GENERIC MAP(id=>"02f2cf2c-2c7a-49df-9246-7a3435c21be3",
-		drive_mode=>"100",
-		ibuf_enabled=>"1",
-		init_dr_st=>"1",
-		input_sync=>"1",
-		input_clk_en=>'0',
-		input_sync_mode=>"0",
-		intr_mode=>"00",
-		invert_in_clock=>'0',
-		invert_in_clock_en=>'0',
-		invert_in_reset=>'0',
-		invert_out_clock=>'0',
-		invert_out_clock_en=>'0',
-		invert_out_reset=>'0',
-		io_voltage=>"",
-		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
-		output_sync=>"0",
-		output_clk_en=>'0',
-		output_mode=>"0",
-		output_reset=>'0',
-		output_clock_mode=>"0",
-		oe_sync=>"0",
-		oe_conn=>"0",
-		oe_reset=>'0',
-		pin_aliases=>"",
-		pin_mode=>"B",
-		por_state=>4,
-		sio_group_cnt=>0,
-		sio_hifreq=>"00000000",
-		sio_hyst=>"1",
-		sio_ibuf=>"00000000",
-		sio_info=>"00",
-		sio_obuf=>"00000000",
-		sio_refsel=>"00000000",
-		sio_vtrip=>"00000000",
-		sio_vohsel=>"00000000",
-		slew_rate=>"0",
-		spanning=>'0',
-		sw_only=>'0',
-		vtrip=>"00",
-		width=>1,
-		port_alias_required=>'0',
-		port_alias_group=>"",
-		use_annotation=>"0",
-		pa_in_clock=>-1,
-		pa_in_clock_en=>-1,
-		pa_in_reset=>-1,
-		pa_out_clock=>-1,
-		pa_out_clock_en=>-1,
-		pa_out_reset=>-1,
-		ovt_needed=>"0",
-		ovt_slew_control=>"00",
-		ovt_hyst_trim=>"0",
-		input_buffer_sel=>"00")
-	PORT MAP(oe=>(one),
-		y=>(zero),
-		fb=>(tmpFB_0__I2C_RTC_SCL_net_0),
-		analog=>(open),
-		io=>Net_67,
-		siovref=>(tmpSIOVREF__I2C_RTC_SCL_net_0),
-		annotation=>(open),
-		in_clock=>zero,
-		in_clock_en=>one,
-		in_reset=>zero,
-		out_clock=>zero,
-		out_clock_en=>one,
-		out_reset=>zero,
-		interrupt=>tmpINTERRUPT_0__I2C_RTC_SCL_net_0);
+	PORT MAP(int_signal=>\RTC:Net_5\);
+\RTC:gsRef_1\:cy_gsref_v1_0
+	GENERIC MAP(guid=>"2C8B7907-32C2-4035-8A12-D819F94023EF")
+	PORT MAP(sig_out=>\RTC:Net_5\);
 Clock:cy_clock_v1_0
 	GENERIC MAP(cy_registers=>"",
 		id=>"ec9dd4c5-b7af-456f-9dee-35431105a234",

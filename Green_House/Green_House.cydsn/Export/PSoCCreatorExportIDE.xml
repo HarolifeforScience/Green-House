@@ -102,20 +102,6 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_UART.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_IntClock.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\UART_IntClock.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SDA_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SDA.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SDA.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_BOOT.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_INT.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_PM.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SLAVE.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_MASTER.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_PVT.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL.c</File>
-          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\I2C_RTC_SCL.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Timer.c</File>
@@ -165,6 +151,9 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Servo_motor_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Servo_motor.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Servo_motor.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RTC.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RTC.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\RTC_INT.c</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\Export\ARM_GCC_Generic\CapSense_CSD_v3_50">
