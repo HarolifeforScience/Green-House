@@ -11,6 +11,7 @@
 */
 #include "project.h"
 #include <stdio.h>
+#include <math.h>
 
 // Define and global variables
 # define RTC_slaveAddress 0x68
@@ -28,12 +29,29 @@ void real_Time_Clock(void);
 CY_ISR_PROTO(my_isr_UART);
 CY_ISR_PROTO(my_isr_TIMER);
 CY_ISR_PROTO(my_isr_PWM);
+CY_ISR_PROTO(my_isr_EOC);
+CY_ISR_PROTO(my_isr_DataLog);
 
 
+// Structures
+typedef struct Window_typedef{
+   uint8 position_index;
+   uint16 positions[6];
+} Window_typedef;
+
+// Variables
 volatile uint8 rtc_data[7];
 volatile uint8 room_temp = 0;
-volatile uint8 window_position_index = 0;
-volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
+volatile Window_typedef window = {.position_index = 0,
+                                  .positions = {899, 1319, 1739, 2159, 2579, 2999}
+                                 };
+
+volatile uint16 soil_adc_currentValue = 0;
+volatile uint32 soil_adc_Sum = 0;
+volatile uint32 soil_adc_count = 0;
+
+
+
 
 int main(void)
 {
@@ -46,18 +64,23 @@ int main(void)
     Timer_Start();
     isr_Timer_StartEx(my_isr_TIMER);
     
+    Data_Logging_Timer_Start();
+    isr_DataLog_Start();
+    
     PWM_Start();
     isr_PWM_StartEx(my_isr_PWM);
     
+    ADC_SOIL_MOISTURE_Start();
+    isr_EOC_StartEx(my_isr_EOC);
+    ADC_SOIL_MOISTURE_StartConvert();
     //
-    I2C_RTC_Start();
-    
+    I2C_RTC_Start();   
+   
     
     // test transmition to putty
     char projectName[50] = "***Green House Project*** \n\r";
     UART_PutString(projectName);
-   
-    
+      
     for(;;)
     {
         /* Place your application code here. */
@@ -81,29 +104,30 @@ void window_position_control(void)
 {
     if (room_temp>=25)
     {
-        window_position_index = 5;    // Fully opened
+        window.position_index = 5;    // Fully opened
     }
     else if (room_temp>=24)
     {
-        window_position_index = 4;
+        window.position_index = 4;
     }
     else if (room_temp>=23)
     {
-        window_position_index = 3;
+        window.position_index = 3;
     }
     else if (room_temp>=22)
     {
-        window_position_index = 2;
+        window.position_index = 2;
     }
     else if (room_temp>=21)
     {
-        window_position_index = 1;
+        window.position_index = 1;
     }
     else
     {
-        window_position_index = 0;    // Fully closed
+        window.position_index = 0;    // Fully closed
     }
 }
+
 void read_Room_Temp(void)
 {
     
@@ -155,6 +179,21 @@ void real_Time_Clock(void)
     //rtc_data[i]>>4&0x07
 }
 
+CY_ISR(my_isr_EOC)
+{
+    soil_adc_currentValue = ADC_SOIL_MOISTURE_CountsTo_mVolts(ADC_SOIL_MOISTURE_GetResult16()); // get the ADC converted Value
+    
+    soil_adc_Sum = soil_adc_Sum + soil_adc_currentValue ; // calculate the sampling ADC values while 0.5 s
+    
+    if(soil_adc_Sum > (2 * pow(10,9) )){
+        soil_adc_Sum = soil_adc_Sum/soil_adc_count;
+        soil_adc_count=1;  
+    }
+    
+    soil_adc_count++; // Count the number of samples 
+    
+    isr_EOC_ClearPending(); // Clear the End of Conversion interrupt pending bit
+}
 
 CY_ISR(my_isr_UART)
 {   
@@ -225,12 +264,17 @@ CY_ISR(my_isr_PWM)
 {
     static uint16 actualPosition = Servo_First_Position;    // actual position of the Servo Motor
     
-    if (actualPosition > window_position[window_position_index]) actualPosition -= 1; // smooth the servo movement by gradualy incrementing/decrementing the position
-    if (actualPosition < window_position[window_position_index]) actualPosition += 1;
+    if (actualPosition > window.positions[window.position_index]) actualPosition -= 1; // smooth the servo movement by gradualy incrementing/decrementing the position
+    if (actualPosition < window.positions[window.position_index]) actualPosition += 1;
     
     PWM_WriteCompare(actualPosition);   // Move the Servo to the desired position
     
     PWM_ReadStatusRegister();           // Clear the interrupt flag
 }
-
+CY_ISR_PROTO(my_isr_DataLog){
+  uint32 soil_temp = soil_adc_Sum/soil_adc_count;
+   soil_adc_Sum = 0 ;
+   soil_adc_count=0;  
+   Timer_ReadStatusRegister();     // Clear the interrupt flag
+}
 /* [] END OF FILE */

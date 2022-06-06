@@ -131,6 +131,30 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\LED_Heating.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Soil_Moisture_Vin_Pin_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Soil_Moisture_Vin_Pin.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Soil_Moisture_Vin_Pin.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_AMux.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_AMux.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_Ext_CP_Clk.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_Ext_CP_Clk.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_IRQ.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_IRQ.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_theACLK.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\ADC_SOIL_MOISTURE_theACLK.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_EOC.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_EOC.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock_1.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\timer_clock_1.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Data_Logging_Timer.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Data_Logging_Timer.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\Data_Logging_Timer_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_DataLog.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC5\isr_DataLog.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\Export\ARM_GCC_Generic">

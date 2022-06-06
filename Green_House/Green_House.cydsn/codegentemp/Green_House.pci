@@ -1,5 +1,5 @@
 # Green_House
-# 2022-05-18 21:02:09Z
+# 2022-05-26 08:55:47Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -12,3 +12,5 @@ set_io "Tx(0)" iocell 12 7
 set_io "I2C_RTC_SDA(0)" iocell 0 7
 set_io "I2C_RTC_SCL(0)" iocell 0 6
 set_io "LED_Heating(0)" iocell 2 1
+set_io "Soil_Moisture_Vin_Pin(0)" iocell 0 0
+set_location "\ADC_SOIL_MOISTURE:DSM\" dsmodcell -1 -1 0

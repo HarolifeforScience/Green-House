@@ -56,8 +56,32 @@
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\LED_Heating_aliases.h" value="HEADER;;;;;LED_Heating" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\LED_Heating.c" value="SOURCE_C;CortexM3;;;;LED_Heating" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\LED_Heating.h" value="HEADER;;;;;LED_Heating" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE.h" value="HEADER;;;;;ADC_SOIL_MOISTURE" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_PM.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_INT.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_EOC.c" value="SOURCE_C;CortexM3;;;;isr_EOC" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_EOC.h" value="HEADER;;;;;isr_EOC" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Soil_Moisture_Vin_Pin_aliases.h" value="HEADER;;;;;Soil_Moisture_Vin_Pin" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Soil_Moisture_Vin_Pin.c" value="SOURCE_C;CortexM3;;;;Soil_Moisture_Vin_Pin" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Soil_Moisture_Vin_Pin.h" value="HEADER;;;;;Soil_Moisture_Vin_Pin" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\timer_clock_1.c" value="SOURCE_C;CortexM3;;;;timer_clock_1" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\timer_clock_1.h" value="HEADER;;;;;timer_clock_1" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Data_Logging_Timer.c" value="SOURCE_C;CortexM3;;;;Data_Logging_Timer" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Data_Logging_Timer.h" value="HEADER;;;;;Data_Logging_Timer" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Data_Logging_Timer_PM.c" value="SOURCE_C;CortexM3;;;;Data_Logging_Timer" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_DataLog.c" value="SOURCE_C;CortexM3;;;;isr_DataLog" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_DataLog.h" value="HEADER;;;;;isr_DataLog" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\UART_IntClock.c" value="SOURCE_C;CortexM3;;;;UART_IntClock" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\UART_IntClock.h" value="HEADER;;;;;UART_IntClock" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_AMux.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE_AMux" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_AMux.h" value="HEADER;;;;;ADC_SOIL_MOISTURE_AMux" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_Ext_CP_Clk.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE_Ext_CP_Clk" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_Ext_CP_Clk.h" value="HEADER;;;;;ADC_SOIL_MOISTURE_Ext_CP_Clk" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_IRQ.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE_IRQ" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_IRQ.h" value="HEADER;;;;;ADC_SOIL_MOISTURE_IRQ" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_theACLK.c" value="SOURCE_C;CortexM3;;;;ADC_SOIL_MOISTURE_theACLK" />
+  <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\ADC_SOIL_MOISTURE_theACLK.h" value="HEADER;;;;;ADC_SOIL_MOISTURE_theACLK" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\cm3gcc.ld" value="LINKER_SCRIPT;;;b98f980c-3bd1-4fc7-a887-c56a20a46fdd;;cy_boot" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Cm3RealView.scat" value="LINKER_SCRIPT;;;fdb8e1ae-f83a-46cf-9446-1d703716f38a;;cy_boot" />
   <file name="C:\Users\yamen\OneDrive\Dokumente\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Cm3Start.c" value="SOURCE_C;CortexM3;;;;cy_boot" />
