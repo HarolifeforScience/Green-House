@@ -1,6 +1,6 @@
 // ======================================================================
 // Green_House.v generated from TopDesign.cysch
-// 06/06/2022 at 14:44
+// 06/06/2022 at 16:36
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -826,7 +826,7 @@ endmodule
 `include "C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\CapSense_CSD_ClockGen_v3_50\CapSense_CSD_ClockGen_v3_50.v"
 `endif
 
-// CapSense_CSD_v3_50(AnalogSwitchDivider=11, ClockSource=0, ConnectInactiveSensors=0, CtlModeReplacementString=SyncCtrl, CurrentSource=1, EnableTuneHelper=false, EzI2CInstanceName=EZI2C, GuardSensorEnable=false, IdacRange=0, Implementation_CH0=1, Implementation_CH1=1, IntClockFrequency=12, LowBaselineReset=5, MaximumSensors=62, MultipleAnalogSwitchDivider=true, NegativeNoiseThreshold=20, NumberOfChannels=1, PrechargePolarity=3, PrescalerOptions=1, PrsOptions=2, RawDataFilterType=0, RbNumber_CH0=0, RbNumber_CH1=0, RemoveCH1=true, RemoveVrefTerm=false, ScanSpeed=7, SensorAutoReset=false, SensorNumber_CH0=1, SensorNumber_CH1=0, SensorNumberChannel0=1, SensorNumberChannel1=0, ShieldEnable=false, SizeReplacementString=uint8, SnsAlias_CH0=<?xml version='1.0'?><PinAliases Version='1'><pin0>Generic0_0__GEN</pin0></PinAliases>, SnsAlias_CH1=<?xml version="1.0" ?><PinAliases Version="1"><pin0>pin1_ch1</pin0></PinAliases>, TunerProperties=, TuningMethod=0, VrefOptions=0, VrefValue=64, WaterProofingEnabled=false, WidgetResolution=8, WidgetsData=<?xml version="1.0" encoding="utf-16"?> <CyWidgetsList xmlns:version="v1.00">   <ListMainTerminal>     <CyTerminal NameIndex="0" WidgetName="Generic0__GEN" />   </ListMainTerminal>   <ListButtons>     <CyButton Name="Generic0" Type="Generic" Channel="First" Count="1" Angle="0" Fliped="false" Fliped2D="false" ScaleFactor="1">       <Location>         <X>2147483647</X>         <Y>2147483647</Y>       </Location>       <Properties>         <Hysteresis>10</Hysteresis>         <Debounce>5</Debounce>         <FingerThreshold>100</FingerThreshold>         <NoiseThreshold>20</NoiseThreshold>         <ScanResolution>_10</ScanResolution>       </Properties>     </CyButton>   </ListButtons>   <ListMatrixButtons />   <ListTouchPads />   <ListSliders />   <GuardSensor Name="GuardSensor" Type="Button" Channel="First" Count="1" Angle="0" Fliped="false" Fliped2D="false" ScaleFactor="1">     <Location>       <X>2147483647</X>       <Y>2147483647</Y>     </Location>     <Properties>       <Hysteresis>10</Hysteresis>       <Debounce>5</Debounce>       <FingerThreshold>100</FingerThreshold>       <NoiseThreshold>20</NoiseThreshold>       <ScanResolution>_10</ScanResolution>     </Properties>   </GuardSensor>   <GuardSensorTerminal NameIndex="0" WidgetName="GuardSensor__GRD" />   <CyScanSlotsList>     <ListScanSlots>       <CyScanSlot IDACSettings="200" Sensitivity="2" AnalogSwitchDivider="11" WidgetName="Generic0__GEN">         <ListTerminalsNames>           <string>Generic0_0__GEN</string>         </ListTerminalsNames>       </CyScanSlot>     </ListScanSlots>     <GuardSensorScanSlot IDACSettings="200" Sensitivity="2" AnalogSwitchDivider="11" WidgetName="GuardSensor__GRD">       <ListTerminalsNames>         <string>GuardSensor__GRD</string>       </ListTerminalsNames>     </GuardSensorScanSlot>   </CyScanSlotsList> </CyWidgetsList>, CY_API_CALLBACK_HEADER_INCLUDE=#include "cyapicallbacks.h", CY_COMMENT=, CY_COMPONENT_NAME=CapSense_CSD_v3_50, CY_CONFIG_TITLE=CapSense, CY_CONST_CONFIG=true, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=CapSense, CY_INSTANCE_SHORT_NAME=CapSense, CY_MAJOR_VERSION=3, CY_MINOR_VERSION=50, CY_PDL_DRIVER_NAME=, CY_PDL_DRIVER_REQ_VERSION=, CY_PDL_DRIVER_SUBGROUP=, CY_PDL_DRIVER_VARIANT=, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  4.4, INSTANCE_NAME=CapSense, )
+// CapSense_CSD_v3_50(AnalogSwitchDivider=11, ClockSource=0, ConnectInactiveSensors=0, CtlModeReplacementString=SyncCtrl, CurrentSource=1, EnableTuneHelper=false, EzI2CInstanceName=EZI2C, GuardSensorEnable=false, IdacRange=4, Implementation_CH0=1, Implementation_CH1=1, IntClockFrequency=12, LowBaselineReset=5, MaximumSensors=62, MultipleAnalogSwitchDivider=true, NegativeNoiseThreshold=20, NumberOfChannels=1, PrechargePolarity=3, PrescalerOptions=1, PrsOptions=2, RawDataFilterType=8, RbNumber_CH0=0, RbNumber_CH1=0, RemoveCH1=true, RemoveVrefTerm=false, ScanSpeed=7, SensorAutoReset=false, SensorNumber_CH0=0, SensorNumber_CH1=0, SensorNumberChannel0=0, SensorNumberChannel1=0, ShieldEnable=false, SizeReplacementString=uint8, SnsAlias_CH0=<?xml version="1.0" ?><PinAliases Version="1"><pin0>pin1_ch0</pin0></PinAliases>, SnsAlias_CH1=<?xml version="1.0" ?><PinAliases Version="1"><pin0>pin1_ch1</pin0></PinAliases>, TunerProperties=, TuningMethod=2, VrefOptions=0, VrefValue=64, WaterProofingEnabled=false, WidgetResolution=8, WidgetsData=<?xml version="1.0" encoding="utf-16"?> <CyWidgetsList xmlns:version="v1.00">   <ListMainTerminal />   <ListButtons />   <ListMatrixButtons />   <ListTouchPads />   <ListSliders />   <GuardSensor Name="GuardSensor" Type="Button" Channel="First" Count="1" Angle="0" Fliped="false" Fliped2D="false" ScaleFactor="1">     <Location>       <X>2147483647</X>       <Y>2147483647</Y>     </Location>     <Properties>       <Hysteresis>10</Hysteresis>       <Debounce>5</Debounce>       <FingerThreshold>100</FingerThreshold>       <NoiseThreshold>20</NoiseThreshold>       <ScanResolution>_10</ScanResolution>     </Properties>   </GuardSensor>   <GuardSensorTerminal NameIndex="0" WidgetName="GuardSensor__GRD" />   <CyScanSlotsList>     <ListScanSlots />     <GuardSensorScanSlot IDACSettings="200" Sensitivity="2" AnalogSwitchDivider="11" WidgetName="GuardSensor__GRD">       <ListTerminalsNames>         <string>GuardSensor__GRD</string>       </ListTerminalsNames>     </GuardSensorScanSlot>   </CyScanSlotsList> </CyWidgetsList>, CY_API_CALLBACK_HEADER_INCLUDE=#include "cyapicallbacks.h", CY_COMMENT=, CY_COMPONENT_NAME=CapSense_CSD_v3_50, CY_CONFIG_TITLE=CapSense, CY_CONST_CONFIG=true, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=CapSense, CY_INSTANCE_SHORT_NAME=CapSense, CY_MAJOR_VERSION=3, CY_MINOR_VERSION=50, CY_PDL_DRIVER_NAME=, CY_PDL_DRIVER_REQ_VERSION=, CY_PDL_DRIVER_SUBGROUP=, CY_PDL_DRIVER_VARIANT=, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  4.4, INSTANCE_NAME=CapSense, )
 module CapSense_CSD_v3_50_6 (
     bclk,
     clock,
@@ -996,29 +996,6 @@ module CapSense_CSD_v3_50_6 (
 
 	assign tmpOE__CmodCH0_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
 
-	wire [0:0] tmpOE__PortCH0_net;
-
-	cy_psoc3_port_v1_0
-		#(.width(1),
-		  .siorefwidth(1),
-		  .id("00fe8d29-61d0-44f9-991d-12f2a1df8113/dd9c1af8-be5a-4b9e-b10c-b2d9f11dc9fc"),
-		  .pin_aliases("Generic0_0__GEN"),
-		  .access_mode("HW_ONLY"),
-		  .layout_mode("NONCONTIGUOUS"),
-		  .port_mode("ANALOG"),
-		  .intr_mode(2'b00),
-		  .drive_mode(3'b100),
-		  .por_state(0),
-		  .enable_shielding(1'b0),
-		  .cs_mode(2'b11))
-		PortCH0
-		 (.oe(tmpOE__PortCH0_net),
-		  .y(1'b0),
-		  .analog(Net_1410),
-		  .precharge(PreChargeClk));
-
-	assign tmpOE__PortCH0_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? 1'b1 : 1'b0;
-
 
 	cy_vref_v1_0
 		#(.guid("89B398AD-36A8-4627-9212-707F2986319E"),
@@ -1185,92 +1162,13 @@ module CapSense_CSD_v3_50_6 (
 
 endmodule
 
-// Timer_v2_80(CaptureAlternatingFall=false, CaptureAlternatingRise=false, CaptureCount=2, CaptureCounterEnabled=false, CaptureInputEnabled=true, CaptureMode=1, CONTROL3=0, ControlRegRemoved=0, CtlModeReplacementString=SyncCtl, CyGetRegReplacementString=CY_GET_REG32, CySetRegReplacementString=CY_SET_REG32, DeviceFamily=PSoC5, EnableMode=0, FF16=false, FF8=false, FixedFunction=false, FixedFunctionUsed=0, HWCaptureCounterEnabled=false, InterruptOnCapture=false, InterruptOnFIFOFull=false, InterruptOnTC=true, IntOnCapture=0, IntOnFIFOFull=0, IntOnTC=1, NumberOfCaptures=1, param45=1, Period=99, RegDefReplacementString=reg32, RegSizeReplacementString=uint32, Resolution=32, RstStatusReplacementString=rstSts, RunMode=0, SiliconRevision=0, SoftwareCaptureModeEnabled=false, SoftwareTriggerModeEnabled=false, TriggerInputEnabled=false, TriggerMode=0, UDB16=false, UDB24=false, UDB32=true, UDB8=false, UDBControlReg=true, UsesHWEnable=0, VerilogSectionReplacementString=sT32, CY_API_CALLBACK_HEADER_INCLUDE=#include "cyapicallbacks.h", CY_COMMENT=, CY_COMPONENT_NAME=Timer_v2_80, CY_CONFIG_TITLE=Timer2, CY_CONST_CONFIG=true, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=Timer2, CY_INSTANCE_SHORT_NAME=Timer2, CY_MAJOR_VERSION=2, CY_MINOR_VERSION=80, CY_PDL_DRIVER_NAME=, CY_PDL_DRIVER_REQ_VERSION=, CY_PDL_DRIVER_SUBGROUP=, CY_PDL_DRIVER_VARIANT=, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  4.4, INSTANCE_NAME=Timer2, )
-module Timer_v2_80_7 (
-    capture,
-    capture_out,
-    clock,
-    enable,
-    interrupt,
-    reset,
-    tc,
-    trigger);
-    input       capture;
-    output      capture_out;
-    input       clock;
-    input       enable;
-    output      interrupt;
-    input       reset;
-    output      tc;
-    input       trigger;
-
-    parameter CaptureCount = 2;
-    parameter CaptureCounterEnabled = 0;
-    parameter DeviceFamily = "PSoC5";
-    parameter InterruptOnCapture = 0;
-    parameter InterruptOnTC = 1;
-    parameter Resolution = 32;
-    parameter SiliconRevision = "0";
-
-          wire  Net_260;
-          wire  Net_261;
-          wire  Net_266;
-          wire  Net_102;
-          wire  Net_55;
-          wire  Net_57;
-          wire  Net_53;
-          wire  Net_51;
-
-    ZeroTerminal ZeroTerminal_1 (
-        .z(Net_260));
-
-	// VirtualMux_2 (cy_virtualmux_v1_0)
-	assign interrupt = Net_55;
-
-	// VirtualMux_3 (cy_virtualmux_v1_0)
-	assign tc = Net_53;
-
-    B_Timer_v2_80 TimerUDB (
-        .capture_in(capture),
-        .capture_out(capture_out),
-        .clock(clock),
-        .enable(enable),
-        .interrupt(Net_55),
-        .reset(reset),
-        .tc(Net_53),
-        .trigger(trigger));
-    defparam TimerUDB.Capture_Count = 2;
-    defparam TimerUDB.CaptureCounterEnabled = 0;
-    defparam TimerUDB.CaptureMode = 1;
-    defparam TimerUDB.EnableMode = 0;
-    defparam TimerUDB.InterruptOnCapture = 0;
-    defparam TimerUDB.Resolution = 32;
-    defparam TimerUDB.RunMode = 0;
-    defparam TimerUDB.TriggerMode = 0;
-
-    OneTerminal OneTerminal_1 (
-        .o(Net_102));
-
-	// VirtualMux_1 (cy_virtualmux_v1_0)
-	assign Net_266 = Net_102;
-
-
-
-endmodule
-
 // top
 module top ;
 
-          wire  Net_171;
-          wire  Net_170;
-          wire  Net_168;
-          wire  Net_167;
-          wire  Net_166;
-          wire  Net_174;
-    electrical  Net_152;
-          wire  Net_151;
-          wire  Net_150;
-          wire  Net_153;
+    electrical  Net_259;
+          wire  Net_258;
+          wire  Net_257;
+          wire  Net_256;
           wire  Net_102;
           wire  Net_105;
           wire  Net_101;
@@ -1279,19 +1177,18 @@ module top ;
           wire  Net_12;
           wire  Net_107;
           wire  Net_10;
-          wire  Net_132;
-          wire  Net_125;
-          wire  Net_123;
-          wire  Net_127;
-          wire  Net_126;
-          wire  Net_134;
-          wire  Net_136;
-          wire  Net_135;
-          wire  Net_130;
-          wire  Net_131;
-          wire  Net_133;
-          wire  Net_129;
-          wire  Net_140;
+          wire  Net_457;
+          wire  Net_456;
+          wire  Net_455;
+          wire  Net_454;
+          wire  Net_453;
+          wire  Net_452;
+          wire  Net_451;
+          wire  Net_450;
+          wire  Net_449;
+          wire  Net_448;
+          wire  Net_447;
+          wire  Net_179;
           wire  Net_75;
           wire  Net_73;
           wire  Net_74;
@@ -1315,15 +1212,13 @@ module top ;
           wire  Net_19;
           wire  Net_15;
           wire  Net_18;
-          wire  Net_177;
-          wire  Net_175;
-          wire  Net_176;
+          wire  Net_178;
+          wire  Net_124;
+          wire  Net_142;
     electrical  Net_147;
     electrical  Net_162;
     electrical  Net_157;
     electrical  Net_148;
-          wire  Net_142;
-          wire  Net_124;
           wire  Net_108;
           wire  Net_14;
 
@@ -1690,13 +1585,13 @@ module top ;
         .enable(1'b1),
         .interrupt(Net_142),
         .kill(1'b1),
-        .ph1(Net_135),
-        .ph2(Net_136),
-        .pwm(Net_134),
-        .pwm1(Net_126),
-        .pwm2(Net_127),
+        .ph1(Net_451),
+        .ph2(Net_452),
+        .pwm(Net_178),
+        .pwm1(Net_453),
+        .pwm2(Net_454),
         .reset(1'b0),
-        .tc(Net_125),
+        .tc(Net_456),
         .trigger(1'b0));
     defparam PWM.Resolution = 16;
 
@@ -1916,10 +1811,10 @@ module top ;
     defparam PWR_1.width = 1;
 
     CapSense_CSD_v3_50_6 CapSense (
-        .bclk(Net_153),
+        .bclk(Net_256),
         .clock(1'b0),
-        .shield(Net_151),
-        .vref(Net_152));
+        .shield(Net_258),
+        .vref(Net_259));
 
 	wire [0:0] tmpOE__OneWirePin2_net;
 	wire [0:0] tmpFB_0__OneWirePin2_net;
@@ -2015,45 +1910,6 @@ module top ;
     defparam PWR_2.port_names = "T1";
     defparam PWR_2.width = 1;
 
-
-	cy_clock_v1_0
-		#(.id("e2b7eb1b-963c-4e16-9ac7-b7f337760f84"),
-		  .source_clock_id(""),
-		  .divisor(0),
-		  .period("200000000000000"),
-		  .is_direct(0),
-		  .is_digital(1))
-		timer_clock_1
-		 (.clock_out(Net_176));
-
-
-    ZeroTerminal ZeroTerminal_2 (
-        .z(Net_175));
-
-    Timer_v2_80_7 Timer2 (
-        .capture(1'b0),
-        .capture_out(Net_167),
-        .clock(Net_176),
-        .enable(1'b1),
-        .interrupt(Net_177),
-        .reset(Net_175),
-        .tc(Net_170),
-        .trigger(1'b1));
-    defparam Timer2.CaptureCount = 2;
-    defparam Timer2.CaptureCounterEnabled = 0;
-    defparam Timer2.DeviceFamily = "PSoC5";
-    defparam Timer2.InterruptOnCapture = 0;
-    defparam Timer2.InterruptOnTC = 1;
-    defparam Timer2.Resolution = 32;
-    defparam Timer2.SiliconRevision = "0";
-
-
-	cy_isr_v1_0
-		#(.int_type(2'b10))
-		isr_Timer2
-		 (.int_signal(Net_177));
-
-
 	wire [0:0] tmpOE__Servo_motor_net;
 	wire [0:0] tmpFB_0__Servo_motor_net;
 	wire [0:0] tmpIO_0__Servo_motor_net;
@@ -2115,7 +1971,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		Servo_motor
 		 (.oe(tmpOE__Servo_motor_net),
-		  .y({Net_134}),
+		  .y({Net_178}),
 		  .fb({tmpFB_0__Servo_motor_net[0:0]}),
 		  .io({tmpIO_0__Servo_motor_net[0:0]}),
 		  .siovref(tmpSIOVREF__Servo_motor_net),

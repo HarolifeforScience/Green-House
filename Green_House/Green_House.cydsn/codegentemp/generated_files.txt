@@ -61,22 +61,20 @@
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\OneWirePin.h" value="HEADER;;;;;OneWirePin" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense.c" value="SOURCE_C;CortexM3;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense.h" value="HEADER;;;;;CapSense" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_CSHL.c" value="SOURCE_C;CortexM3;;;;CapSense" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_CSHL.h" value="HEADER;;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_INT.c" value="SOURCE_C;CortexM3;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_Pins.c" value="SOURCE_C;CortexM3;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_Pins.h" value="HEADER;;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_PM.c" value="SOURCE_C;CortexM3;;;;CapSense" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_SMS_Wrapper.c" value="SOURCE_C;CortexM3;;;;CapSense" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_TunerHelper.c" value="SOURCE_C;CortexM3;;;;CapSense" />
+  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\CapSense_TunerHelper.h" value="HEADER;;;;;CapSense" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\OneWirePin2_aliases.h" value="HEADER;;;;;OneWirePin2" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\OneWirePin2.c" value="SOURCE_C;CortexM3;;;;OneWirePin2" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\OneWirePin2.h" value="HEADER;;;;;OneWirePin2" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\timer_clock_1.c" value="SOURCE_C;CortexM3;;;;timer_clock_1" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\timer_clock_1.h" value="HEADER;;;;;timer_clock_1" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Em_EEPROM.c" value="SOURCE_C;CortexM3;;;;Em_EEPROM" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Em_EEPROM.h" value="HEADER;;;;;Em_EEPROM" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Timer2.c" value="SOURCE_C;CortexM3;;;;Timer2" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Timer2.h" value="HEADER;;;;;Timer2" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Timer2_PM.c" value="SOURCE_C;CortexM3;;;;Timer2" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_Timer2.c" value="SOURCE_C;CortexM3;;;;isr_Timer2" />
-  <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\isr_Timer2.h" value="HEADER;;;;;isr_Timer2" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Servo_motor_aliases.h" value="HEADER;;;;;Servo_motor" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Servo_motor.c" value="SOURCE_C;CortexM3;;;;Servo_motor" />
   <file name="C:\Users\Arold\Documents\GitHub\Green-House\Green_House\Green_House.cydsn\codegentemp\Servo_motor.h" value="HEADER;;;;;Servo_motor" />

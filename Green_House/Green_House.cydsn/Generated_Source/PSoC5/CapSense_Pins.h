@@ -50,7 +50,7 @@ void CapSense_SetAllCmodsDriveMode(uint8 mode) ;
 #define CapSense_DM_RES_UPDWN       (PIN_DM_RES_UPDWN)
 
 /* PC registers defines for sensors */
-#define CapSense_PortCH0__Generic0_0__GEN  CapSense_PortCH0__Generic0_0__GEN__PC
+#define CapSense_PortCH0__DummyWidget__BTN  0
 /* For Cmods*/
 #define CapSense_CmodCH0_Cmod_CH0       CapSense_CmodCH0__Cmod_CH0__PC
 

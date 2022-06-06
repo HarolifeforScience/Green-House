@@ -52,7 +52,7 @@
 #define CapSense_CLOCK_SOURCE               (0u)
 
 #define CapSense_CURRENT_SOURCE             (1u)
-#define CapSense_IDAC_RANGE_VALUE           (0u)
+#define CapSense_IDAC_RANGE_VALUE           (4u)
 
 #define CapSense_PRESCALER_OPTIONS          (1u)
 #define CapSense_MULTIPLE_PRESCALER_ENABLED (1u)
@@ -64,7 +64,7 @@
 
 #define CapSense_WATER_PROOF                (0u)
 
-#define CapSense_TUNING_METHOD              (0u)
+#define CapSense_TUNING_METHOD              (2u)
 #define CapSense_TUNER_API_GENERATE         (0u)
 
 #define CapSense_IMPLEMENTATION_CH0         (1u)
@@ -185,7 +185,7 @@ CY_ISR_PROTO(CapSense_IsrCH0_ISR);
 #define CapSense_TOTAL_RB_NUMBER__CH0            (1u)
 
 /* Define Sensors */
-#define CapSense_SENSOR_GENERIC0_0__GEN    (0u)
+#define CapSense_SENSOR_DUMMYWIDGET__BTN    (0u)
 /* AMux Cmod, Comparator and Idac Channels definitions */
 #define CapSense_AMuxCH0_CMOD_CHANNEL          (1u)
 #define CapSense_AMuxCH0_CMP_VP_CHANNEL        (2u)

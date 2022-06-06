@@ -44,15 +44,15 @@ uint8 CapSense_sensorEnableMask[(((CapSense_TOTAL_SENSOR_COUNT - 1u) / 8u) + 1u)
 0x1u, };
 
 uint8 CYXDATA * const CYCODE CapSense_pcTable[] = {
-    (uint8 CYXDATA *)CapSense_PortCH0__Generic0_0__GEN__PC, 
+0,
 };
 
 const uint8 CYCODE CapSense_portTable[] = {
-    CapSense_PortCH0__Generic0_0__GEN__PORT, 
+0,
 };
 
 const uint8 CYCODE CapSense_maskTable[] = {
-    CapSense_PortCH0__Generic0_0__GEN__MASK,
+0,
 };
 
 uint8 CYXDATA * const CYCODE CapSense_csTable[] = {
@@ -61,20 +61,17 @@ uint8 CYXDATA * const CYCODE CapSense_csTable[] = {
     (uint8 CYXDATA *)CYREG_PRT6_CAPS_SEL, (uint8 CYXDATA *)CYREG_PRT15_CAPS_SEL,
 };
 
-const uint8 CYCODE CapSense_idacSettings[] = {
+uint8 CapSense_idacSettings[] = {
     200u,
 };
 
-const uint8 CYCODE CapSense_widgetResolution[] = {
+uint8 CapSense_widgetResolution[] = {
     CapSense_PWM_RESOLUTION_10_BITS,
 };
 
-uint8 CapSense_analogSwitchDivider[CapSense_TOTAL_SCANSLOT_COUNT] = {
-    11u, 
-};
-
+uint8 CapSense_analogSwitchDivider[CapSense_TOTAL_SCANSLOT_COUNT];
 const uint8 CYCODE CapSense_widgetNumber[] = {
-    0u, /* Generic0__GEN */
+    0u, /* DummyWidget__BTN */
     
 };
 

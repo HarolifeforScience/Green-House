@@ -28,16 +28,17 @@ void window_position_control(void);
 void heating_control(void);
 void real_Time_Clock(void);
 uint8 get_soil_temp(void);
+uint16 get_CapData(void);
 
 
 // Interrupts handler prototypes
 CY_ISR_PROTO(my_isr_UART);
 CY_ISR_PROTO(my_isr_TIMER);
 CY_ISR_PROTO(my_isr_PWM);
-CY_ISR(my_isr_TIMER2);
 
 
 /* variable declaration for Em_EEPROM */
+
 char    str[64] ;
 const uint8_t Em_EEPROM_em_EepromStorage[Em_EEPROM_PHYSICAL_SIZE]
 __ALIGNED(CY_FLASH_SIZEOF_ROW) = {0u};
@@ -63,15 +64,19 @@ int read (int fd, const void *Ch, size_t count);
 volatile uint8 rtc_data[7];
 volatile uint8 room_temp = 0;
 volatile uint8 window_position_index = 0;
+volatile uint16 timerCount = 0;
 volatile uint16 window_position[6] = {899, 1319, 1739, 2159, 2579, 2999};
 
 /* variables declaration for soil measurement */
 
 uint16 capData = 0; // variable to read the sensor values
+
 uint16 baselineData; // sensor baseline
+
 uint8  p;        // loop counter
 
 /* our Transmit Buffer */
+
 char TransmitBuffer[TRANSBUFFER_SIZE];
 
 
@@ -97,7 +102,9 @@ int main(void)
     
     /* start Em_EEPROM */
     em_eeprom_status = Em_EEPROM_Init((uint32_t)Em_EEPROM_em_EepromStorage) ;
+    
     if (em_eeprom_status != CY_EM_EEPROM_SUCCESS) {
+        
         print_em_eeprom_error(em_eeprom_status) ;
     }
     
@@ -166,7 +173,7 @@ void window_position_control(void)
 void read_Room_Temp(void)
 {
     //  Read, Calculate and convert the tempearture
-    room_temp = OneWireRead_data(ROOM);
+    room_temp = OneWireRead_data(SOIL);
     
     window_position_control();
     
@@ -180,12 +187,12 @@ uint8 get_soil_temp(){
     
     int soil_temp;
     
-    soil_temp = OneWireRead_data(SOIL);
+    soil_temp = OneWireRead_data(ROOM);
     
     return soil_temp;
 }
 
-void get_CapData(void) {
+uint16 get_CapData(void) {
     
     // start CapSense scanning of sensor number 0
     CapSense_ScanSensor(0); 
@@ -193,6 +200,7 @@ void get_CapData(void) {
     while(CapSense_IsBusy()); 
     // read the CapSense value of sensor number 0
     capData = CapSense_ReadSensorRaw(0);  // read the CapSense value of sensor number 0
+    return capData;
 }
 
 
@@ -237,12 +245,12 @@ void real_Time_Clock(void)
 CY_ISR(my_isr_UART)
 {   
    // real_Time_Clock();
-  ///room_temp = OneWireRead_data();
-   // char testData[32];
+  room_temp = OneWireRead_data(SOIL);
+  char testData[32];
     
-    //sprintf(testData," Temp One wire = %f \r\n" ,room_temp);
+  sprintf(testData," Temp One wire = %u \r\n" ,room_temp);
     
-    //UART_PutString(testData);
+  UART_PutString(testData);
     
     
     // Testing ends
@@ -304,18 +312,18 @@ CY_ISR(my_isr_UART)
 
 CY_ISR(my_isr_TIMER)
 {
-    
+    timerCount = timerCount + 1;
     read_Room_Temp();               // Read the temperature every second
-    Timer_ReadStatusRegister();     // Clear the interrupt flag
-}
-
-CY_ISR(my_isr_TIMER2){
     
-    /* save the data in JSON format */
-    len = sprintf(TransmitBuffer,"{  \" ROOM TEMP\": %u , \"SOIL TEMP\": %u , \"SOIL MOISTURE\": %d }\r\n", room_temp,get_soil_temp(),capData);
-    UART_PutString(TransmitBuffer);
-    save_str_to_eeprom(TransmitBuffer, len+1) ;
-                
+    if ( timerCount == 10 ) {
+        
+        len = sprintf(TransmitBuffer,"{  \" ROOM TEMP\": %u , \"SOIL TEMP\": %u , \"SOIL MOISTURE\": %d }\r\n", room_temp,get_soil_temp(),get_CapData());
+        UART_PutString(TransmitBuffer);
+        save_str_to_eeprom(TransmitBuffer, len+1) ;
+        
+        timerCount = 0;
+    }
+    Timer_ReadStatusRegister();     // Clear the interrupt flag
 }
 
 CY_ISR(my_isr_PWM)

@@ -87,7 +87,7 @@ int OneWireRead_data(int args){
        /* Start Convert*/
        OwWriteByte(0x44);
        /* Wait until conversion completes */
-       CyDelayUs(750);
+       CyDelayUs(300);
     
        OwReset();
        

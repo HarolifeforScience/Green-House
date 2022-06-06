@@ -35,7 +35,7 @@
 void CapSense_SetAllSensorsDriveMode(uint8 mode) 
 {
     /* Set pins drive mode */
-    CyPins_SetPinDriveMode(CapSense_PortCH0__Generic0_0__GEN, mode);
+    CyPins_SetPinDriveMode(CapSense_PortCH0__DummyWidget__BTN, mode);
 
 }
 
