@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
   28:Generated_Source\PSoC5/CapSense_CSHL.c ****         (CapSense_RAW_FILTER_MASK & CapSense_IIR4_FILTER)   | \
   29:Generated_Source\PSoC5/CapSense_CSHL.c ****         (CapSense_RAW_FILTER_MASK & CapSense_JITTER_FILTER) | \
   30:Generated_Source\PSoC5/CapSense_CSHL.c ****         (CapSense_RAW_FILTER_MASK & CapSense_IIR8_FILTER)   | \
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 2
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 2
 
 
   31:Generated_Source\PSoC5/CapSense_CSHL.c ****         (CapSense_RAW_FILTER_MASK & CapSense_IIR16_FILTER) )
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
   85:Generated_Source\PSoC5/CapSense_CSHL.c **** * Summary:
   86:Generated_Source\PSoC5/CapSense_CSHL.c **** *  Loads the CapSense_sensorBaseline[sensor] array element with an 
   87:Generated_Source\PSoC5/CapSense_CSHL.c **** *  initial value which is equal to raw count value. 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 3
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 3
 
 
   88:Generated_Source\PSoC5/CapSense_CSHL.c **** *  Resets to zero CapSense_sensorBaselineLow[sensor] and 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  129:Generated_Source\PSoC5/CapSense_CSHL.c ****         uint8 debounceIndex;
  130:Generated_Source\PSoC5/CapSense_CSHL.c ****     #endif  /* (CapSense_TOTAL_MATRIX_BUTTONS_COUNT) */
  131:Generated_Source\PSoC5/CapSense_CSHL.c ****     
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 4
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 4
 
 
  132:Generated_Source\PSoC5/CapSense_CSHL.c ****     #if (CapSense_TOTAL_GENERICS_COUNT)
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  165:Generated_Source\PSoC5/CapSense_CSHL.c ****     
  166:Generated_Source\PSoC5/CapSense_CSHL.c ****     #if (CapSense_TOTAL_GENERICS_COUNT)
  167:Generated_Source\PSoC5/CapSense_CSHL.c ****         /* Exclude generic widget */
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 5
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 5
 
 
  168:Generated_Source\PSoC5/CapSense_CSHL.c ****         }
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  195:Generated_Source\PSoC5/CapSense_CSHL.c ****                           
  196:Generated_Source\PSoC5/CapSense_CSHL.c **** {
   89              		.loc 1 196 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 6
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 6
 
 
   90              		.cfi_startproc
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  217:Generated_Source\PSoC5/CapSense_CSHL.c ****         {
  218:Generated_Source\PSoC5/CapSense_CSHL.c ****             /* Initialize Baseline, Signal and debounce counters */
  219:Generated_Source\PSoC5/CapSense_CSHL.c ****             CapSense_BaseInit(sensor + CapSense_TOTAL_SENSOR_COUNT__CH0);
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 7
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 7
 
 
  220:Generated_Source\PSoC5/CapSense_CSHL.c ****         }
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  142              		.loc 1 252 0 discriminator 3
  143 000c 0134     		adds	r4, r4, #1
  144              	.LVL10:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 8
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 8
 
 
  145 000e E4B2     		uxtb	r4, r4
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  171              		.cfi_offset 14, -4
  282:Generated_Source\PSoC5/CapSense_CSHL.c ****     uint8 i;
  283:Generated_Source\PSoC5/CapSense_CSHL.c ****     uint8 pos;
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 9
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 9
 
 
  284:Generated_Source\PSoC5/CapSense_CSHL.c ****     uint8 enMask;
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  205 002e FFF7FEFF 		bl	CapSense_BaseInit
  206              	.LVL17:
  292:Generated_Source\PSoC5/CapSense_CSHL.c ****     {
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 10
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 10
 
 
  207              		.loc 1 292 0 discriminator 2
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  330:Generated_Source\PSoC5/CapSense_CSHL.c **** *
  331:Generated_Source\PSoC5/CapSense_CSHL.c **** * Global Variables:
  332:Generated_Source\PSoC5/CapSense_CSHL.c **** *  CapSense_sensorBaseline[]    - used to store baseline value.
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 11
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 11
 
 
  333:Generated_Source\PSoC5/CapSense_CSHL.c **** *  CapSense_sensorBaselineLow[] - used to store fraction byte of 
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  387:Generated_Source\PSoC5/CapSense_CSHL.c ****         CapSense_rawFilterData1[sensor] = filteredRawData;
  388:Generated_Source\PSoC5/CapSense_CSHL.c ****         
  389:Generated_Source\PSoC5/CapSense_CSHL.c ****     #elif (CapSense_RAW_FILTER_MASK & CapSense_IIR8_FILTER)
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 12
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 12
 
 
  390:Generated_Source\PSoC5/CapSense_CSHL.c ****         filteredRawData = CapSense_IIR8Filter(filteredRawData, CapSense_rawFilterData1[sensor]);
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  444:Generated_Source\PSoC5/CapSense_CSHL.c ****                 /* Add Raw Data to Baseline */
  445:Generated_Source\PSoC5/CapSense_CSHL.c ****                 calc += filteredRawData;
  446:Generated_Source\PSoC5/CapSense_CSHL.c **** 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 13
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 13
 
 
  447:Generated_Source\PSoC5/CapSense_CSHL.c ****                 /* Sub the high Baseline */
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  501:Generated_Source\PSoC5/CapSense_CSHL.c **** *
  502:Generated_Source\PSoC5/CapSense_CSHL.c **** * Return:
  503:Generated_Source\PSoC5/CapSense_CSHL.c **** *  None
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 14
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 14
 
 
  504:Generated_Source\PSoC5/CapSense_CSHL.c **** *
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  558:Generated_Source\PSoC5/CapSense_CSHL.c **** * Global Variables:
  559:Generated_Source\PSoC5/CapSense_CSHL.c **** *  CapSense_sensorSignal[]      - used to store diffence between 
  560:Generated_Source\PSoC5/CapSense_CSHL.c **** *  current value of raw data and previous value of baseline.
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 15
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 15
 
 
  561:Generated_Source\PSoC5/CapSense_CSHL.c **** *  CapSense_debounceCounter[]   - used to store current debounce 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  263              	.LVL24:
  587:Generated_Source\PSoC5/CapSense_CSHL.c ****     uint8 hysteresis = CapSense_hysteresis[widget];
  264              		.loc 1 587 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 16
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 16
 
 
  265 0018 317A     		ldrb	r1, [r6, #8]	@ zero_extendqisi2
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  300 004c 0ADD     		ble	.L23
  607:Generated_Source\PSoC5/CapSense_CSHL.c ****         {
  608:Generated_Source\PSoC5/CapSense_CSHL.c ****             /* Sensor active, decrement debounce counter */
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 17
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 17
 
 
  609:Generated_Source\PSoC5/CapSense_CSHL.c ****             if (CapSense_debounceCounter[debounceIndex] <= 1u)
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  340              		.cfi_endproc
  341              	.LFE6:
  342              		.size	CapSense_CheckIsSensorActive, .-CapSense_CheckIsSensorActive
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 18
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 18
 
 
  343              		.section	.text.CapSense_CheckIsWidgetActive,"ax",%progbits
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  361              		.loc 1 659 0
  362 0002 0020     		movs	r0, #0
  363              	.LVL36:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 19
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 19
 
 
  364 0004 FFF7FEFF 		bl	CapSense_CheckIsSensorActive
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  694:Generated_Source\PSoC5/CapSense_CSHL.c ****                                  
  695:Generated_Source\PSoC5/CapSense_CSHL.c **** {
  384              		.loc 1 695 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 20
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 20
 
 
  385              		.cfi_startproc
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  423              		.cfi_endproc
  424              	.LFE8:
  425              		.size	CapSense_CheckIsAnyWidgetActive, .-CapSense_CheckIsAnyWidgetActive
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 21
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 21
 
 
  426 001e 00BF     		.section	.text.CapSense_EnableWidget,"ax",%progbits
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  750:Generated_Source\PSoC5/CapSense_CSHL.c ****         pos = (rawIndex >> 3u);
  751:Generated_Source\PSoC5/CapSense_CSHL.c ****         enMask = 0x01u << (rawIndex & 0x07u);
  752:Generated_Source\PSoC5/CapSense_CSHL.c ****         
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 22
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 22
 
 
  753:Generated_Source\PSoC5/CapSense_CSHL.c ****         CapSense_sensorEnableMask[pos] |= enMask;
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  785:Generated_Source\PSoC5/CapSense_CSHL.c **** * Reentrant:
  786:Generated_Source\PSoC5/CapSense_CSHL.c **** *  No
  787:Generated_Source\PSoC5/CapSense_CSHL.c **** *
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 23
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 23
 
 
  788:Generated_Source\PSoC5/CapSense_CSHL.c **** *******************************************************************************/
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  814:Generated_Source\PSoC5/CapSense_CSHL.c ****     *
  815:Generated_Source\PSoC5/CapSense_CSHL.c ****     * Summary:
  816:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  Finds index of maximum element within defined centroid. Checks 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 24
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 24
 
 
  817:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  CapSense_SensorSignal[] within defined cenrtoid and 
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  871:Generated_Source\PSoC5/CapSense_CSHL.c ****                             /* Start of centroid */
  872:Generated_Source\PSoC5/CapSense_CSHL.c ****                             curCtrdStartPos = i;
  873:Generated_Source\PSoC5/CapSense_CSHL.c ****                             curCntrdSize++;
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 25
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 25
 
 
  874:Generated_Source\PSoC5/CapSense_CSHL.c ****                         }
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  928:Generated_Source\PSoC5/CapSense_CSHL.c ****                         #if (CapSense_IS_DIPLEX_SLIDER && CapSense_IS_NON_DIPLEX_SLIDER)
  929:Generated_Source\PSoC5/CapSense_CSHL.c ****                             if (diplex == 0u)
  930:Generated_Source\PSoC5/CapSense_CSHL.c ****                             {
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 26
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 26
 
 
  931:Generated_Source\PSoC5/CapSense_CSHL.c ****                                 curPos = i;
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  985:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  noiseThreshold:  Noise threshould.
  986:Generated_Source\PSoC5/CapSense_CSHL.c ****     * 
  987:Generated_Source\PSoC5/CapSense_CSHL.c ****     * Return:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 27
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 27
 
 
  988:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  Returns position value of the slider.
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1042:Generated_Source\PSoC5/CapSense_CSHL.c **** 
 1043:Generated_Source\PSoC5/CapSense_CSHL.c ****         #if (CapSense_ADD_SLIDER_TYPE)
 1044:Generated_Source\PSoC5/CapSense_CSHL.c ****             }
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 28
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 28
 
 
 1045:Generated_Source\PSoC5/CapSense_CSHL.c ****             else
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1099:Generated_Source\PSoC5/CapSense_CSHL.c ****                 {
 1100:Generated_Source\PSoC5/CapSense_CSHL.c ****                     CapSense_centroid[CapSense_POS_PREV] = startOfSlider[posPrev];
 1101:Generated_Source\PSoC5/CapSense_CSHL.c ****                     CapSense_centroid[CapSense_POS_NEXT] = startOfSlider[posNext];
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 29
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 29
 
 
 1102:Generated_Source\PSoC5/CapSense_CSHL.c ****                 }
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1156:Generated_Source\PSoC5/CapSense_CSHL.c ****         position = ((uint8) HI16((uint32)denominator + CapSense_CENTROID_ROUND_VALUE));
 1157:Generated_Source\PSoC5/CapSense_CSHL.c **** 
 1158:Generated_Source\PSoC5/CapSense_CSHL.c ****         return (position);
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 30
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 30
 
 
 1159:Generated_Source\PSoC5/CapSense_CSHL.c ****     }    
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1213:Generated_Source\PSoC5/CapSense_CSHL.c ****              (0u != (CapSense_AVERAGING_FILTER & CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK)))
 1214:Generated_Source\PSoC5/CapSense_CSHL.c ****             uint8 tempPos;
 1215:Generated_Source\PSoC5/CapSense_CSHL.c ****         #endif /* ((0u != (CapSense_MEDIAN_FILTER & CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK)) || \
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 31
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 31
 
 
 1216:Generated_Source\PSoC5/CapSense_CSHL.c ****                *   (0u != (CapSense_AVERAGING_FILTER & CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK)))
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1270:Generated_Source\PSoC5/CapSense_CSHL.c ****                         #endif /* ((0u != (CapSense_MEDIAN_FILTER & \
 1271:Generated_Source\PSoC5/CapSense_CSHL.c ****                                *           CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK)) || \
 1272:Generated_Source\PSoC5/CapSense_CSHL.c ****                                *   (0u != (CapSense_AVERAGING_FILTER & \
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 32
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 32
 
 
 1273:Generated_Source\PSoC5/CapSense_CSHL.c ****                                *           CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK)))
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1327:Generated_Source\PSoC5/CapSense_CSHL.c ****                             }                                
 1328:Generated_Source\PSoC5/CapSense_CSHL.c ****                         #endif /* (0u != (CapSense_IIR4_FILTER & \
 1329:Generated_Source\PSoC5/CapSense_CSHL.c ****                                *          CapSense_LINEAR_SLIDERS_POS_FILTERS_MASK))
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 33
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 33
 
 
 1330:Generated_Source\PSoC5/CapSense_CSHL.c ****                                */
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1384:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  Returns position value of the radial slider.
 1385:Generated_Source\PSoC5/CapSense_CSHL.c ****     *
 1386:Generated_Source\PSoC5/CapSense_CSHL.c ****     * Side Effects:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 34
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 34
 
 
 1387:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  If any sensor within the slider widget is active, the function returns values
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1441:Generated_Source\PSoC5/CapSense_CSHL.c ****                 {
 1442:Generated_Source\PSoC5/CapSense_CSHL.c ****                     /* Caluclate position to store filters data */
 1443:Generated_Source\PSoC5/CapSense_CSHL.c ****                     posIndex  = firstTimeIndex + 1u;
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 35
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 35
 
 
 1444:Generated_Source\PSoC5/CapSense_CSHL.c ****                     
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1498:Generated_Source\PSoC5/CapSense_CSHL.c ****                                */
 1499:Generated_Source\PSoC5/CapSense_CSHL.c **** 
 1500:Generated_Source\PSoC5/CapSense_CSHL.c ****                         #if (0u != (CapSense_IIR2_FILTER & CapSense_RADIAL_SLIDERS_POS_FILTERS_MASK
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 36
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 36
 
 
 1501:Generated_Source\PSoC5/CapSense_CSHL.c ****                             if (0u != (posFiltersMask & CapSense_IIR2_FILTER))
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1555:Generated_Source\PSoC5/CapSense_CSHL.c **** 
 1556:Generated_Source\PSoC5/CapSense_CSHL.c **** #if(CapSense_TOTAL_TOUCH_PADS_COUNT > 0u)
 1557:Generated_Source\PSoC5/CapSense_CSHL.c ****     /*******************************************************************************
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 37
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 37
 
 
 1558:Generated_Source\PSoC5/CapSense_CSHL.c ****     * Function Name: CapSense_GetTouchCentroidPos
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1612:Generated_Source\PSoC5/CapSense_CSHL.c ****         uint8 posY;
 1613:Generated_Source\PSoC5/CapSense_CSHL.c ****         uint8 touch = 0u;
 1614:Generated_Source\PSoC5/CapSense_CSHL.c ****         uint8 offset = CapSense_rawDataIndex[widget];
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 38
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 38
 
 
 1615:Generated_Source\PSoC5/CapSense_CSHL.c ****         uint8 count = CapSense_numberOfSensors[widget];
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1669:Generated_Source\PSoC5/CapSense_CSHL.c ****                                         CapSense_TOUCH_PADS_POS_FILTERS_MASK)))
 1670:Generated_Source\PSoC5/CapSense_CSHL.c **** 
 1671:Generated_Source\PSoC5/CapSense_CSHL.c ****                                 if ( (0u != (posFiltersMask & CapSense_MEDIAN_FILTER)) || 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 39
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 39
 
 
 1672:Generated_Source\PSoC5/CapSense_CSHL.c ****                                      (0u != (posFiltersMask & CapSense_AVERAGING_FILTER)) )
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1726:Generated_Source\PSoC5/CapSense_CSHL.c ****                                                                       CapSense_posFiltersData[posYI
 1727:Generated_Source\PSoC5/CapSense_CSHL.c ****                                     CapSense_posFiltersData[posYIndex + 1u] = 
 1728:Generated_Source\PSoC5/CapSense_CSHL.c ****                                                                             CapSense_posFiltersData
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 40
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 40
 
 
 1729:Generated_Source\PSoC5/CapSense_CSHL.c ****                                     CapSense_posFiltersData[posYIndex] = tempPos;
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1783:Generated_Source\PSoC5/CapSense_CSHL.c ****                     }
 1784:Generated_Source\PSoC5/CapSense_CSHL.c ****                 #endif /* (0u != CapSense_TOUCH_PADS_POS_FILTERS_MASK) */
 1785:Generated_Source\PSoC5/CapSense_CSHL.c **** 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 41
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 41
 
 
 1786:Generated_Source\PSoC5/CapSense_CSHL.c ****                 /* Save positions */
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1840:Generated_Source\PSoC5/CapSense_CSHL.c ****         if (x2 > x3)
 1841:Generated_Source\PSoC5/CapSense_CSHL.c ****         {
 1842:Generated_Source\PSoC5/CapSense_CSHL.c ****             x2 = x3;
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 42
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 42
 
 
 1843:Generated_Source\PSoC5/CapSense_CSHL.c ****         }
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1897:Generated_Source\PSoC5/CapSense_CSHL.c ****     * Return:
 1898:Generated_Source\PSoC5/CapSense_CSHL.c ****     *  Returns filtered value.
 1899:Generated_Source\PSoC5/CapSense_CSHL.c ****     *
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 43
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 43
 
 
 1900:Generated_Source\PSoC5/CapSense_CSHL.c ****     *******************************************************************************/
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
 1942:Generated_Source\PSoC5/CapSense_CSHL.c ****         tmp >>= 2u;
 1943:Generated_Source\PSoC5/CapSense_CSHL.c ****         
 1944:Generated_Source\PSoC5/CapSense_CSHL.c ****         return ((uint16) tmp);
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 44
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 44
 
 
 1945:Generated_Source\PSoC5/CapSense_CSHL.c ****     }
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  551              	.LVL60:
  383:Generated_Source\PSoC5/CapSense_CSHL.c ****             
  552              		.loc 1 383 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 45
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 45
 
 
  553 0022 25F81400 		strh	r0, [r5, r4, lsl #1]	@ movhi
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  596              		.loc 1 424 0
  597 0060 0022     		movs	r2, #0
  598 0062 1F4B     		ldr	r3, .L57+20
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 46
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 46
 
 
  599 0064 1A55     		strb	r2, [r3, r4]
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  461:Generated_Source\PSoC5/CapSense_CSHL.c ****     {
  643              		.loc 1 461 0
  644 009e B6B2     		uxth	r6, r6
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 47
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 47
 
 
  645              	.LVL73:
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  694              	.LFB5:
  521:Generated_Source\PSoC5/CapSense_CSHL.c ****     uint8 i;
  695              		.loc 1 521 0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 48
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 48
 
 
  696              		.cfi_startproc
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  742              		.cfi_endproc
  743              	.LFE5:
  744              		.size	CapSense_UpdateEnabledBaselines, .-CapSense_UpdateEnabledBaselines
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 49
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 49
 
 
  745              		.global	CapSense_numberOfSensors
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  799              	.Letext0:
  800              		.file 2 "Generated_Source\\PSoC5\\cytypes.h"
  801              		.file 3 "Generated_Source\\PSoC5\\CapSense.h"
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 50
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 50
 
 
  802              		.file 4 "Generated_Source\\PSoC5\\CapSense_CSHL.h"
@@ -2998,21 +2998,21 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  856 0067 98010000 		.4byte	.LASF8
  857 006b 04       		.uleb128 0x4
  858 006c 3B010000 		.4byte	.LASF9
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 51
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 51
 
 
  859 0070 02       		.byte	0x2
- 860 0071 E401     		.2byte	0x1e4
+ 860 0071 E901     		.2byte	0x1e9
  861 0073 2C000000 		.4byte	0x2c
  862 0077 04       		.uleb128 0x4
  863 0078 00000000 		.4byte	.LASF10
  864 007c 02       		.byte	0x2
- 865 007d E501     		.2byte	0x1e5
+ 865 007d EA01     		.2byte	0x1ea
  866 007f 3A000000 		.4byte	0x3a
  867 0083 04       		.uleb128 0x4
  868 0084 5E010000 		.4byte	.LASF11
  869 0088 02       		.byte	0x2
- 870 0089 E601     		.2byte	0x1e6
+ 870 0089 EB01     		.2byte	0x1eb
  871 008b 48000000 		.4byte	0x48
  872 008f 02       		.uleb128 0x2
  873 0090 04       		.byte	0x4
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  913 00df 00000000 		.4byte	.LLST0
  914 00e3 00       		.byte	0
  915 00e4 05       		.uleb128 0x5
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 52
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 52
 
 
  916 00e5 DA020000 		.4byte	.LASF18
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  970 0158 0C       		.uleb128 0xc
  971 0159 0C000000 		.4byte	.LVL9
  972 015d E4000000 		.4byte	0xe4
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 53
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 53
 
 
  973 0161 0A       		.uleb128 0xa
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1027 01cf FC020000 		.4byte	.LASF29
  1028 01d3 01       		.byte	0x1
  1029 01d4 4102     		.2byte	0x241
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 54
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 54
 
 
  1030 01d6 6B000000 		.4byte	0x6b
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1084 025f 12       		.uleb128 0x12
  1085 0260 6F030000 		.4byte	.LASF30
  1086 0264 01       		.byte	0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 55
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 55
 
 
  1087 0265 8902     		.2byte	0x289
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1141 02e4 B802     		.2byte	0x2b8
  1142 02e6 6B000000 		.4byte	0x6b
  1143 02ea C6010000 		.4byte	.LLST13
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 56
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 56
 
 
  1144 02ee 11       		.uleb128 0x11
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1198 0363 E902     		.2byte	0x2e9
  1199 0365 6B000000 		.4byte	0x6b
  1200 0369 01       		.byte	0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 57
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 57
 
 
  1201 036a 00       		.byte	0
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1255 03e5 01       		.byte	0x1
  1256 03e6 8E07     		.2byte	0x78e
  1257 03e8 77000000 		.4byte	0x77
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 58
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 58
 
 
  1258 03ec 4F020000 		.4byte	.LLST17
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1312 0474 11       		.uleb128 0x11
  1313 0475 BA030000 		.4byte	.LASF42
  1314 0479 01       		.byte	0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 59
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 59
 
 
  1315 047a 6101     		.2byte	0x161
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1369 04ec 6B000000 		.4byte	0x6b
  1370 04f0 A8030000 		.4byte	.LLST26
  1371 04f4 0C       		.uleb128 0xc
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 60
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 60
 
 
  1372 04f5 1E000000 		.4byte	.LVL80
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1426 0569 0401     		.2byte	0x104
  1427 056b 6F050000 		.4byte	0x56f
  1428 056f 1F       		.uleb128 0x1f
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 61
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 61
 
 
  1429 0570 4E050000 		.4byte	0x54e
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1483 05e5 05       		.uleb128 0x5
  1484 05e6 03       		.byte	0x3
  1485 05e7 00000000 		.4byte	CapSense_noiseThreshold
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 62
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 62
 
 
  1486 05eb 1E       		.uleb128 0x1e
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1540 0663 03       		.byte	0x3
  1541 0664 9A       		.byte	0x9a
  1542 0665 20       		.uleb128 0x20
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 63
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 63
 
 
  1543 0666 52050000 		.4byte	.LASF61
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1597 0025 03       		.uleb128 0x3
  1598 0026 08       		.uleb128 0x8
  1599 0027 00       		.byte	0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 64
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 64
 
 
  1600 0028 00       		.byte	0
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1654 005f 07       		.uleb128 0x7
  1655 0060 34       		.uleb128 0x34
  1656 0061 00       		.byte	0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 65
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 65
 
 
  1657 0062 03       		.uleb128 0x3
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1711 009f 00       		.byte	0
  1712 00a0 00       		.byte	0
  1713 00a1 0C       		.uleb128 0xc
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 66
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 66
 
 
  1714 00a2 898201   		.uleb128 0x4109
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1768 00db 0B       		.uleb128 0xb
  1769 00dc 3B       		.uleb128 0x3b
  1770 00dd 05       		.uleb128 0x5
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 67
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 67
 
 
  1771 00de 49       		.uleb128 0x49
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1825 0114 06       		.uleb128 0x6
  1826 0115 40       		.uleb128 0x40
  1827 0116 18       		.uleb128 0x18
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 68
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 68
 
 
  1828 0117 9742     		.uleb128 0x2117
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1882 014e 3A       		.uleb128 0x3a
  1883 014f 0B       		.uleb128 0xb
  1884 0150 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 69
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 69
 
 
  1885 0151 05       		.uleb128 0x5
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1939 0187 00       		.byte	0
  1940 0188 03       		.uleb128 0x3
  1941 0189 08       		.uleb128 0x8
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 70
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 70
 
 
  1942 018a 3A       		.uleb128 0x3a
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  1996 01c0 49       		.uleb128 0x49
  1997 01c1 13       		.uleb128 0x13
  1998 01c2 3F       		.uleb128 0x3f
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 71
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 71
 
 
  1999 01c3 19       		.uleb128 0x19
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2053 0034 02000000 		.4byte	.LVL7
  2054 0038 06000000 		.4byte	.LVL8
  2055 003c 0200     		.2byte	0x2
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 72
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 72
 
 
  2056 003e 30       		.byte	0x30
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2110 00bb 50       		.byte	0x50
  2111 00bc 2C000000 		.4byte	.LVL27
  2112 00c0 40000000 		.4byte	.LVL29
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 73
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 73
 
 
  2113 00c4 0400     		.2byte	0x4
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2167 0145 03       		.byte	0x3
  2168 0146 08000000 		.4byte	.LANCHOR0+8
  2169 014a 22       		.byte	0x22
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 74
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 74
 
 
  2170 014b 00000000 		.4byte	0
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2224 01d2 08000000 		.4byte	.LVL40
  2225 01d6 14000000 		.4byte	.LVL43
  2226 01da 0100     		.2byte	0x1
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 75
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 75
 
 
  2227 01dc 54       		.byte	0x54
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2281 0265 01       		.uleb128 0x1
  2282 0266 50       		.byte	0x50
  2283 0267 9F       		.byte	0x9f
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 76
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 76
 
 
  2284 0268 00000000 		.4byte	0
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2338 02ea 55       		.byte	0x55
  2339 02eb 44000000 		.4byte	.LVL65
  2340 02ef CA000000 		.4byte	.LVL76
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 77
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 77
 
 
  2341 02f3 0100     		.2byte	0x1
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2395 0373 0100     		.2byte	0x1
  2396 0375 56       		.byte	0x56
  2397 0376 00000000 		.4byte	0
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 78
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 78
 
 
  2398 037a 00000000 		.4byte	0
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2452 0018 00000000 		.4byte	.LFB1
  2453 001c 18000000 		.4byte	.LFE1-.LFB1
  2454 0020 00000000 		.4byte	.LFB2
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 79
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 79
 
 
  2455 0024 16000000 		.4byte	.LFE2-.LFB2
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2506      FB0E0D00 
  2506      01010101 
  2507              	.LASF10:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 80
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 80
 
 
  2508 0000 75696E74 		.ascii	"uint16\000"
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2528 00d0 7369676E 		.ascii	"signed char\000"
  2528      65642063 
  2528      68617200 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 81
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 81
 
 
  2529              	.LASF36:
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2554 0184 43617053 		.ascii	"CapSense_ScanSensor\000"
  2554      656E7365 
  2554      5F536361 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 82
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 82
 
 
  2554      6E53656E 
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2573      5F557064 
  2573      61746553 
  2573      656E736F 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 83
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 83
 
 
  2574              	.LASF39:
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2596              	.LASF45:
  2597 0351 43617053 		.ascii	"CapSense_rawFilterData1\000"
  2597      656E7365 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 84
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 84
 
 
  2597      5F726177 
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2618              	.LASF17:
  2619 046f 43617053 		.ascii	"CapSense_BaseInit\000"
  2619      656E7365 
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 85
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 85
 
 
  2619      5F426173 
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 1
  2639 054a 74656D70 		.ascii	"tempRaw\000"
  2639      52617700 
  2640              	.LASF61:
-ARM GAS  C:\Users\Arold\AppData\Local\Temp\cc744xce.s 			page 86
+ARM GAS  C:\Users\Arold\AppData\Local\Temp\ccMJwZZc.s 			page 86
 
 
  2641 0552 43617053 		.ascii	"CapSense_IsBusy\000"

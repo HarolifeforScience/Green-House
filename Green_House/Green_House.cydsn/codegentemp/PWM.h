@@ -233,7 +233,7 @@ void PWM_RestoreConfig(void) ;
                                                     PWM_STATUS_TC_INT_EN_MASK_SHIFT)) | \
                                                     (uint8)((uint8)(0u <<  \
                                                     PWM_STATUS_CMP2_INT_EN_MASK_SHIFT)) | \
-                                                    (uint8)((uint8)(0u <<  \
+                                                    (uint8)((uint8)(1u <<  \
                                                     PWM_STATUS_CMP1_INT_EN_MASK_SHIFT )) | \
                                                     (uint8)((uint8)(0u <<  \
                                                     PWM_STATUS_KILL_INT_EN_MASK_SHIFT )))

@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+
 #include <OneWireLab.h>
 
 // Define and global variables
@@ -25,11 +26,32 @@
 # define TRANSBUFFER_SIZE  150
 # define ROOM  1
 # define SOIL  0
+
 # define MAX_LENGTH              (4u)
 # define VALID_DAY_LENGTH        (2u)
 # define VALID_MONTH_LENGTH      (2u)
 # define VALID_SHORT_YEAR_LENGTH (2u)
 # define VALID_LONG_YEAR_LENGTH  (4u)
+
+/* Maximum value of seconds and minutes */
+# define MAX_SEC_OR_MIN (60u)
+
+/* Maximum value of hours definition */
+# define MAX_HOURS_24H (23UL)
+
+/* Month per year definition */
+# define MONTHS_PER_YEAR (12U)
+
+/* Days per week definition */
+# define DAYS_PER_WEEK (7u)
+
+
+# define IS_SEC_VALID(sec) ((sec) <= MAX_SEC_OR_MIN )
+# define IS_MIN_VALID(min) ((min) <= MAX_SEC_OR_MIN )
+# define IS_HOUR_VALID(hour) ((hour) <= MAX_HOURS_24H)
+# define IS_MONTH_VALID(month) (((month > 0u ) && ((month) <= MONTHS_PER_YEAR ) )
+# define IS_YEAR_VALID(year) ((year) > 0u )
+
 #define RTC_ACCESS_RETRY         (50u)
 #define  RTC_MAX_YEAR            (4u)
 
@@ -69,6 +91,13 @@ void print_em_eeprom_error(cy_en_em_eeprom_status_t status);
 int write(int file, char *ptr, int len);
 int read (int fd, const void *Ch, size_t count);
 
+/*Function for RTC*/
+
+bool ValidateDateTime(RTC_TIME_DATE *datetime);
+static void Rtc_PrintDateTime(void);
+static void Rtc_SetTime(void);
+bool ValidateDateTime(RTC_TIME_DATE *datetime);
+
 /* the length of the string to be saved */
  uint len = 0 ;
 
@@ -94,6 +123,9 @@ char TransmitBuffer[TRANSBUFFER_SIZE];
 
 int main(void)
 {
+    
+    RTC_TIME_DATE Start;
+    
     CyGlobalIntEnable; /* Enable global interrupts. */
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
@@ -107,12 +139,26 @@ int main(void)
     PWM_Start();
     isr_PWM_StartEx(my_isr_PWM);
     
-    //
+    Start.Sec = 55u;
+   
+    Start.Min = 55u;
+
+    Start.Hour = 13u;
+
+    Start.DayOfMonth = 7u;
+
+    Start.Month = 7u;
+   
+    Start.Year = 2015u;
+
+    RTC_WriteTime(&Start);
+    
     RTC_Start();
     
-    RTC_ReadSecond();
-    RTC_ReadMinute();
-    RTC_ReadHour();
+    RTC_Init();
+    
+    RTC_Enable();
+  
     
     OneWireStart();
     
@@ -125,7 +171,7 @@ int main(void)
     }
     
     // Some Samples
-    for(p = 0; p < 10; p++) {
+    /*for(p = 0; p < 10; p++) {
         
         CapSense_ScanSensor(0); 
         
@@ -134,7 +180,7 @@ int main(void)
         capData += CapSense_ReadSensorRaw(0); 
     }
     baselineData = capData/10; // this is the baseline to be subtracted from the capsense data
-    
+    */
     // test transmition to putty
     char projectName[50] = "***Green House Project*** \n\r";
       UART_PutString(projectName);
@@ -219,66 +265,61 @@ uint16 get_CapData(void) {
     return capData;
 }
 CY_ISR(my_isr_UART)
-{   
-   // real_Time_Clock();
-  room_temp = OneWireRead_data(SOIL);
-  char testData[32];
-    
-  sprintf(testData," Temp One wire = %u \r\n" ,room_temp);
-    
-  UART_PutString(testData);
-    
-    
-    // Testing ends
-    
+{  
     // Terminal Interface Commande
-    static uint8 old_char = 0;
+    static uint8 old_char = 0 , last_char = 0;
     uint8 current_char;
     current_char = UART_GetChar();
     
-    if(current_char == 't' || current_char == 'T')
-    {
+    UART_PutChar(current_char);
+    
+    if((old_char == 't' || old_char == 'T') && current_char == 13)
+    {  
         // Setting the current time for the device
-        UART_PutString("Setting the current time for the device\r\n");  
+        UART_PutString("\nSetting the current time for the device\r\n");  
+        //Rtc_SetTime();
     }
-    else if(current_char == 'd' || current_char == 'D')
+    else if((old_char == 'd' || old_char == 'D') && current_char ==  13)
     {
         // Setting the current day for the device
-        UART_PutString("Setting the current day for the device\r\n");  
+        UART_PutString("\nSetting the current day for the device\r\n");
+        Rtc_SetTime();
     }
-    else if(current_char == '?')
+    else if((old_char == '?')&& current_char == 13)
     {
-        if(old_char == 't' || old_char == 'T')
+        if(last_char == 't' || last_char == 'T' || last_char == 'd' || last_char == 'D')
         {
             // Sending out the current device time
-            UART_PutString("Sending out the current device time\r\n");
+            UART_PutString("\nSending out the current device time\r\n");
+            Rtc_PrintDateTime();
         }
-        else if(old_char == 'd' || old_char == 'D')
+       /* else if(old_char == 'd' || old_char == 'D')
         {
             // Sending out the current device day
             UART_PutString("Sending out the current device day\r\n");
-        }
+        }*/
         else
         {
             // Sending out indentification information 
-            UART_PutString("GreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\r\n");
+            UART_PutString("\nGreenHouse controller 0.1, developed by Yameni Gleen and Ndassi Harold\r\n");
         }
     }
-     else if(current_char == 'a' || current_char == 'A')
+     else if((old_char == 'a' || old_char == 'A') && current_char == 13)
     {
         // Sending out all saved data in JSON format: date, time, all temperatures, air humidity, soil moisture, light sensor
-        UART_PutString("Sending all saved data...\r\n");
+        UART_PutString("\nSending all saved data...\r\n");
          Stored = 0;
          print_data_from_eeprom();
     }
-     else if(current_char == 'c' || current_char == 'C')
+     else if((old_char == 'c' || old_char == 'C') && current_char == 13)
     {
         // clearing the device data logging memory
-         UART_PutString("Clearing the logging memory...\r\n");
+         UART_PutString("\nClearing the logging memory...\r\n");
          Em_EEPROM_Erase();
          UART_PutString("cleared !");
     }
     
+    last_char = old_char;
     old_char = current_char;
     // Clearing the Interrupt bit and the Receive register
     UART_ClearRxBuffer();
@@ -325,6 +366,7 @@ void save_str_to_eeprom(char *str, uint len)
 }
 
 /* write to EEPROM */
+
 int get_str_from_eeprom(uint32_t address, char *str)
 {
     int i = 0 ;
@@ -349,6 +391,7 @@ int get_str_from_eeprom(uint32_t address, char *str)
 }
 
 /* read from EEPROM */
+
 void print_data_from_eeprom(void)
 {
     uint address = 0 ;
@@ -417,9 +460,11 @@ int write(int file, char *ptr, int len) {
   
   
 int read (int fd, const void *Ch, size_t count) {  
+    
   size_t CharCnt = 0x00;  
     
-  (void)fd;/* Parameter is not used, suppress unused argument warning */  
+ /* Parameter is not used, suppress unused argument warning */  
+ (void)fd;
 
   for (;count > 0x00; --count) {  
     
@@ -444,6 +489,7 @@ int read (int fd, const void *Ch, size_t count) {
   return CharCnt;  
 }  
 
+
 // RTC 
 
 static void Rtc_PrintDateTime(void)
@@ -453,35 +499,43 @@ static void Rtc_PrintDateTime(void)
     
     RTC_TIME_DATE *dateTime;
     dateTime = RTC_ReadTime();
+    
+    CyDelay(10000);
 	
 	/* Display current date and time */
-	printf("\rCurrent Time: %u : %u : %u  %u/%u/%u\r\n", \
-			dateTime->Hour, dateTime->Min, dateTime->Sec, \
+	sprintf(TransmitBuffer,"\rCurrent Time: %u : %u : %u  %u/%u/%u\r\n", 
+        
+			dateTime->Hour = RTC_ReadHour(), dateTime->Min, dateTime->Sec, \
+        
 			dateTime->DayOfWeek, dateTime->Month, dateTime->Year);
+    
+    UART_PutString(TransmitBuffer);
 }
+
 
 static void Rtc_SetTime(void)
 {
 	/* Variables used to store user input */
 	char dateStr[MAX_LENGTH], monthStr[MAX_LENGTH], yearStr[MAX_LENGTH];
+    
 	char secStr[MAX_LENGTH], minStr[MAX_LENGTH], hourStr[MAX_LENGTH];
 
 	/* Variables used to store date and time information */
-	uint32_t date, month, year, sec, min, hour;
+	//uint32_t date, month, year, sec, min, hour;
 
 	/* Variable used to store return status of RTC API */
 	//cy_en_rtc_status_t  rtcApiStatus;
 
 	uint32_t rtcAccessRetry = RTC_ACCESS_RETRY;
 
-	printf("\r\nEnter new date (DD MM YY)\r\n");
+	UART_PutString("\r\nEnter new date (DD MM YY)\r\n");
 	scanf("%s %s %s", dateStr, monthStr, yearStr);
 
 	/* validate user input */
 	if(strlen(dateStr)<= VALID_DAY_LENGTH && strlen(monthStr)<= VALID_MONTH_LENGTH  && \
 	(strlen(yearStr)<= VALID_SHORT_YEAR_LENGTH || strlen(yearStr)== VALID_LONG_YEAR_LENGTH ))
 	{
-		printf("\rEnter new time in 24-hour format (HH MM SS)\r\n");
+	    UART_PutString("\rEnter new time in 24-hour format (HH MM SS)\r\n");
 		sscanf("%s %s %s", hourStr, minStr, secStr);
         
         RTC_TIME_DATE *time;
@@ -495,12 +549,12 @@ static void Rtc_SetTime(void)
 		time -> Hour  = atoi(hourStr);
 
 		/* If user input 4 digits Year information, set 2 digits Year */
-		if(year > RTC_MAX_YEAR)
+		if(time ->Year > RTC_MAX_YEAR)
 		{
-			year = year % 100u;
+			time ->Year = time ->Year % 100u;
 		}
 
-		if(ValidateDateTime(&time)
+		if(ValidateDateTime(time))
 		{
 			/* Set date and time.
 			 * RTC block doesn't allow to access, when synchronizing the user registers
@@ -510,19 +564,18 @@ static void Rtc_SetTime(void)
 			 */
 			do
 			{
-				RTC_WriteTime(&time);
+				RTC_WriteTime(time);
 				rtcAccessRetry --;
 			} while ((RTC_ReadStatus() != RTC_STATUS_DST) && (rtcAccessRetry != 0));
 
 			if((RTC_ReadStatus() != RTC_STATUS_DST))
 			{
-				printf("\r\nFailed to update date and time\r\n");
-				PrintAvailableCommand();
+				UART_PutString("\r\nFailed to update date and time\r\n");
 			}
 			else
 			{
-				printf("\r\nDate and Time updated !!\r\n");
-				Rtc_PrintDateTime();
+				UART_PutString("\r\nDate and Time updated !!\r\n");
+				//Rtc_PrintDateTime();
 			}
 		}
 		else
@@ -536,11 +589,13 @@ static void Rtc_SetTime(void)
 		printf("\r\nInvalid values! Please enter the values in specified format\r\n");
 		//PrintAvailableCommand();
 	}
+
 }
 
 bool ValidateDateTime(RTC_TIME_DATE *datetime)
 {
 	uint8_t daysInMonth;
+    
 	/* Variable used to store days in months table */
 	static uint8_t daysInMonthTable[RTC_MONTHS_IN_YEAR] = {
 		RTC_DAYS_IN_JANUARY,
@@ -556,12 +611,9 @@ bool ValidateDateTime(RTC_TIME_DATE *datetime)
 		RTC_DAYS_IN_NOVEMBER,
 		RTC_DAYS_IN_DECEMBER};
 
-	bool status = True ;
-    
-            /*RTC_IS_SEC(sec) & CY_RTC_IS_MIN_VALID(min) & \
-			CY_RTC_IS_HOUR_VALID(hour) & CY_RTC_IS_MONTH_VALID(month) & \
-			CY_RTC_IS_YEAR_SHORT_VALID(year); */
-
+	bool status = IS_SEC_VALID(datetime ->Sec) & IS_MIN_VALID(datetime->Min) &
+                  IS_HOUR_VALID(datetime ->Hour) & IS_MONTH_VALID(datetime->Month) &
+                  IS_YEAR_VALID(datetime ->Year ) ) ;
 
 	if(status)
 	{
@@ -574,6 +626,7 @@ bool ValidateDateTime(RTC_TIME_DATE *datetime)
 		}
 		status &= (datetime->DayOfWeek > 0U) && (datetime->DayOfWeek <= daysInMonth);
 	}
+    
 	return status;
 }
 
